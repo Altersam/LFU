@@ -339,6 +339,7 @@ const $=s=>document.querySelector(s);
 const escapeHtml=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const unique=items=>[...new Set(items)].filter(Boolean);
 const find=id=>DATA.lessons.find(l=>l.id===id);
+function groupLabel(g,detail=false){if(g.name==="10КО"&&g.subgroup===2)return"10КО · Экономисты";return g.name+(g.subgroup?(detail?` · гр. ${g.subgroup}`:` гр.${g.subgroup}`):"")}
 
 function groupOrder(l,name){const g=l.groups.find(x=>x.name===name);return g?.subgroup===1?0:g?.subgroup===2?2:1}
 function matches(l){const hay=[l.subject,...l.teachers,l.room,...l.groups.map(g=>g.name)].join(" ").toLocaleLowerCase("ru");return !state.query||hay.includes(state.query)}
@@ -347,10 +348,10 @@ function teacherLessons(name){return DATA.lessons.filter(l=>l.teachers.includes(
 function classLabel(label){const first={classes:"Все классы",detail:"Отдельный класс",teachers:"Отдельный учитель",summary:"Сводка"};return first[label]||label}
 
 const roomText=l=>{const r=l.room;return (r==="МТС Линк"||r==="edu.fa.ru")?" · "+r:""};function lessonButton(l){
-  return `<button class="lesson ${lessonClass(l)}" data-id="${l.id}"><b>${escapeHtml(l.subject)}</b><small>${escapeHtml(l.teachers.join(", ")||"без учителя")} · ${escapeHtml(l.groups.map(g=>g.name+(g.subgroup?` гр.${g.subgroup}`:"")).join(", "))}${roomText(l)}</small></button>`;
+  return `<button class="lesson ${lessonClass(l)}" data-id="${l.id}"><b>${escapeHtml(l.subject)}</b><small>${escapeHtml(l.teachers.join(", ")||"без учителя")} · ${escapeHtml(l.groups.map(g=>groupLabel(g)).join(", "))}${roomText(l)}</small></button>`;
 }
 function compactLesson(l,extra=""){
-  return `<button class="compact-lesson ${lessonClass(l)} ${extra}" data-id="${l.id}"><time>${l.lesson} · ${l.start}-${l.end}</time><b>${escapeHtml(l.subject)}</b><small>${escapeHtml(l.teachers.join(", ")||"без учителя")} · ${escapeHtml(l.groups.map(g=>g.name+(g.subgroup?` гр.${g.subgroup}`:"")).join(", "))}${roomText(l)}</small></button>`;
+  return `<button class="compact-lesson ${lessonClass(l)} ${extra}" data-id="${l.id}"><time>${l.lesson} · ${l.start}-${l.end}</time><b>${escapeHtml(l.subject)}</b><small>${escapeHtml(l.teachers.join(", ")||"без учителя")} · ${escapeHtml(l.groups.map(g=>groupLabel(g)).join(", "))}${roomText(l)}</small></button>`;
 }
 function classCell(items,name){
   const whole=items.filter(i=>groupOrder(i,name)===1);
@@ -442,14 +443,14 @@ function formatPills(items){
   const c=formatCounts(items), cls={"очно":"physical","онлайн":"online","дистант":"remote"};
   return `<div class="format-list">${Object.entries(c).filter(([,count])=>count>0).map(([name,count])=>`<span class="format-pill ${cls[name]}">${name}: ${count}</span>`).join("")}</div>`;
 }
-function classGroupLabel(group){return group.name+(group.subgroup?` · гр. ${group.subgroup}`:"")}
+ function classGroupLabel(group){return groupLabel(group,true)}
 function statsList(rows,unit="ч"){
   return `<ul class="stats-list">${rows.map(row=>`<li><span>${escapeHtml(row.name)}</span><b>${escapeHtml(row.value??`${row.count} ${unit}`)}</b></li>`).join("")}</ul>`;
 }
 function teacherGroupLoad(lessons){
   const rows=new Map();
   for(const lesson of lessons)for(const group of lesson.groups){
-    const name=group.name+(group.subgroup?` гр.${group.subgroup}`:"");
+    const name=groupLabel(group);
     const row=rows.get(name)||{name,formats:{"очно":0,"онлайн":0,"дистант":0}};
     row.formats[lesson.delivery]++;rows.set(name,row);
   }
@@ -670,7 +671,7 @@ function changeLog(title,items){
 }
 function render(){if(state.mode==="classes")renderClasses();else if(state.mode==="detail")renderDetail();else if(state.mode==="teachers")renderTeachers();else renderSummary()}
 function openDetail(l){
-  $("#detail").innerHTML=`<p class="eyebrow">${DAYS[l.weekday]} · слот ${l.lesson}</p><h2 style="margin:6px 0 0">${escapeHtml(l.subject)}</h2><dl class="pairs"><dt>Время</dt><dd>${l.start}-${l.end}</dd><dt>Классы</dt><dd>${escapeHtml(l.groups.map(g=>g.name+(g.subgroup?` · гр. ${g.subgroup}`:"")).join(", "))}</dd><dt>Учителя</dt><dd>${escapeHtml(l.teachers.join(", ")||"не указан")}</dd><dt>Формат</dt><dd><span class="badge ${escapeHtml(l.delivery)}">${l.delivery}</span>${l.weekend_remote?" · выходной дистант":""}</dd>${(l.room==="МТС Линк"||l.room==="edu.fa.ru")?`<dt>Кабинет</dt><dd>${escapeHtml(l.room)}</dd>`:""}</dl>`;
+   $("#detail").innerHTML=`<p class="eyebrow">${DAYS[l.weekday]} · слот ${l.lesson}</p><h2 style="margin:6px 0 0">${escapeHtml(l.subject)}</h2><dl class="pairs"><dt>Время</dt><dd>${l.start}-${l.end}</dd><dt>Классы</dt><dd>${escapeHtml(l.groups.map(g=>groupLabel(g,true)).join(", "))}</dd><dt>Учителя</dt><dd>${escapeHtml(l.teachers.join(", ")||"не указан")}</dd><dt>Формат</dt><dd><span class="badge ${escapeHtml(l.delivery)}">${l.delivery}</span>${l.weekend_remote?" · выходной дистант":""}</dd>${(l.room==="МТС Линк"||l.room==="edu.fa.ru")?`<dt>Кабинет</dt><dd>${escapeHtml(l.room)}</dd>`:""}</dl>`;
   $("#drawer").classList.add("open");
 }
 function bindLessons(){$("#content").querySelectorAll(".lesson,.compact-lesson").forEach(b=>b.onclick=()=>openDetail(find(b.dataset.id)))}
