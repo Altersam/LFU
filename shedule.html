@@ -326,7 +326,9 @@ const scheduleChanges={
   "490":{weekday:4,day:"Чт",lesson:1,start:"09:30",end:"10:15",delivery:"очно",room:null,room_source:null},
   "489":{weekday:4,day:"Чт",lesson:2,start:"10:35",end:"11:20",delivery:"очно",room:null,room_source:null},
   "727":{delivery:"очно",room:null,room_source:null},
-  "728":{delivery:"очно",room:null,room_source:null}
+  "728":{delivery:"очно",room:null,room_source:null},
+  "389":{weekday:3,day:"Ср",lesson:0,start:"08:30",end:"09:15"},
+  "390":{weekday:3,day:"Ср",lesson:5,start:"13:20",end:"14:05"}
 };
 for(const lesson of DATA.lessons){
   if(mathPracticumIds.has(lesson.id)){lesson.subject="Практикум по решению математических задач";lesson.category="внеурочка"}
