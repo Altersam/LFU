@@ -17,6 +17,8 @@
  }
  .lesson.math-practicum{background:#fff3bf;border-left-color:#e67700}
  .compact-lesson.math-practicum{background:#fff3bf;border-left-color:#e67700}
+ .lesson.pe-distance{background:#d3f9d8;border-left-color:#2b8a3e}
+ .compact-lesson.pe-distance{background:#d3f9d8;border-left-color:#2b8a3e}
  *{box-sizing:border-box}
 body{margin:0;background:var(--page);color:var(--ink);font:14px/1.45 "Inter","Segoe UI",Arial,sans-serif}
 button,input,select{font:inherit;color:inherit}
@@ -358,7 +360,33 @@ const scheduleChanges={
   "388":{weekday:3,day:"Ср",lesson:4,start:"12:25",end:"13:10"},
   "386":{weekday:3,day:"Ср",lesson:0,start:"08:30",end:"09:15"},
   "608":{weekday:4,day:"Чт",lesson:3,start:"11:30",end:"12:15"},
-  "458":{weekday:5,day:"Пт",lesson:1,start:"09:30",end:"10:15"}
+  "458":{weekday:5,day:"Пт",lesson:1,start:"09:30",end:"10:15"},
+  "682":{weekday:5,day:"Пт",lesson:7,start:"15:30",end:"16:15"},
+  "687":{weekday:5,day:"Пт",lesson:7,start:"15:30",end:"16:15"},
+  "693":{weekday:5,day:"Пт",lesson:7,start:"15:30",end:"16:15"},
+  "692":{weekday:5,day:"Пт",lesson:5,start:"13:20",end:"14:05"},
+  "690":{weekday:5,day:"Пт",lesson:5,start:"13:20",end:"14:05"},
+  "20":{weekday:1,day:"Пн",lesson:7,start:"15:30",end:"16:15"},
+  "25":{weekday:5,day:"Пт",lesson:1,start:"09:30",end:"10:15"},
+  "26":{weekday:5,day:"Пт",lesson:4,start:"12:25",end:"13:10"},
+  "173":{weekday:1,day:"Пн",lesson:3,start:"11:30",end:"12:15"},
+  "573":{weekday:1,day:"Пн",lesson:3,start:"11:30",end:"12:15"},
+  "375":{category:"электив"},
+  "376":{category:"электив"},
+  "487":{category:"электив"},
+  "381":{category:"электив"},
+  "382":{category:"электив"},
+  "383":{category:"электив"},
+  "307":{category:"электив"},
+  "428":{category:"электив"},
+  "740":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
+  "741":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"},
+  "742":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
+  "743":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"},
+  "744":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
+  "745":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"},
+  "746":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
+  "747":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"}
 };
 for(const lesson of DATA.lessons){
   if(mathPracticumIds.has(lesson.id)){lesson.subject="Практикум по решению математических задач";lesson.category="внеурочка"}
@@ -370,7 +398,7 @@ DATA.summary.distance_lessons=formatTotals["дистант"]||0;
 for(const metric of DATA.comparison.metrics){if(metric.label==="Очные занятия")metric.after=formatTotals["очно"]||0;if(metric.label==="Онлайн-занятия")metric.after=formatTotals["онлайн"]||0;if(metric.label==="Дистанционные занятия")metric.after=formatTotals["дистант"]||0}
 for(const dashboard of DATA.analytics.class_dashboard){const lessons=DATA.lessons.filter(lesson=>lesson.groups.some(group=>group.name===dashboard.name));dashboard.physical=lessons.filter(lesson=>lesson.delivery==="очно").length;dashboard.online=lessons.filter(lesson=>lesson.delivery==="онлайн").length;dashboard.distance=lessons.filter(lesson=>lesson.delivery==="дистант").length}
 for(const dashboard of DATA.analytics.teacher_dashboard){const lessons=DATA.lessons.filter(lesson=>lesson.teachers.includes(dashboard.name));dashboard.physical=lessons.filter(lesson=>lesson.delivery==="очно").length;dashboard.online=lessons.filter(lesson=>lesson.delivery==="онлайн").length;dashboard.distance=lessons.filter(lesson=>lesson.delivery==="дистант").length}
-function lessonClass(l){if(mathPracticumIds.has(l.id))return"math-practicum";if(l.category==="классный час")return"class-hour";if(l.category==="электив")return"elective";if(l.category==="внеурочка")return"extra";if(l.category==="профильная группа")return"economists";return l.delivery==="онлайн"?"online":l.delivery==="дистант"?"remote":""}
+function lessonClass(l){if(l.highlightClass)return l.highlightClass;if(mathPracticumIds.has(l.id))return"math-practicum";if(l.category==="классный час")return"class-hour";if(l.category==="электив")return"elective";if(l.category==="внеурочка")return"extra";if(l.category==="профильная группа")return"economists";return l.delivery==="онлайн"?"online":l.delivery==="дистант"?"remote":""}
 const DAYS={1:"Пн",2:"Вт",3:"Ср",4:"Чт",5:"Пт",6:"Сб",7:"Вс"};
 const WEEK=[1,2,3,4,5];
 const SLOT_TIMES={0:"08:30-09:15",1:"09:30-10:15",2:"10:35-11:20",3:"11:30-12:15",4:"12:25-13:10",5:"13:20-14:05",6:"14:35-15:20",7:"15:30-16:15",8:"16:25-17:10",9:"17:20-18:05"};
