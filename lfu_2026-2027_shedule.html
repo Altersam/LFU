@@ -17,8 +17,10 @@
  }
  .lesson.math-practicum{background:#fff3bf;border-left-color:#e67700}
  .compact-lesson.math-practicum{background:#fff3bf;border-left-color:#e67700}
- .lesson.pe-distance{background:#d3f9d8;border-left-color:#2b8a3e}
- .compact-lesson.pe-distance{background:#d3f9d8;border-left-color:#2b8a3e}
+  .lesson.pe-distance{background:#d3f9d8;border-left-color:#2b8a3e}
+  .compact-lesson.pe-distance{background:#d3f9d8;border-left-color:#2b8a3e}
+  .lesson.split-elective-extra{background:linear-gradient(90deg,var(--elective) 0 50%,var(--extra) 50% 100%);border-left-color:var(--elective-bd)}
+  .compact-lesson.split-elective-extra{background:linear-gradient(90deg,var(--elective) 0 50%,var(--extra) 50% 100%);border-left-color:var(--elective-bd)}
  *{box-sizing:border-box}
 body{margin:0;background:var(--page);color:var(--ink);font:14px/1.45 "Inter","Segoe UI",Arial,sans-serif}
 button,input,select{font:inherit;color:inherit}
@@ -379,19 +381,54 @@ const scheduleChanges={
   "383":{category:"электив"},
   "307":{category:"электив"},
   "428":{category:"электив"},
-  "740":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
-  "741":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"},
-  "742":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
-  "743":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"},
-  "744":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
-  "745":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"},
-  "746":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15"},
-  "747":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15"}
+  "740":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "741":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "742":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "743":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "744":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "745":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "746":{weekday:1,day:"Пн",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "747":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15",teachers:[]},
+  "488":{highlightClass:"split-elective-extra"},
+  "82":{weekday:2,day:"Вт",lesson:3,start:"11:30",end:"12:15"},
+  "218":{weekday:1,day:"Пн",lesson:2,start:"10:35",end:"11:20"},
+  "211":{weekday:2,day:"Вт",lesson:6,start:"14:35",end:"15:20"},
+  "212":{weekday:2,day:"Вт",lesson:5,start:"13:20",end:"14:05"},
+  "292":{weekday:2,day:"Вт",lesson:6,start:"14:35",end:"15:20"},
+  "644":{weekday:5,day:"Пт",lesson:7,start:"15:30",end:"16:15"},
+  "648":{weekday:5,day:"Пт",lesson:1,start:"09:30",end:"10:15"},
+  "58":{weekday:1,day:"Пн",lesson:2,start:"10:35",end:"11:20"},
+  "63":{weekday:1,day:"Пн",lesson:2,start:"10:35",end:"11:20"},
+  "60":{weekday:5,day:"Пт",lesson:7,start:"15:30",end:"16:15"},
+  "59":{weekday:1,day:"Пн",lesson:6,start:"14:35",end:"15:20"},
+  "64":{weekday:1,day:"Пн",lesson:3,start:"11:30",end:"12:15"},
+  "620":{weekday:1,day:"Пн",lesson:7,start:"15:30",end:"16:15"},
+  "631":{weekday:5,day:"Пт",lesson:2,start:"10:35",end:"11:20"},
+  "622":{weekday:5,day:"Пт",lesson:4,start:"12:25",end:"13:10"},
+  "629":{weekday:5,day:"Пт",lesson:7,start:"15:30",end:"16:15"},
+  "627":{weekday:3,day:"Ср",lesson:7,start:"15:30",end:"16:15"},
+  "153":{weekday:1,day:"Пн",lesson:2,start:"10:35",end:"11:20",groups:[{id:12,name:"10КО",subgroup:2}]},
+  "152":{weekday:1,day:"Пн",lesson:3,start:"11:30",end:"12:15",groups:[{id:12,name:"10КО",subgroup:2}]},
+  "220":{weekday:4,day:"Чт",lesson:9,start:"17:20",end:"18:05",delivery:"очно",room:"10КО",room_source:"publication"},
+  "89":{weekday:2,day:"Вт",lesson:1,start:"09:30",end:"10:15",delivery:"очно",room:null,room_source:null,groups:[{id:12,name:"10КО",subgroup:1}]},
+  "90":{weekday:2,day:"Вт",lesson:2,start:"10:35",end:"11:20",delivery:"очно",room:null,room_source:null,groups:[{id:12,name:"10КО",subgroup:1}]},
+  "384":{weekday:4,day:"Чт",lesson:0,start:"08:30",end:"09:15"},
+  "422":{groups:[{id:12,name:"10КО",subgroup:2}]},
+  "416":{groups:[{id:12,name:"10КО",subgroup:2}]},
+  "490":{weekday:4,day:"Чт",lesson:1,start:"09:30",end:"10:15",groups:[{id:12,name:"10КО",subgroup:1}]},
+  "489":{weekday:4,day:"Чт",lesson:2,start:"10:35",end:"11:20",groups:[{id:12,name:"10КО",subgroup:1}]},
+  "733":{weekday:2,day:"Вт",lesson:0,start:"08:30",end:"09:15",groups:[{id:12,name:"10КО",subgroup:2}]},
+  "732":{weekday:3,day:"Ср",lesson:0,start:"08:30",end:"09:15",groups:[{id:12,name:"10КО",subgroup:2}]},
+  "734":{groups:[{id:12,name:"10КО",subgroup:2}]},
+  "735":{groups:[{id:12,name:"10КО",subgroup:2}]}
 };
 for(const lesson of DATA.lessons){
   if(mathPracticumIds.has(lesson.id)){lesson.subject="Практикум по решению математических задач";lesson.category="внеурочка"}
-  if(scheduleChanges[lesson.id])Object.assign(lesson,scheduleChanges[lesson.id]);
+ if(scheduleChanges[lesson.id])Object.assign(lesson,scheduleChanges[lesson.id]);
 }
+ const _10VMath=DATA.lessons.find(lesson=>lesson.id==="631");
+ if(_10VMath)DATA.lessons.push({..._10VMath,id:"631v",weekday:1,day:"Пн",lesson:4,start:"12:25",end:"13:10",groups:[{id:7,name:"10В",subgroup:null}],teachers:["Эйсымонт Инна Михайловна"]});
+ DATA.lessons=DATA.lessons.filter(lesson=>lesson.id!=="156");
 const formatTotals=DATA.lessons.reduce((totals,lesson)=>(totals[lesson.delivery]=(totals[lesson.delivery]||0)+1,totals),{});
 DATA.summary.online_lessons=formatTotals["онлайн"]||0;
 DATA.summary.distance_lessons=formatTotals["дистант"]||0;
