@@ -1,0 +1,26 @@
+# LFU — пакет обновления корня GitHub Pages
+
+Содержимое:
+- `index.html` — новая главная страница LFU.
+- `guide.html` — «Инструкция Лицея», бывший onboarding / путеводитель педагога.
+- `summary_26_27.html` — интерактивный дайджест «О Лицее · 2026/2027».
+- `assets/mascots/` — локальные маскоты для всех трёх страниц.
+- `summary_assets/` — изображения, которые использует дайджест.
+
+## Что сделать в репозитории LFU
+1. Заменить корневой `index.html` новым файлом из этого пакета.
+2. Добавить `guide.html`.
+3. Заменить / добавить `summary_26_27.html`.
+4. Загрузить папки `assets/` и `summary_assets/`.
+5. Существующие рабочие страницы (`distant.html`, `online_lfu.html`, `MechAI.html`, `MechAI_KTP.html`,
+   `VarFin_instructions_jury.html`, `cabinets.html`, `lfu_2026-2027_shedule.html`) оставить в корне — новая главная на них ссылается.
+
+## Historical Display Generator
+На главной LFU карточка ведёт сразу на опубликованную инструкцию:
+`https://altersam.github.io/Historical-Display-Generator/%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D1%8F.html`
+
+
+## Основная логика
+- `index.html` = навигационный хаб.
+- `guide.html` = инструкция / onboarding / FAQ педагога.
+- `summary_26_27.html` = отчётный и презентационный дайджест о развитии Лицея.
