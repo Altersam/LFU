@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Кредитная лаборатория</title>
+<style>
+:root{
+  --bg:#f3f5f8;--panel:#fff;--text:#172033;--muted:#667085;--line:#d7dde7;
+  --accent:#3157d5;--accent-soft:#eef2ff;--good:#117a48;--warn:#a96000;--bad:#b42318;
+  --ann:#eef3ff;--diff:#edf9f3;--target:#fff1b8;--param:#fff7d7;--sel:#d9e5ff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+button,input{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--text);border-radius:12px;min-height:50px;padding:10px 14px;font-size:15px;font-weight:700}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}button.good{background:var(--good);border-color:var(--good);color:#fff}
+button:active{transform:translateY(1px)}
+.app{height:100%;display:flex;flex-direction:column;overflow:hidden}
+.top{min-height:60px;display:flex;align-items:center;gap:10px;padding:7px 10px;background:#fff;border-bottom:1px solid var(--line);flex:0 0 auto}
+.brand{font-weight:900;font-size:20px;margin-right:auto;white-space:nowrap}.top-actions{display:flex;gap:7px;align-items:center}
+.view-tabs{display:flex;gap:4px;background:#f0f2f6;padding:4px;border-radius:13px}.view-tabs button{min-height:42px;padding:7px 11px;border:0;background:transparent;font-size:14px}.view-tabs button.active{background:#fff;color:var(--accent);box-shadow:0 1px 4px rgba(20,30,55,.12)}
+.iconbtn{min-width:50px;padding:8px 10px;font-size:20px}.menu{position:relative}.menu-panel{display:none;position:absolute;right:0;top:54px;z-index:50;width:240px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 45px rgba(20,30,55,.22)}.menu-panel.open{display:grid;gap:7px}
+.task{background:#fff;border-bottom:1px solid var(--line);padding:12px 14px;flex:0 0 auto}.progress-row{display:flex;align-items:center;gap:9px}.chip{font-size:14px;font-weight:800;border-radius:999px;padding:6px 10px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}.cellchip{background:#fff2c5;color:#775500}.track{height:8px;flex:1;background:#e7ebf2;border-radius:999px;overflow:hidden}.fill{height:100%;background:var(--accent);width:6.7%;border-radius:999px}
+.task h2{font-size:20px;line-height:1.2;margin:9px 0 5px}.task p{font-size:15px;line-height:1.4;margin:0;color:#344054}.task-footer{display:flex;align-items:center;gap:9px;margin-top:9px;min-height:28px;font-size:14px;color:var(--muted)}.selected-info{font-weight:700;color:#344054}.status{margin-left:auto;font-weight:800}.status.ok{color:var(--good)}.status.bad{color:var(--bad)}.status.warn{color:var(--warn)}
+.schedule-action{display:none;margin-top:10px}.schedule-action.show{display:flex}.schedule-action button{width:100%;min-height:52px;font-size:16px}
+.work{flex:1;min-height:0;display:flex;overflow:hidden}.sheetwrap{flex:1;min-width:0;overflow:auto;background:#fff;overscroll-behavior:contain}.sheet{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content;min-width:100%}.sheet th,.sheet td{height:46px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:5px 9px;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sheet thead th{position:sticky;top:0;z-index:5;background:#edf0f5;text-align:center;font-weight:800}.rowh{position:sticky;left:0;z-index:4;width:46px;min-width:46px;background:#edf0f5!important;text-align:right;color:var(--muted);font-size:13px!important}.sheet thead .rowh{z-index:7}.sheet td{min-width:122px;background:#fff}.sheet td.label{font-weight:800;background:#fafbfc}.sheet td.param{background:var(--param);font-weight:800}.sheet td.ann{background:var(--ann)}.sheet td.diff{background:var(--diff)}.sheet td.head{background:#e6eaf1;font-weight:900;text-align:center}.sheet td.num{text-align:right;font-variant-numeric:tabular-nums}.sheet td.sel{outline:4px solid var(--accent);outline-offset:-4px;background:var(--sel)!important}.sheet td.target{box-shadow:inset 0 0 0 3px #eda900;background:var(--target)!important}.sheet td.locked{cursor:default}.sheet td.error{color:var(--bad);font-weight:800}
+.side{width:300px;border-left:1px solid var(--line);background:#f8fafc;padding:11px;overflow:auto}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}.card h3{font-size:16px;margin:0 0 8px}.stat{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid #eef1f5;font-size:14px}.stat:first-of-type{border-top:0}.stat b{font-variant-numeric:tabular-nums}.helptext{font-size:13px;color:var(--muted);line-height:1.5}
+.dock{display:none}
+.composer{position:fixed;left:0;right:0;bottom:0;z-index:70;background:#fff;border-top:1px solid var(--line);box-shadow:0 -20px 55px rgba(20,30,55,.24);padding:12px;transform:translateY(110%);transition:transform .18s ease;max-height:74vh;overflow:auto}.composer.open{transform:translateY(0)}.composer-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}.composer-head b{font-size:20px}.composer-head .close{margin-left:auto;min-width:48px;font-size:22px}.composer-note{font-size:14px;color:var(--muted);line-height:1.35;margin-bottom:9px}
+.exprbox{border:3px solid var(--accent);border-radius:14px;background:#fff;padding:4px 10px;margin-bottom:8px}.exprlabel{font-size:12px;color:var(--muted);font-weight:700;padding-top:3px}.expr-row{display:flex;align-items:center;min-height:52px}.eqprefix{font-size:26px;font-weight:900;color:var(--accent);margin-right:6px;display:none}.eqprefix.show{display:block}#expr{width:100%;height:50px;border:0;outline:0;font-family:Consolas,monospace;font-size:23px;font-weight:700;background:#fff;color:var(--text)}.preview{min-height:42px;padding:9px 11px;border-radius:11px;background:#f8fafc;color:#344054;font-size:15px;font-weight:700;margin-bottom:9px}.preview.good{background:#edf8f2;color:var(--good)}.preview.bad{background:#fff1ef;color:var(--bad)}.preview.warn{background:#fff8e9;color:var(--warn)}
+.tools{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin-bottom:8px}.tools button{min-height:44px;padding:5px;font-size:14px}.calc{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.calc button{min-height:64px;font-size:25px;font-weight:900}.calc .op{background:#f0f3f8;font-size:27px}.composer-actions{display:grid;grid-template-columns:1fr 1.5fr;gap:9px;margin-top:10px}.composer-actions button{min-height:55px;font-size:17px}
+.modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(10,20,40,.48);align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}.dialog{width:min(620px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:18px;padding:18px;box-shadow:0 22px 70px rgba(0,0,0,.28)}.dialog h2{font-size:22px;margin:0 0 10px}.dialog p{font-size:15px;line-height:1.5}.hintbox{padding:13px;border:1px solid var(--line);background:#f8fafc;border-radius:13px;margin:10px 0}.hintbox b{font-size:15px}.hintbox p{margin:6px 0 0}.formula-reveal{display:none;background:#182238;color:#fff;font-family:Consolas,monospace;font-size:16px;padding:12px;border-radius:11px;overflow:auto;white-space:nowrap;margin-top:8px}.formula-reveal.show{display:block}.dialog-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}.dialog-actions button{min-height:52px;font-size:16px}
+.conditions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}.field label{display:block;font-size:14px;font-weight:800;margin-bottom:5px}.field-wrap{display:flex;align-items:center;border:2px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.field-wrap:focus-within{border-color:var(--accent)}.field input{width:100%;height:54px;border:0;outline:0;padding:0 12px;font-size:19px;font-weight:700}.suffix{padding:0 12px;color:var(--muted);font-weight:800}.condition-help{font-size:13px;color:var(--muted);line-height:1.45;margin-top:10px}.summary-table{width:100%;border-collapse:collapse;margin-top:8px}.summary-table th,.summary-table td{border-bottom:1px solid var(--line);padding:9px 7px;font-size:14px;text-align:right}.summary-table th:first-child,.summary-table td:first-child{text-align:left}.summary-table th{background:#f8fafc}.winner{color:var(--good);font-weight:900}
+.hidden{display:none!important}
+@media(max-width:900px){
+  html,body{overflow:hidden}.app{height:100dvh;padding-bottom:74px}.top{min-height:58px;padding:6px 7px}.brand{font-size:17px}.top-actions{gap:5px}.view-tabs{max-width:58vw;overflow:auto}.view-tabs button{min-height:43px;padding:7px 10px;font-size:13px}.iconbtn{min-width:46px;min-height:46px}.task{padding:10px}.chip{font-size:13px;padding:6px 9px}.track{height:7px}.task h2{font-size:18px;margin:8px 0 4px}.task p{font-size:14px;line-height:1.35;max-height:58px;overflow:auto}.task-footer{font-size:13px;margin-top:7px}.status{max-width:48%;text-align:right}.side{display:none}.sheet th,.sheet td{height:45px;font-size:15px;padding:5px 7px}.sheet td{min-width:108px;max-width:145px}.sheet th[data-col="0"],.sheet td[data-col="0"],.sheet th[data-col="8"],.sheet td[data-col="8"]{min-width:158px}.sheet th[data-col="1"],.sheet td[data-col="1"],.sheet th[data-col="9"],.sheet td[data-col="9"]{min-width:64px}.rowh{width:42px!important;min-width:42px!important}.dock{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:fixed;left:0;right:0;bottom:0;z-index:60;height:74px;padding:6px;background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(20,30,55,.10)}.dock button{min-height:60px;padding:4px 3px;font-size:13px;line-height:1.05}.dock button b{display:block;font-size:21px;line-height:22px;margin-bottom:3px}.composer{bottom:74px;padding:10px;max-height:72vh}.composer-head b{font-size:18px}.composer-note{font-size:13px}.tools{grid-template-columns:repeat(4,1fr)}.tools button{min-height:42px;font-size:13px}.calc button{min-height:60px;font-size:24px}.dialog{max-height:84vh;padding:15px}.conditions{grid-template-columns:1fr}.menu-panel{position:fixed;right:8px;top:60px}.summary-table th,.summary-table td{font-size:13px;padding:8px 5px}
+}
+@media(max-width:430px){.brand{font-size:15px}.view-tabs{max-width:55vw}.view-tabs button{font-size:12px;padding:6px 8px}.task h2{font-size:17px}.task p{font-size:13px}.sheet th,.sheet td{font-size:14px}.calc button{min-height:56px}.composer{max-height:75vh}}
+
+/* v8 — refined UI */
+:root{
+  --shadow:0 8px 28px rgba(31,42,68,.08);
+  --shadow-strong:0 18px 55px rgba(31,42,68,.18);
+}
+.top{
+  box-shadow:0 1px 0 rgba(31,42,68,.03);
+}
+.brand:before{
+  content:"ƒx";
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;height:34px;
+  margin-right:8px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#3157d5,#5577e8);
+  color:white;
+  font-size:15px;
+  font-weight:900;
+  vertical-align:middle;
+}
+.view-tabs{border:1px solid #e3e7ef}
+.view-tabs button{transition:background .15s ease,color .15s ease,box-shadow .15s ease}
+.view-tabs button.active{
+  box-shadow:0 2px 7px rgba(49,87,213,.14);
+}
+.task{
+  border-bottom:1px solid #e4e8ef;
+  box-shadow:0 4px 14px rgba(31,42,68,.035);
+  z-index:2;
+}
+.task h2{letter-spacing:-.01em}
+.sheetwrap{background:#fbfcfe}
+.sheet td.sel{
+  outline:3px solid var(--accent);
+  outline-offset:-3px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.7);
+}
+.dock button{
+  border-color:#dfe4ec;
+}
+.composer{
+  border-radius:18px 18px 0 0;
+}
+.exprbox{box-shadow:0 0 0 3px rgba(49,87,213,.06)}
+.formula-page{
+  display:none;
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  padding:18px;
+  background:linear-gradient(180deg,#f7f9fc 0%,#f3f5f8 100%);
+}
+.formula-page.show{display:block}
+.formula-shell{max-width:1040px;margin:0 auto}
+.formula-hero{
+  background:linear-gradient(135deg,#263f9f,#4168e8);
+  color:#fff;
+  border-radius:20px;
+  padding:20px 22px;
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+}
+.formula-hero h2{margin:0 0 6px;font-size:24px}
+.formula-hero p{margin:0;opacity:.9;line-height:1.45}
+.formula-legend{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  margin-bottom:14px;
+}
+.legend-card,.formula-card{
+  background:#fff;
+  border:1px solid #e1e6ee;
+  border-radius:16px;
+  box-shadow:var(--shadow);
+}
+.legend-card{padding:11px 12px}
+.legend-card b{display:block;font-size:16px;margin-bottom:2px}
+.legend-card span{font-size:12px;color:var(--muted);line-height:1.35}
+.formula-columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.formula-card{overflow:hidden}
+.formula-card .fhead{
+  padding:13px 15px;
+  font-size:17px;
+  font-weight:900;
+}
+.formula-card.ann-card .fhead{background:#e9efff;color:#2447af}
+.formula-card.diff-card .fhead{background:#e8f7ef;color:#12643f}
+.formula-list{padding:5px 14px 13px}
+.formula-item{
+  padding:10px 0;
+  border-top:1px solid #edf0f4;
+}
+.formula-item:first-child{border-top:0}
+.formula-item .fname{font-size:13px;font-weight:800;color:#344054;margin-bottom:4px}
+.formula-code{
+  display:block;
+  width:100%;
+  overflow:auto;
+  white-space:nowrap;
+  padding:9px 10px;
+  border-radius:10px;
+  background:#172033;
+  color:#fff;
+  font-family:Consolas,monospace;
+  font-size:14px;
+}
+.formula-item small{display:block;margin-top:5px;color:var(--muted);line-height:1.35}
+.formula-note{
+  margin-top:14px;
+  padding:13px 15px;
+  background:#fff7df;
+  border:1px solid #f0d889;
+  border-radius:14px;
+  color:#624b00;
+  font-size:13px;
+  line-height:1.45;
+}
+
+@media(max-width:900px){
+  .formula-page{padding:10px 8px 85px}
+  .formula-hero{padding:15px;border-radius:15px}
+  .formula-hero h2{font-size:20px}
+  .formula-hero p{font-size:13px}
+  .formula-legend{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .formula-columns{grid-template-columns:1fr;gap:10px}
+  .formula-card .fhead{font-size:16px;padding:11px 12px}
+  .formula-list{padding:4px 11px 11px}
+  .formula-code{font-size:13px;padding:8px}
+}
+@media(max-width:430px){
+  /* slightly denser smartphone layout */
+  .brand{max-width:82px;overflow:hidden;text-overflow:ellipsis}
+  .app{padding-bottom:66px}
+  .top{min-height:52px;padding:4px 6px}
+  .brand{font-size:14px}
+  .brand:before{width:28px;height:28px;border-radius:8px;font-size:12px;margin-right:5px}
+  .top-actions{gap:3px}
+  .view-tabs{padding:3px;max-width:61vw}
+  .view-tabs button{min-height:36px;padding:5px 7px;font-size:11px;border-radius:9px}
+  .iconbtn{min-width:38px;min-height:38px;padding:5px;font-size:17px;border-radius:10px}
+  .task{padding:7px 8px}
+  .chip{font-size:11px;padding:4px 7px}
+  .track{height:6px}
+  .task h2{font-size:15px;margin:6px 0 3px}
+  .task p{font-size:12px;line-height:1.28;max-height:45px}
+  .task-footer{font-size:11px;margin-top:5px;min-height:20px}
+  .schedule-action{margin-top:6px}
+  .schedule-action button{min-height:42px;font-size:13px}
+  .sheet th,.sheet td{height:39px;font-size:12.5px;padding:4px 5px}
+  .sheet td{min-width:92px;max-width:125px}
+  .sheet th[data-col="0"],.sheet td[data-col="0"],
+  .sheet th[data-col="8"],.sheet td[data-col="8"]{min-width:135px}
+  .sheet th[data-col="1"],.sheet td[data-col="1"],
+  .sheet th[data-col="9"],.sheet td[data-col="9"]{min-width:52px}
+  .rowh{width:35px!important;min-width:35px!important;font-size:11px!important}
+  .dock{height:66px;padding:5px;gap:4px}
+  .dock button{min-height:54px;font-size:11px;border-radius:10px}
+  .dock button b{font-size:18px;line-height:18px}
+  .composer{bottom:66px;padding:7px 8px;max-height:54vh;border-radius:15px 15px 0 0}
+  .composer-head{margin-bottom:4px}
+  .composer-head b{font-size:15px}
+  .composer-head .close{min-width:36px;min-height:36px;height:36px;font-size:18px;padding:2px}
+  .composer-note{font-size:11px;line-height:1.2;margin-bottom:5px;max-height:27px;overflow:hidden}
+  .exprbox{border-width:2px;border-radius:10px;padding:2px 7px;margin-bottom:5px}
+  .exprlabel{font-size:10px}
+  .expr-row{min-height:38px}
+  .eqprefix{font-size:20px}
+  #expr{height:36px;font-size:18px}
+  .preview{min-height:31px;padding:6px 8px;margin-bottom:5px;font-size:12px;border-radius:9px}
+  .tools{
+    display:flex;
+    overflow-x:auto;
+    gap:4px;
+    margin-bottom:5px;
+    scrollbar-width:none;
+  }
+  .tools::-webkit-scrollbar{display:none}
+  .tools button{flex:0 0 44px;min-width:44px;min-height:34px;height:34px;padding:2px;font-size:11px}
+  .calc{gap:5px}
+  .calc button{min-height:43px;height:43px;font-size:19px;border-radius:9px}
+  .calc .op{font-size:20px}
+  .composer-actions{gap:6px;margin-top:6px}
+  .composer-actions button{min-height:42px;font-size:13px}
+  /* while editing, prioritize the sheet */
+  body.editing-now .task{display:none}
+  body.editing-now .dock{display:none}
+  body.editing-now .app{padding-bottom:0}
+  body.editing-now .composer{bottom:0;max-height:48vh}
+  .formula-page{padding-bottom:72px}
+  .formula-legend{grid-template-columns:1fr 1fr}
+  .legend-card{padding:8px 9px}
+  .legend-card b{font-size:14px}
+  .legend-card span{font-size:11px}
+  .formula-item{padding:8px 0}
+  .formula-code{font-size:12px}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand">Кредитная лаборатория</div>
+    <div class="top-actions">
+      <div class="view-tabs">
+        <button id="annTab" class="active">Аннуитет</button>
+        <button id="diffTab">Дифф.</button>
+        <button id="bothTab">Оба</button><button id="formulaTab">ƒx Формулы</button>
+      </div>
+      <button class="iconbtn" id="conditionsBtn" title="Условия кредита">⚙</button>
+      <div class="menu"><button class="iconbtn" id="menuBtn">⋯</button><div class="menu-panel" id="menuPanel"><button id="summaryBtn">Итоговое сравнение</button><button id="newBtn">Новый вариант</button><button id="solutionBtn">Показать эталон</button><button id="resetBtn">Сбросить работу</button></div></div>
+    </div>
+  </div>
+
+  <div class="task" id="taskCard">
+    <div class="progress-row"><span class="chip" id="stepChip">Шаг 1 из 15</span><div class="track"><div class="fill" id="progressFill"></div></div><span class="chip cellchip" id="targetChip">C5</span></div>
+    <h2 id="taskTitle"></h2>
+    <p id="taskText"></p>
+    <div class="schedule-action" id="scheduleAction"><button class="primary" id="buildScheduleBtn">Построить остальные платежи</button></div>
+    <div class="task-footer"><span>Выбрано:</span><span class="selected-info" id="selectedInfo">C5</span><span class="status" id="status">ожидает решения</span></div>
+  </div>
+
+  <div class="work">
+    <div class="sheetwrap" id="sheetWrap"><table class="sheet" id="sheet"></table></div>
+    <aside class="side">
+      <div class="card"><h3>Аннуитетный кредит</h3><div class="stat"><span>Платёж</span><b id="annPay">—</b></div><div class="stat"><span>Сумма выплат</span><b id="annTotal">—</b></div><div class="stat"><span>Переплата</span><b id="annOver">—</b></div></div>
+      <div class="card"><h3>Дифференцированный</h3><div class="stat"><span>Первый платёж</span><b id="diffFirst">—</b></div><div class="stat"><span>Последний платёж</span><b id="diffLast">—</b></div><div class="stat"><span>Сумма выплат</span><b id="diffTotal">—</b></div></div>
+      <div class="card"><h3>Как работать</h3><div class="helptext">Коснитесь ячейки — она выделится. Нажмите <b>«Ввести»</b>. Можно записать обычное число или собрать формулу, касаясь нужных ячеек. Знак <b>=</b> вводить не обязательно.</div></div>
+    </aside>
+  </div>
+
+  <section class="formula-page" id="formulaPage">
+    <div class="formula-shell">
+      <div class="formula-hero">
+        <h2>Формулы по кредитам</h2>
+        <p>Шпаргалка повторяет логику исходного файла. Ниже показаны и математическая запись, и формулы исходной электронной таблицы. В тренажёре знак «=» и символ $ вводить необязательно, денежные значения округляются до копеек автоматически.</p>
+      </div>
+
+      <div class="formula-legend">
+        <div class="legend-card"><b>S</b><span>сумма кредита</span></div>
+        <div class="legend-card"><b>p</b><span>годовая ставка</span></div>
+        <div class="legend-card"><b>n</b><span>срок кредита, лет</span></div>
+        <div class="legend-card"><b>m</b><span>выплат в год</span></div>
+        <div class="legend-card"><b>N</b><span>общее число выплат</span></div>
+        <div class="legend-card"><b>r</b><span>ставка за один период</span></div>
+        <div class="legend-card"><b>β</b><span>коэффициент 1 + r</span></div>
+        <div class="legend-card"><b>X</b><span>аннуитетный платёж</span></div>
+      </div>
+
+      <div class="formula-columns">
+        <div class="formula-card ann-card">
+          <div class="fhead">Аннуитетный кредит</div>
+          <div class="formula-list">
+            <div class="formula-item">
+              <div class="fname">Количество выплат</div>
+              <code class="formula-code">N = n × m</code>
+              <small>В таблице: C5 = C3 × C4</small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Ставка за один период</div>
+              <code class="formula-code">r = p ÷ m</code>
+              <small>В таблице: C6 = C2 ÷ C4</small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Коэффициент</div>
+              <code class="formula-code">β = 1 + r</code>
+              <small>В таблице: C7 = 1 + C6</small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Постоянный платёж</div>
+              <code class="formula-code">X = S·βᴺ·(β−1) ÷ (βᴺ−1)</code>
+              <small>Исходный Excel: <b>=MROUND(C1*C7^C5*(C7-1)/(C7^C5-1),0.01)</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Проценты за месяц</div>
+              <code class="formula-code">Проценты = Остаток × r</code>
+              <small>Исходный Excel: <b>=MROUND(B12*C$6,0.01)</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Погашение основного долга</div>
+              <code class="formula-code">Часть долга = Платёж − Проценты</code>
+              <small>Исходный Excel: <b>=E13-D13</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Новый остаток</div>
+              <code class="formula-code">Остаток = Старый остаток − Часть долга</code>
+              <small>Исходный Excel: <b>=B12-C13</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Итоги</div>
+              <code class="formula-code">Всего = SUM(E13:E72)</code>
+              <small>Переплата = Всего − S; процент переплаты = Переплата ÷ S × 100</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="formula-card diff-card">
+          <div class="fhead">Дифференцированный кредит</div>
+          <div class="formula-list">
+            <div class="formula-item">
+              <div class="fname">Количество выплат</div>
+              <code class="formula-code">N = n × m</code>
+              <small>В таблице: K5 = K3 × K4</small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Ставка за период</div>
+              <code class="formula-code">r = p ÷ m</code>
+              <small>В таблице: K6 = K2 ÷ K4</small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Постоянная часть долга</div>
+              <code class="formula-code">Основной долг = S ÷ N</code>
+              <small>Исходный Excel: <b>=MROUND(K1/K5,0.01)</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Проценты</div>
+              <code class="formula-code">Проценты = Остаток × r</code>
+              <small>Исходный Excel: <b>=MROUND(J12*K$6,0.01)</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Платёж</div>
+              <code class="formula-code">Платёж = Основной долг + Проценты</code>
+              <small>Исходный Excel: <b>=K13+L13</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Новый остаток</div>
+              <code class="formula-code">Остаток = Старый остаток − Основной долг</code>
+              <small>Исходный Excel: <b>=J12-K13</b></small>
+            </div>
+            <div class="formula-item">
+              <div class="fname">Итоги</div>
+              <code class="formula-code">Всего = SUM(M13:M72)</code>
+              <small>Переплата = Всего − S; процент переплаты = Переплата ÷ S × 100</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="formula-note">
+        <b>Последний платёж:</b> из-за округления до копеек остаток может немного отличаться. Поэтому в последнем месяце погашается весь оставшийся основной долг — именно так итог совпадает с исходным файлом.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="dock">
+  <button id="hintBtn"><b>💡</b>Подсказка</button>
+  <button id="editBtn"><b>✎</b>Ввести</button>
+  <button class="good" id="checkBtn"><b>✓</b>Проверить</button>
+  <button class="primary" id="nextBtn"><b>→</b>Далее</button>
+</div>
+
+<div class="composer" id="composer">
+  <div class="composer-head"><b>Ячейка <span id="composeCell">C5</span></b><button class="close" id="closeComposer">×</button></div>
+  <div class="composer-note" id="composerNote">Введите число или формулу. Для ссылки просто коснитесь нужной ячейки таблицы.</div>
+  <div class="exprbox">
+    <div class="exprlabel" id="exprLabel">Число или формула</div>
+    <div class="expr-row"><span class="eqprefix" id="eqprefix">=</span><input id="expr" readonly inputmode="none" aria-label="Ввод значения или формулы"></div>
+  </div>
+  <div class="preview" id="preview">Введите значение или соберите формулу</div>
+  <div class="tools">
+    <button data-key="(">(</button><button data-key=")">)</button><button data-key="^">xʸ</button><button data-key="%">%</button>
+    <button data-key="SUM">Σ</button><button data-key=":">:</button><button data-key="BK">⌫</button><button data-key="CLR">C</button>
+  </div>
+  <div class="calc">
+    <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button><button class="op" data-key="/">÷</button>
+    <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button><button class="op" data-key="*">×</button>
+    <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button><button class="op" data-key="-">−</button>
+    <button data-key="0">0</button><button data-key=",">,</button><button data-key=".">.</button><button class="op" data-key="+">+</button>
+  </div>
+  <div class="composer-actions"><button id="cancelEdit">Отмена</button><button class="primary" id="saveCell">Записать в ячейку</button></div>
+</div>
+
+<div class="modal" id="modal"><div class="dialog"><h2 id="modalTitle"></h2><div id="modalBody"></div><div class="dialog-actions" id="modalActions"></div></div></div>
+
+<script>
+(function(){
+"use strict";
+var COLS=13,ROWS=76,cells={},cache={},selected="C5",view="ann",step=0,editing=false,exprText="",history=[],storageKey="credit_lab_v8",mainMode="trainer";
+var rateCells={C2:true,K2:true,C6:true,K6:true};
+var inputRateCells={C2:true,K2:true};
+var paramPairs={C1:"K1",K1:"C1",C2:"K2",K2:"C2",C3:"K3",K3:"C3",C4:"K4",K4:"C4"};
+
+function colName(n){var s="";do{s=String.fromCharCode(65+n%26)+s;n=Math.floor(n/26)-1}while(n>=0);return s}
+function colIndex(s){var n=0,i;s=String(s).replace(/\$/g,"").toUpperCase();for(i=0;i<s.length;i++)n=n*26+(s.charCodeAt(i)-64);return n-1}
+function parts(id){var m=String(id).replace(/\$/g,"").toUpperCase().match(/^([A-Z]+)(\d+)$/);return m?{c:m[1],r:parseInt(m[2],10)}:null}
+function idAt(c,r){return colName(c)+r}
+function set(id,v){cells[id]=v}
+function formula(id,s){cells[id]="="+normalizeFormula(s)}
+function normalizeFormula(s){return String(s||"").replace(/^\s*=\s*/,"").replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/\$/g,"").trim()}
+function base(){
+  cells={};cache={};
+  var a=[["A1","Сумма кредита"],["B1","S="],["A2","Годовая ставка"],["B2","p="],["A3","Срок кредита"],["B3","n="],["A4","Регулярность выплат"],["B4","m="],["A5","Количество выплат"],["B5","N="],["A6","Разовая ставка"],["B6","r="],["A7","Коэффициент"],["B7","Бетта="],["A8","Платеж"],["B8","X="],
+  ["I1","Сумма кредита"],["J1","S="],["I2","Годовая ставка"],["J2","p="],["I3","Срок кредита"],["J3","n="],["I4","Регулярность выплат"],["J4","m="],["I5","Количество выплат"],["J5","N="],["I6","Разовая ставка"],["J6","r="],["I7","Коэффициент"],["J7","Бетта="],["I8","Часть основного долга"],["J8","S/N="],
+  ["A11","K"],["B11","Остаток"],["C11","Часть долга"],["D11","Проценты"],["E11","Платеж"],["I11","K"],["J11","Остаток"],["K11","Часть долга"],["L11","Проценты"],["M11","Платеж"],
+  ["D74","Сумма выплат"],["D75","Переплата"],["D76","Процент переплаты"],["L74","Сумма выплат"],["L75","Переплата"],["L76","Процент переплаты"]],i,r;
+  for(i=0;i<a.length;i++)set(a[i][0],a[i][1]);
+  set("C1",1000000);set("C2",0.10);set("C3",5);set("C4",12);set("K1",1000000);set("K2",0.10);set("K3",5);set("K4",12);
+  set("A12",0);set("I12",0);for(r=13;r<=72;r++){set("A"+r,r-12);set("I"+r,r-12)}
+}
+function moneyCell(id){return /^(C1|K1|C8|K8|[BCDE](1[2-9]|[2-6][0-9]|7[0-2])|[JKLM](1[2-9]|[2-6][0-9]|7[0-2])|E7[45]|M7[45])$/.test(id)}
+function excelRound(v,d){var p=Math.pow(10,d),sg=v<0?-1:1;return sg*Math.floor(Math.abs(v)*p+0.500000001)/p}
+function mroundExcel(v,m){if(m===0)return NaN;return Math.round(v/m)*m}
+function roundMoney(v){return excelRound(v,2)}
+function autoRoundCell(id){return /^(C8|K8|D(1[3-9]|[2-6][0-9]|7[0-2])|L(1[3-9]|[2-6][0-9]|7[0-2]))$/.test(id)}
+function semantic(id,v){if(typeof v!=="number"||!isFinite(v))return v;if(rateCells[id]&&Math.abs(v)>1)return v/100;if(autoRoundCell(id))return roundMoney(v);return v}
+function formulaSemantic(id,v,expr){if(typeof v!=="number"||!isFinite(v))return v;if(rateCells[id]){expr=String(expr||"");if(!/[A-Z]+\d+/i.test(expr)&&expr.indexOf("%")<0)return v/100;if(Math.abs(v)>1)return v/100;return v}if(autoRoundCell(id))return roundMoney(v);return v}
+function parsePlain(s){s=String(s).trim().replace(/\s/g,"").replace(",",".");if(!s)return null;if(/^[-+]?\d+(?:\.\d+)?%$/.test(s))return parseFloat(s)/100;if(/^[-+]?\d+(?:\.\d+)?$/.test(s))return parseFloat(s);return null}
+function parseHumanRate(s){var raw=String(s).trim().replace(/\s/g,"").replace(",","."),hasPct=/%$/.test(raw),n;if(hasPct)raw=raw.slice(0,-1);if(!/^[-+]?\d+(?:\.\d+)?$/.test(raw))return null;n=parseFloat(raw);if(hasPct)return n/100;if(Math.abs(n)<=1)return n;return n/100}
+function tokenize(s){var t=[],i=0,m,x;s=normalizeFormula(s);while(i<s.length){if(/\s/.test(s.charAt(i))){i++;continue}m=s.substring(i).match(/^(MROUND|ROUND|SUM|\$?[A-Z]+\$?\d+|\d+(?:[\.,]\d+)?%?|[+\-*\/^():;,])/i);if(!m)throw new Error("Недопустимый символ");x=m[1].toUpperCase().replace(/\$/g,"");t.push(x);i+=m[1].length}return t}
+function Parser(tokens,stack){this.t=tokens;this.i=0;this.stack=stack||{}}
+Parser.prototype.peek=function(){return this.t[this.i]};Parser.prototype.take=function(){return this.t[this.i++]};
+Parser.prototype.expr=function(){var v=this.term(),op;while((op=this.peek())==="+"||op==="-"){this.take();v=op==="+"?v+this.term():v-this.term()}return v};
+Parser.prototype.term=function(){var v=this.pow(),op,b;while((op=this.peek())==="*"||op==="/"){this.take();b=this.pow();if(op==="/"&&b===0)throw new Error("Деление на ноль");v=op==="*"?v*b:v/b}return v};
+Parser.prototype.pow=function(){var v=this.unary();if(this.peek()==="^"){this.take();v=Math.pow(v,this.pow())}return v};
+Parser.prototype.unary=function(){var p=this.peek();if(p==="+"){this.take();return this.unary()}if(p==="-"){this.take();return-this.unary()}return this.primary()};
+Parser.prototype.sep=function(){var x=this.take();if(x!==","&&x!==";")throw new Error("Нужна запятая")};
+Parser.prototype.primary=function(){var x=this.take(),v,a,b,n,m;if(typeof x==="undefined")throw new Error("Формула не закончена");if(x==="("){v=this.expr();if(this.take()!==")")throw new Error("Нужна )");return v}
+  if(x==="SUM"){if(this.take()!=="(")throw new Error("Нужна (");a=this.take();if(!/^[A-Z]+\d+$/.test(a)||this.take()!==":")throw new Error("Выберите диапазон, например E13:E72");b=this.take();if(!/^[A-Z]+\d+$/.test(b)||this.take()!==")")throw new Error("Закройте )");return sumRange(a,b,this.stack)}
+  if(x==="ROUND"||x==="MROUND"){if(this.take()!=="(")throw new Error("Нужна (");v=this.expr();this.sep();m=this.expr();if(this.take()!==")")throw new Error("Нужна )");if(x==="ROUND")return excelRound(v,Math.round(m));if(m===0)throw new Error("Шаг округления не может быть 0");return mroundExcel(v,m)}
+  if(/^[A-Z]+\d+$/.test(x))return getValue(x,this.stack);if(/^\d+(?:[\.,]\d+)?%$/.test(x))return parseFloat(x.replace(",","."))/100;if(/^\d+(?:[\.,]\d+)?$/.test(x))return parseFloat(x.replace(",","."));throw new Error("Ошибка формулы")};
+function evalExpr(s,stack){try{var p=new Parser(tokenize(s),stack||{}),v=p.expr();if(p.i!==p.t.length)throw new Error("Лишние символы");if(typeof v!=="number"||!isFinite(v))throw new Error("Нет числового результата");return{ok:true,v:v}}catch(e){return{ok:false,error:e.message||"Ошибка"}}}
+function getValue(id,stack){id=String(id).replace(/\$/g,"").toUpperCase();stack=stack||{};if(Object.prototype.hasOwnProperty.call(cache,id))return cache[id];if(stack[id])return NaN;var raw=cells[id],out,e,n;if(raw===undefined||raw==="")out=0;else if(typeof raw==="number")out=raw;else if(typeof raw==="string"&&raw.charAt(0)==="="){stack[id]=true;e=evalExpr(raw.substring(1),stack);delete stack[id];out=e.ok?formulaSemantic(id,e.v,raw.substring(1)):NaN}else{n=parsePlain(raw);out=n===null?raw:semantic(id,n)}cache[id]=out;return out}
+function sumRange(a,b,stack){var p1=parts(a),p2=parts(b),s=0,c,r,v;if(!p1||!p2)return NaN;for(c=Math.min(colIndex(p1.c),colIndex(p2.c));c<=Math.max(colIndex(p1.c),colIndex(p2.c));c++)for(r=Math.min(p1.r,p2.r);r<=Math.max(p1.r,p2.r);r++){v=getValue(idAt(c,r),stack);if(typeof v==="number"&&isFinite(v))s+=v}return s}
+function recalc(){cache={};var c,r,id;for(r=1;r<=ROWS;r++)for(c=0;c<COLS;c++){id=idAt(c,r);if(cells[id]!==undefined)cache[id]=getValue(id,{})}save()}
+function fmt(v,d){if(typeof v!=="number"||!isFinite(v))return "#ОШИБКА";return v.toLocaleString("ru-RU",{minimumFractionDigits:d,maximumFractionDigits:d})}
+function display(id,raw){var v=typeof raw==="string"&&raw.charAt(0)==="="?getValue(id,{}):raw,n;if(typeof v==="string"){n=parsePlain(v);if(n!==null)v=n}if(typeof v!=="number")return v||"";if(id==="C2"||id==="K2")return fmt(v*100,2)+" %";if(id==="C6"||id==="K6")return fmt(v*100,4)+" %";if(id==="E76"||id==="M76")return fmt(v,2)+" %";if(moneyCell(id))return fmt(v,2);if(Math.abs(v-Math.round(v))<1e-10)return String(Math.round(v));return fmt(v,6).replace(/0+$/,"").replace(/,$/,"")}
+function esc(s){return String(s===undefined?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function isLocked(id){if(/^[AB][1-8]$/.test(id)||/^[IJ][1-8]$/.test(id))return true;if(/^A(1[1-9]|[2-6][0-9]|7[0-2])$/.test(id)||/^I(1[1-9]|[2-6][0-9]|7[0-2])$/.test(id))return true;if(/^[A-E]11$/.test(id)||/^[I-M]11$/.test(id))return true;if(/^(D7[4-6]|L7[4-6])$/.test(id))return true;return false}
+function taskTargets(t){return t.targets||[t.cell]}
+function renderSheet(){var h="<thead><tr><th class='rowh'></th>",c,r,id,raw,cl,txt,v,targets=taskTargets(tasks[step]||{}),i;for(c=0;c<COLS;c++)h+="<th data-col='"+c+"'>"+colName(c)+"</th>";h+="</tr></thead><tbody>";for(r=1;r<=ROWS;r++){h+="<tr><th class='rowh'>"+r+"</th>";for(c=0;c<COLS;c++){id=idAt(c,r);raw=cells[id];cl=[];txt=raw===undefined?"":display(id,raw);if((c===0||c===1||c===8||c===9)&&r<=8)cl.push("label");if(/^(C[1-4]|K[1-4])$/.test(id))cl.push("param");if(r===11)cl.push("head");if(c<=4&&r>=11)cl.push("ann");if(c>=8&&r>=11)cl.push("diff");v=getValue(id,{});if(typeof v==="number")cl.push("num");if(typeof v==="number"&&!isFinite(v))cl.push("error");if(id===selected)cl.push("sel");for(i=0;i<targets.length;i++)if(targets[i]===id)cl.push("target");if(isLocked(id))cl.push("locked");h+="<td data-id='"+id+"' data-col='"+c+"' class='"+cl.join(" ")+"'>"+esc(txt)+"</td>"}h+="</tr>"}h+="</tbody>";document.getElementById("sheet").innerHTML=h;var td=document.querySelectorAll("td[data-id]");for(i=0;i<td.length;i++)td[i].onclick=function(){chooseCell(this.getAttribute("data-id"))};applyView()}
+function applyView(){var nodes=document.querySelectorAll("[data-col]"),i,c,hide;for(i=0;i<nodes.length;i++){c=parseInt(nodes[i].getAttribute("data-col"),10);hide=view==="ann"?(c>=5):view==="diff"?(c<=7):false;if(hide)nodes[i].classList.add("hidden");else nodes[i].classList.remove("hidden")}document.getElementById("annTab").className=view==="ann"?"active":"";document.getElementById("diffTab").className=view==="diff"?"active":"";document.getElementById("bothTab").className=view==="both"?"active":"";if(mainMode!=="formulas")document.getElementById("formulaTab").className=""}
+function chooseCell(id){if(editing&&id!==selected){exprText+=id;syncComposer();return}selected=id;document.getElementById("selectedInfo").textContent=id;renderSheet()}
+function setStatus(text,type){var s=document.getElementById("status");s.textContent=text;s.className="status "+(type||"")}
+function same(a,b){return typeof a==="number"&&typeof b==="number"&&isFinite(a)&&isFinite(b)&&Math.abs(a-b)<=Math.max(.011,Math.abs(b)*1e-8)}
+
+var tasks=[
+ {cell:"C5",title:"Количество выплат",text:"Сколько всего платежей будет за весь срок кредита? Рассчитайте N.",hint:"Срок кредита умножьте на регулярность выплат.",formula:"C3*C4",expected:function(){return getValue("C3",{})*getValue("C4",{})}},
+ {cell:"C6",title:"Разовая ставка",text:"Переведите годовую ставку в ставку за один платежный период.",hint:"Годовую ставку разделите на количество выплат в год.",formula:"C2/C4",expected:function(){return getValue("C2",{})/getValue("C4",{})}},
+ {cell:"C7",title:"Коэффициент β",text:"Рассчитайте коэффициент β = 1 + r.",hint:"К единице прибавьте разовую ставку C6.",formula:"1+C6",expected:function(){return 1+getValue("C6",{})}},
+ {cell:"C8",title:"Аннуитетный платеж",text:"Рассчитайте постоянный платеж X. Система сама округлит денежный результат до копеек.",hint:"Используйте сумму S, коэффициент β и количество выплат N.",formula:"C1*C7^C5*(C7-1)/(C7^C5-1)",expected:function(){var S=getValue("C1",{}),b=getValue("C7",{}),N=getValue("C5",{});return roundMoney(S*Math.pow(b,N)*(b-1)/(Math.pow(b,N)-1))}},
+ {cell:"D13",title:"Проценты первого платежа",text:"Найдите проценты за первый период. Начальный остаток и платеж уже связаны с исходными данными.",hint:"Остаток B12 умножьте на разовую ставку C6.",formula:"B12*C6",before:function(){formula("B12","C1");formula("E13","C8")},expected:function(){return roundMoney(getValue("B12",{})*getValue("C6",{}))}},
+ {targets:["C13","B13"],cell:"C13",title:"Закончите первый платеж",text:"Сначала найдите часть долга C13, затем новый остаток B13. Обе ячейки должны быть заполнены.",hint:"C13 = платеж − проценты. B13 = старый остаток − часть долга.",formulas:["E13-D13","B12-C13"],expectedMany:function(){return[{id:"C13",v:roundMoney(getValue("E13",{})-getValue("D13",{}))},{id:"B13",v:roundMoney(getValue("B12",{})-getValue("C13",{}))}]}},
+ {cell:"E74",title:"График и сумма выплат",text:"Постройте остальные платежи кнопкой ниже, затем в E74 найдите сумму всех 60 платежей.",hint:"Для итоговой суммы используйте диапазон платежей E13:E72.",formula:"SUM(E13:E72)",schedule:"ann",expected:function(){return roundMoney(sumRange("E13","E72",{}))}},
+ {cell:"K5",title:"Количество выплат",text:"Начинаем дифференцированный кредит. Рассчитайте количество выплат N.",hint:"Срок кредита умножьте на регулярность выплат.",formula:"K3*K4",expected:function(){return getValue("K3",{})*getValue("K4",{})}},
+ {cell:"K6",title:"Разовая ставка",text:"Рассчитайте ставку за один платежный период.",hint:"Годовую ставку K2 разделите на K4.",formula:"K2/K4",after:function(){formula("K7","1+K6")},expected:function(){return getValue("K2",{})/getValue("K4",{})}},
+ {cell:"K8",title:"Часть основного долга",text:"Найдите постоянную часть основного долга S/N.",hint:"Сумму кредита K1 разделите на количество выплат K5.",formula:"K1/K5",expected:function(){return roundMoney(getValue("K1",{})/getValue("K5",{}))}},
+ {cell:"L13",title:"Проценты первого платежа",text:"Найдите проценты первого периода по дифференцированной схеме.",hint:"Остаток J12 умножьте на разовую ставку K6.",formula:"J12*K6",before:function(){formula("J12","K1");formula("K13","K8")},expected:function(){return roundMoney(getValue("J12",{})*getValue("K6",{}))}},
+ {cell:"M13",title:"Первый платеж",text:"Сложите постоянную часть основного долга и проценты первого периода.",hint:"Сложите K13 и L13.",formula:"K13+L13",expected:function(){return roundMoney(getValue("K13",{})+getValue("L13",{}))}},
+ {cell:"J13",title:"Остаток после первого платежа",text:"Рассчитайте новый остаток долга.",hint:"Из J12 вычтите погашенную часть K13.",formula:"J12-K13",expected:function(){return roundMoney(getValue("J12",{})-getValue("K13",{}))}},
+ {cell:"M74",title:"График и сумма выплат",text:"Постройте остальные платежи кнопкой ниже, затем найдите сумму выплат в M74.",hint:"Сложите все платежи M13:M72.",formula:"SUM(M13:M72)",schedule:"diff",expected:function(){return roundMoney(sumRange("M13","M72",{}))}},
+ {compare:true,cell:"M74",title:"Сравнение двух схем",text:"Откройте итоговое сравнение: сопоставьте сумму выплат, переплату и размер первого платежа.",hint:"При одинаковых условиях дифференцированная схема обычно дает меньшую переплату, но более высокий первый платеж."}
+];
+
+function prepareStep(){mainMode="trainer";document.getElementById("formulaPage").classList.remove("show");document.getElementById("taskCard").classList.remove("hidden");document.querySelector(".work").classList.remove("hidden");document.querySelector(".dock").classList.remove("hidden");var t=tasks[step];if(t.before)t.before();selected=taskTargets(t)[0];view=step<7?"ann":step<14?"diff":"both";recalc();renderAll();scrollTarget()}
+function renderTask(){var t=tasks[step],n=step+1,total=tasks.length,targets=taskTargets(t);document.getElementById("stepChip").textContent="Шаг "+n+" из "+total;document.getElementById("targetChip").textContent=t.compare?"ИТОГ":targets.join(" + ");document.getElementById("progressFill").style.width=(n/total*100)+"%";document.getElementById("taskTitle").textContent=t.title;document.getElementById("taskText").textContent=t.text;document.getElementById("selectedInfo").textContent=selected;document.getElementById("scheduleAction").className=t.schedule?"schedule-action show":"schedule-action";if(t.schedule){var nn=Math.round(getValue(t.schedule==="ann"?"C5":"K5",{}));document.getElementById("buildScheduleBtn").textContent="Построить остальные "+Math.max(0,nn-1)+" платежей";}setStatus(t.compare?"готово к сравнению":"ожидает решения","")}
+function renderStats(){function put(id,cell,suf){var v=getValue(cell,{});document.getElementById(id).textContent=typeof v==="number"&&isFinite(v)?fmt(v,2)+(suf||""):"—"}put("annPay","C8"," ₽");put("annTotal","E74"," ₽");put("annOver","E75"," ₽");put("diffFirst","M13"," ₽");put("diffLast","M72"," ₽");put("diffTotal","M74"," ₽")}
+function renderAll(){renderSheet();renderTask();renderStats();applyView()}
+
+function isSimpleNumberText(s){return /^\s*[-+]?\d+(?:[\.,]\d+)?%?\s*$/.test(s)}
+function composerCellNote(id){if(inputRateCells[id])return "Это процентная ячейка. Можно ввести 20, 20% или 0,2 — во всех трех случаях получится 20%.";if(id==="C1"||id==="K1")return "Введите сумму кредита в рублях или используйте формулу.";if(id==="C3"||id==="K3")return "Введите срок кредита в годах или используйте формулу.";if(id==="C4"||id==="K4")return "Введите количество выплат в год или используйте формулу.";return "Введите число или формулу. Чтобы вставить ссылку, просто коснитесь другой ячейки таблицы."}
+function openComposer(){if(mainMode==="formulas"){showTrainer();return}if(tasks[step].compare){showSummary();return}if(isLocked(selected)){setStatus("эта ячейка служебная — выберите расчетную ячейку","warn");return}editing=true;var raw=cells[selected];exprText=raw===undefined?"":(typeof raw==="string"&&raw.charAt(0)==="="?raw.substring(1):String(raw));if(inputRateCells[selected]&&typeof raw==="number")exprText=String(raw*100).replace(".",",");document.getElementById("composeCell").textContent=selected;document.getElementById("composerNote").textContent=composerCellNote(selected);document.getElementById("composer").classList.add("open");if(window.innerWidth<=430)document.body.classList.add("editing-now");syncComposer()}
+function closeComposer(){editing=false;document.getElementById("composer").classList.remove("open");document.body.classList.remove("editing-now")}
+function previewValue(){var txt=exprText.trim(),v,e;if(!txt)return{ok:false,empty:true};if(isSimpleNumberText(txt)){v=inputRateCells[selected]?parseHumanRate(txt):parsePlain(txt);if(v===null)return{ok:false,error:"Не удалось прочитать число"};return{ok:true,v:semantic(selected,v),literal:true}}e=evalExpr(txt,{});if(!e.ok)return e;return{ok:true,v:formulaSemantic(selected,e.v,txt),literal:false}}
+function syncComposer(){var inp=document.getElementById("expr"),p=document.getElementById("preview"),e=previewValue(),formulaLike=!isSimpleNumberText(exprText)&&exprText.trim()!=="";inp.value=prettyExpr(exprText);document.getElementById("eqprefix").className=formulaLike?"eqprefix show":"eqprefix";document.getElementById("exprLabel").textContent=formulaLike?"Формула":"Число или формула";if(e.empty){p.textContent="Введите значение или соберите формулу";p.className="preview"}else if(e.ok){p.textContent=(formulaLike?"Результат: ":"Будет записано: ")+display(selected,e.v);p.className="preview good"}else{p.textContent="Пока не готово: "+e.error;p.className="preview warn"}}
+function prettyExpr(s){return String(s||"").replace(/\*/g,"×").replace(/\//g,"÷").replace(/-/g,"−")}
+function key(k){if(k==="BK")exprText=exprText.slice(0,-1);else if(k==="CLR")exprText="";else if(k==="SUM")exprText+="SUM(";else exprText+=k;syncComposer()}
+function saveCell(){var txt=exprText.trim(),e=previewValue(),pair;if(!txt){delete cells[selected];recalc();closeComposer();renderAll();return}if(!e.ok){document.getElementById("preview").textContent="Не могу записать: "+(e.error||"ошибка");document.getElementById("preview").className="preview bad";return}history.push(JSON.stringify(cells));if(isSimpleNumberText(txt)){set(selected,e.v)}else{formula(selected,txt)}pair=paramPairs[selected];if(pair){if(typeof cells[selected]==="string"&&cells[selected].charAt(0)==="=")formula(pair,cells[selected].substring(1));else set(pair,cells[selected])}recalc();closeComposer();renderAll();setStatus("записано в "+selected,"warn")}
+
+function check(){var t=tasks[step],list,i,a,raw;if(t.compare){showSummary();setStatus("сравнение открыто","ok");return true}if(t.expectedMany){list=t.expectedMany();for(i=0;i<list.length;i++){a=getValue(list[i].id,{});raw=cells[list[i].id];if(raw===undefined||raw===""){setStatus("заполните "+list[i].id,"bad");selected=list[i].id;renderSheet();return false}if(!same(a,list[i].v)){setStatus("проверьте "+list[i].id,"bad");selected=list[i].id;renderSheet();return false}}setStatus("✓ обе ячейки верны","ok");return true}
+  a=getValue(t.cell,{});raw=cells[t.cell];if(raw===undefined||raw===""){setStatus("ячейка "+t.cell+" пустая","bad");return false}if(!same(a,t.expected())){setStatus("результат неверный: "+display(t.cell,a),"bad");return false}setStatus("✓ верно: "+display(t.cell,a),"ok");if(t.after)t.after();if(step===6){formula("E75","E74-B12");formula("E76","E75/B12*100")}if(step===13){formula("M75","M74-J12");formula("M76","M75/J12*100")}recalc();renderStats();return true}
+function next(){if(step<tasks.length-1){step++;prepareStep()}else showSummary()}
+function buildSchedule(){var t=tasks[step];if(!t.schedule)return;if(t.schedule==="ann"){if(!same(getValue("B13",{}),roundMoney(getValue("B12",{})-getValue("C13",{})))){setStatus("сначала завершите первый платеж B13","warn");return}if(!buildAnn()){setStatus("в этом формате можно построить до 60 платежей","bad");return}setStatus("график построен — теперь посчитайте E74","ok")}else{if(!same(getValue("J13",{}),roundMoney(getValue("J12",{})-getValue("K13",{})))){setStatus("сначала рассчитайте J13","warn");return}if(!buildDiff()){setStatus("в этом формате можно построить до 60 платежей","bad");return}setStatus("график построен — теперь посчитайте M74","ok")}recalc();renderSheet();renderStats();scrollTarget()}
+function buildAnn(){var r,N=Math.round(getValue("C5",{})),last;if(N<1||N>60)return false;last=12+N;formula("B12","C1");formula("E13","C8");for(r=14;r<last;r++){formula("D"+r,"MROUND(B"+(r-1)+"*C6,0.01)");formula("E"+r,"C8");formula("C"+r,"E"+r+"-D"+r);formula("B"+r,"B"+(r-1)+"-C"+r)}if(N===1){formula("D13","MROUND(B12*C6,0.01)");formula("C13","B12");formula("E13","C13+D13");set("B13",0)}else{formula("D"+last,"MROUND(B"+(last-1)+"*C6,0.01)");formula("C"+last,"B"+(last-1));formula("E"+last,"C"+last+"+D"+last);set("B"+last,0)}return true}
+function buildDiff(){var r,N=Math.round(getValue("K5",{})),last;if(N<1||N>60)return false;last=12+N;formula("J12","K1");formula("K13","K8");for(r=14;r<last;r++){formula("K"+r,"K8");formula("L"+r,"MROUND(J"+(r-1)+"*K6,0.01)");formula("M"+r,"K"+r+"+L"+r);formula("J"+r,"J"+(r-1)+"-K"+r)}if(N===1){formula("K13","J12");formula("L13","MROUND(J12*K6,0.01)");formula("M13","K13+L13");set("J13",0)}else{formula("K"+last,"J"+(last-1));formula("L"+last,"MROUND(J"+(last-1)+"*K6,0.01)");formula("M"+last,"K"+last+"+L"+last);set("J"+last,0)}return true}
+
+function hint(){var t=tasks[step],m=document.getElementById("modal"),body=document.getElementById("modalBody"),acts=document.getElementById("modalActions"),f=t.formula,fs=t.formulas;document.getElementById("modalTitle").textContent="Подсказка • "+t.title;body.innerHTML="<div class='hintbox'><b>Что делать</b><p>"+esc(t.hint)+"</p></div>"+(t.compare?"":"<button id='revealBtn'>Показать пример формулы</button><div class='formula-reveal' id='formulaReveal'>"+(fs?"="+esc(fs[0])+"<br>= "+esc(fs[1]):"="+esc(f))+"</div>");acts.innerHTML="";var c=document.createElement("button");c.textContent="Понятно";c.className="primary";c.onclick=function(){m.classList.remove("show")};acts.appendChild(c);m.classList.add("show");setTimeout(function(){var b=document.getElementById("revealBtn");if(b)b.onclick=function(){document.getElementById("formulaReveal").classList.add("show");b.style.display="none"}},0)}
+function showSummary(){var m=document.getElementById("modal"),body=document.getElementById("modalBody"),acts=document.getElementById("modalActions"),at=getValue("E74",{}),dt=getValue("M74",{});document.getElementById("modalTitle").textContent="Итоговое сравнение";function M(id){var v=getValue(id,{});return typeof v==="number"&&isFinite(v)?fmt(v,2)+" ₽":"—"}function P(id){var v=getValue(id,{});return typeof v==="number"&&isFinite(v)?fmt(v,2)+" %":"—"}body.innerHTML="<table class='summary-table'><tr><th>Показатель</th><th>Аннуитет</th><th>Дифф.</th></tr><tr><td>Первый платеж</td><td>"+M("C8")+"</td><td>"+M("M13")+"</td></tr><tr><td>Последний платеж</td><td>"+M("E72")+"</td><td>"+M("M72")+"</td></tr><tr><td>Сумма выплат</td><td>"+M("E74")+"</td><td>"+M("M74")+"</td></tr><tr><td>Переплата</td><td>"+M("E75")+"</td><td>"+M("M75")+"</td></tr><tr><td>Процент переплаты</td><td>"+P("E76")+"</td><td>"+P("M76")+"</td></tr></table>"+((typeof at==="number"&&typeof dt==="number"&&isFinite(at)&&isFinite(dt))?"<div class='hintbox'><b>Вывод</b><p>Разница в сумме выплат: <span class='winner'>"+fmt(Math.abs(at-dt),2)+" ₽</span>. При этих условиях меньшая сумма выплат у "+(dt<at?"дифференцированной":"аннуитетной")+" схемы.</p></div>":"");acts.innerHTML="";var c=document.createElement("button");c.textContent="Закрыть";c.className="primary";c.onclick=function(){m.classList.remove("show")};acts.appendChild(c);m.classList.add("show")}
+function showConditions(){var m=document.getElementById("modal"),body=document.getElementById("modalBody"),acts=document.getElementById("modalActions");document.getElementById("modalTitle").textContent="Условия кредита";body.innerHTML="<div class='conditions'><div class='field'><label>Сумма кредита</label><div class='field-wrap'><input id='condSum' inputmode='decimal' value='"+esc(String(getValue("C1",{})))+"'><span class='suffix'>₽</span></div></div><div class='field'><label>Годовая ставка</label><div class='field-wrap'><input id='condRate' inputmode='decimal' value='"+esc(String(getValue("C2",{})*100).replace(".",","))+"'><span class='suffix'>%</span></div></div><div class='field'><label>Срок кредита</label><div class='field-wrap'><input id='condYears' inputmode='decimal' value='"+esc(String(getValue("C3",{})))+"'><span class='suffix'>лет</span></div></div><div class='field'><label>Регулярность выплат</label><div class='field-wrap'><input id='condFreq' inputmode='numeric' value='"+esc(String(getValue("C4",{})))+"'><span class='suffix'>/год</span></div></div></div><div class='condition-help'>Для ставки можно написать <b>20</b>, <b>20%</b> или <b>0,2</b> — сервис поймет это как 20%. Условия применяются одновременно к обеим схемам кредита.</div>";acts.innerHTML="";var cancel=document.createElement("button");cancel.textContent="Отмена";cancel.onclick=function(){m.classList.remove("show")};var apply=document.createElement("button");apply.textContent="Применить и пересчитать";apply.className="primary";apply.onclick=function(){var S=parsePlain(document.getElementById("condSum").value),P=parseHumanRate(document.getElementById("condRate").value),Y=parsePlain(document.getElementById("condYears").value),F=parsePlain(document.getElementById("condFreq").value);if(S===null||P===null||Y===null||F===null||S<=0||P<0||Y<=0||F<=0){alert("Проверьте введенные значения");return}if(Y*F>60){alert("Исходный формат таблицы рассчитан максимум на 60 платежей. Уменьшите срок или регулярность выплат.");return}base();set("C1",S);set("K1",S);set("C2",P);set("K2",P);set("C3",Y);set("K3",Y);set("C4",F);set("K4",F);step=0;selected="C5";m.classList.remove("show");prepareStep();setStatus("условия обновлены","ok")};acts.appendChild(cancel);acts.appendChild(apply);m.classList.add("show")}
+function solution(){base();formula("C5","C3*C4");formula("C6","C2/C4");formula("C7","1+C6");formula("C8","MROUND(C1*C7^C5*(C7-1)/(C7^C5-1),0.01)");formula("B12","C1");formula("D13","MROUND(B12*C6,0.01)");formula("E13","C8");formula("C13","E13-D13");formula("B13","B12-C13");buildAnn();formula("E74","SUM(E13:E72)");formula("E75","E74-B12");formula("E76","E75/B12*100");formula("K5","K3*K4");formula("K6","K2/K4");formula("K7","1+K6");formula("K8","MROUND(K1/K5,0.01)");formula("J12","K1");formula("K13","K8");formula("L13","MROUND(J12*K6,0.01)");formula("M13","K13+L13");formula("J13","J12-K13");buildDiff();formula("M74","SUM(M13:M72)");formula("M75","M74-J12");formula("M76","M75/J12*100");recalc();view="both";renderAll();setStatus("эталон заполнен","ok")}
+function newVariant(){var sums=[600000,750000,900000,1200000,1500000],rates=[.085,.10,.12,.15,.20],years=[3,4,5],S=sums[Math.floor(Math.random()*sums.length)],P=rates[Math.floor(Math.random()*rates.length)],Y=years[Math.floor(Math.random()*years.length)];base();set("C1",S);set("K1",S);set("C2",P);set("K2",P);set("C3",Y);set("K3",Y);step=0;selected="C5";prepareStep()}
+function reset(){localStorage.removeItem(storageKey);base();step=0;selected="C5";prepareStep()}
+function save(){try{localStorage.setItem(storageKey,JSON.stringify({cells:cells,step:step,view:view,selected:selected}))}catch(e){}}
+function load(){try{var o=JSON.parse(localStorage.getItem(storageKey)||"null");if(o&&o.cells){cells=o.cells;step=Math.min(o.step||0,tasks.length-1);view=o.view||"ann";selected=o.selected||taskTargets(tasks[step])[0];return true}}catch(e){}return false}
+function scrollTarget(){setTimeout(function(){var t=tasks[step],id=taskTargets(t)[0],el=document.querySelector("td[data-id='"+id+"']");if(el&&el.scrollIntoView)el.scrollIntoView({block:"center",inline:"center"})},30)}
+
+
+function showFormulas(){
+  mainMode="formulas";
+  closeComposer();
+  document.getElementById("taskCard").classList.add("hidden");
+  document.querySelector(".work").classList.add("hidden");
+  document.querySelector(".dock").classList.add("hidden");
+  document.getElementById("formulaPage").classList.add("show");
+  document.getElementById("annTab").className="";
+  document.getElementById("diffTab").className="";
+  document.getElementById("bothTab").className="";
+  document.getElementById("formulaTab").className="active";
+}
+function showTrainer(v){
+  mainMode="trainer";
+  document.getElementById("taskCard").classList.remove("hidden");
+  document.querySelector(".work").classList.remove("hidden");
+  document.querySelector(".dock").classList.remove("hidden");
+  document.getElementById("formulaPage").classList.remove("show");
+  if(v)view=v;
+  renderSheet();
+  applyView();
+  document.getElementById("formulaTab").className="";
+}
+
+// events
+document.getElementById("annTab").onclick=function(){showTrainer("ann")};document.getElementById("diffTab").onclick=function(){showTrainer("diff")};document.getElementById("bothTab").onclick=function(){showTrainer("both")};document.getElementById("formulaTab").onclick=showFormulas;
+document.getElementById("conditionsBtn").onclick=showConditions;document.getElementById("menuBtn").onclick=function(){document.getElementById("menuPanel").classList.toggle("open")};document.getElementById("summaryBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");showSummary()};document.getElementById("newBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");newVariant()};document.getElementById("solutionBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");solution()};document.getElementById("resetBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");reset()};
+document.getElementById("editBtn").onclick=openComposer;document.getElementById("closeComposer").onclick=closeComposer;document.getElementById("cancelEdit").onclick=closeComposer;document.getElementById("saveCell").onclick=saveCell;document.getElementById("checkBtn").onclick=check;document.getElementById("nextBtn").onclick=next;document.getElementById("hintBtn").onclick=hint;document.getElementById("buildScheduleBtn").onclick=buildSchedule;
+var keys=document.querySelectorAll("[data-key]"),ki;for(ki=0;ki<keys.length;ki++)keys[ki].onclick=function(){key(this.getAttribute("data-key"))};
+if(!load())base();prepareStep();
+})();
+</script>
+</body>
+</html>
