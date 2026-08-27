@@ -331,6 +331,65 @@ button:active{transform:translateY(1px)}
   }
 }
 
+
+/* v10 — charts */
+.charts-page{
+  display:none;flex:1;min-height:0;overflow:auto;padding:18px;
+  background:linear-gradient(180deg,#f7f9fc 0%,#f2f5f9 100%);
+}
+.charts-page.show{display:block}
+.charts-shell{max-width:1080px;margin:0 auto;padding-bottom:24px}
+.charts-hero{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:linear-gradient(135deg,#1f3b91,#3f68e6);color:#fff;
+  border-radius:20px;padding:20px 22px;margin-bottom:14px;
+  box-shadow:0 10px 30px rgba(34,61,143,.18)
+}
+.charts-kicker{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.78;margin-bottom:5px}
+.charts-hero h2{margin:0 0 5px;font-size:24px}
+.charts-hero p{margin:0;max-width:720px;line-height:1.45;opacity:.9;font-size:13px}
+.chart-refresh{flex:0 0 auto;min-height:44px;border:1px solid rgba(255,255,255,.38);color:#fff;background:rgba(255,255,255,.12);font-weight:800}
+.chart-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.chart-stat{background:#fff;border:1px solid #e1e6ee;border-radius:15px;padding:12px 13px;box-shadow:0 7px 22px rgba(31,42,68,.06)}
+.chart-stat span{display:block;color:#667085;font-size:11px;margin-bottom:5px}
+.chart-stat b{display:block;font-size:18px;line-height:1.2;font-variant-numeric:tabular-nums}
+.chart-stat small{display:block;margin-top:4px;color:#98a2b3;font-size:10px}
+.chart-card{background:#fff;border:1px solid #e1e6ee;border-radius:18px;padding:14px 15px 12px;margin-bottom:12px;box-shadow:0 7px 24px rgba(31,42,68,.055)}
+.chart-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:8px}
+.chart-card h3{margin:0 0 3px;font-size:17px}
+.chart-card p{margin:0;color:#667085;font-size:12px;line-height:1.35}
+.chart-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#475467;white-space:nowrap}
+.chart-legend span{display:flex;align-items:center;gap:5px}
+.chart-legend i{display:inline-block;width:10px;height:10px;border-radius:999px}
+.ann-dot{background:#3157d5}.diff-dot{background:#16a36a}
+.chart-canvas{width:100%;min-height:270px;overflow:hidden;border-radius:12px;background:#fbfcfe;border:1px solid #edf0f4}
+.chart-canvas svg{display:block;width:100%;height:auto;min-height:270px}
+.chart-axis{stroke:#d8dee8;stroke-width:1}.chart-gridline{stroke:#e9edf3;stroke-width:1}
+.chart-label{fill:#7b8495;font:11px Arial,Helvetica,sans-serif}
+.chart-line-ann{fill:none;stroke:#3157d5;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.chart-line-diff{fill:none;stroke:#16a36a;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.chart-bar-ann{fill:#3157d5}.chart-bar-diff{fill:#16a36a}.chart-bar-over{opacity:.58}
+.chart-conclusion{background:#eef8f3;border:1px solid #cce9da;color:#245a42;border-radius:15px;padding:13px 15px;font-size:13px;line-height:1.45}
+.chart-conclusion b{color:#133d2c}
+@media(max-width:900px){
+  .charts-page{padding:10px 8px 84px}.charts-hero{padding:15px;border-radius:15px;align-items:flex-start}
+  .charts-hero h2{font-size:20px}.charts-hero p{font-size:12px}
+  .chart-refresh{min-height:40px;padding:6px 9px;font-size:12px}
+  .chart-summary{grid-template-columns:1fr 1fr;gap:7px}.chart-stat{padding:9px 10px;border-radius:12px}.chart-stat b{font-size:16px}
+  .chart-card{padding:11px 10px 9px;border-radius:14px}.chart-card-head{display:block;margin-bottom:5px}
+  .chart-card h3{font-size:15px}.chart-card p{font-size:11px}.chart-legend{margin-top:6px}
+  .chart-canvas,.chart-canvas svg{min-height:230px}
+}
+@media(max-width:430px){
+  /* Five visible tabs without squeezing them into one line */
+  .view-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .view-tabs button{min-height:36px!important;font-size:10.5px!important}
+  #formulaTab,#chartsTab{font-size:10px!important}
+  .charts-hero{display:block}.chart-refresh{margin-top:10px;width:100%}
+  .chart-summary{grid-template-columns:1fr 1fr}.chart-stat span{font-size:10px}.chart-stat b{font-size:15px}
+  .chart-canvas,.chart-canvas svg{min-height:215px}.chart-conclusion{font-size:12px}
+}
+
 </style>
 </head>
 <body>
@@ -341,7 +400,7 @@ button:active{transform:translateY(1px)}
       <div class="view-tabs">
         <button id="annTab" class="active">Аннуитет</button>
         <button id="diffTab">Дифф.</button>
-        <button id="bothTab">Оба</button><button id="formulaTab">ƒx Формулы</button>
+        <button id="bothTab">Оба</button><button id="formulaTab">ƒx Формулы</button><button id="chartsTab">📊 Графики</button>
       </div>
       <button class="iconbtn" id="conditionsBtn" title="Условия кредита">⚙</button>
       <div class="menu"><button class="iconbtn" id="menuBtn" aria-label="Меню" title="Меню">⋯</button><div class="menu-panel" id="menuPanel"><button id="summaryBtn">Итоговое сравнение</button><button id="newBtn">Новый вариант</button><button id="solutionBtn">Показать эталон</button><button id="resetBtn">Сбросить работу</button></div></div>
@@ -476,6 +535,62 @@ button:active{transform:translateY(1px)}
         <b>Последний платёж:</b> из-за округления до копеек остаток может немного отличаться. Поэтому в последнем месяце погашается весь оставшийся основной долг — именно так итог совпадает с исходным файлом.
       </div>
     </div>
+
+  </section>
+
+  <section class="charts-page" id="chartsPage">
+    <div class="charts-shell">
+      <div class="charts-hero">
+        <div>
+          <div class="charts-kicker">Визуализация кредита</div>
+          <h2>Графики платежей</h2>
+          <p>Автоматически строятся по текущим условиям кредита и обновляются после изменения суммы, ставки, срока или числа выплат.</p>
+        </div>
+        <button class="chart-refresh" id="refreshChartsBtn">↻ Обновить</button>
+      </div>
+
+      <div class="chart-summary" id="chartSummary"></div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <div>
+            <h3>Платёж по месяцам</h3>
+            <p>Как меняется размер очередного платежа.</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="ann-dot"></i>Аннуитет</span>
+            <span><i class="diff-dot"></i>Дифф.</span>
+          </div>
+        </div>
+        <div class="chart-canvas" id="paymentChart"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <div>
+            <h3>Остаток основного долга</h3>
+            <p>Как быстро уменьшается задолженность по месяцам.</p>
+          </div>
+          <div class="chart-legend">
+            <span><i class="ann-dot"></i>Аннуитет</span>
+            <span><i class="diff-dot"></i>Дифф.</span>
+          </div>
+        </div>
+        <div class="chart-canvas" id="balanceChart"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <div>
+            <h3>Итоговая стоимость кредита</h3>
+            <p>Сумма всех выплат и переплата по двум схемам.</p>
+          </div>
+        </div>
+        <div class="chart-canvas" id="totalsChart"></div>
+      </div>
+
+      <div class="chart-conclusion" id="chartConclusion"></div>
+    </div>
   </section>
 
 </div>
@@ -566,7 +681,7 @@ function esc(s){return String(s===undefined?"":s).replace(/&/g,"&amp;").replace(
 function isLocked(id){if(/^[AB][1-8]$/.test(id)||/^[IJ][1-8]$/.test(id))return true;if(/^A(1[1-9]|[2-6][0-9]|7[0-2])$/.test(id)||/^I(1[1-9]|[2-6][0-9]|7[0-2])$/.test(id))return true;if(/^[A-E]11$/.test(id)||/^[I-M]11$/.test(id))return true;if(/^(D7[4-6]|L7[4-6])$/.test(id))return true;return false}
 function taskTargets(t){return t.targets||[t.cell]}
 function renderSheet(){var h="<thead><tr><th class='rowh'></th>",c,r,id,raw,cl,txt,v,targets=taskTargets(tasks[step]||{}),i;for(c=0;c<COLS;c++)h+="<th data-col='"+c+"'>"+colName(c)+"</th>";h+="</tr></thead><tbody>";for(r=1;r<=ROWS;r++){h+="<tr><th class='rowh'>"+r+"</th>";for(c=0;c<COLS;c++){id=idAt(c,r);raw=cells[id];cl=[];txt=raw===undefined?"":display(id,raw);if((c===0||c===1||c===8||c===9)&&r<=8)cl.push("label");if(/^(C[1-4]|K[1-4])$/.test(id))cl.push("param");if(r===11)cl.push("head");if(c<=4&&r>=11)cl.push("ann");if(c>=8&&r>=11)cl.push("diff");v=getValue(id,{});if(typeof v==="number")cl.push("num");if(typeof v==="number"&&!isFinite(v))cl.push("error");if(id===selected)cl.push("sel");for(i=0;i<targets.length;i++)if(targets[i]===id)cl.push("target");if(isLocked(id))cl.push("locked");h+="<td data-id='"+id+"' data-col='"+c+"' class='"+cl.join(" ")+"'>"+esc(txt)+"</td>"}h+="</tr>"}h+="</tbody>";document.getElementById("sheet").innerHTML=h;var td=document.querySelectorAll("td[data-id]");for(i=0;i<td.length;i++)td[i].onclick=function(){chooseCell(this.getAttribute("data-id"))};applyView()}
-function applyView(){var nodes=document.querySelectorAll("[data-col]"),i,c,hide;for(i=0;i<nodes.length;i++){c=parseInt(nodes[i].getAttribute("data-col"),10);hide=view==="ann"?(c>=5):view==="diff"?(c<=7):false;if(hide)nodes[i].classList.add("hidden");else nodes[i].classList.remove("hidden")}document.getElementById("annTab").className=view==="ann"?"active":"";document.getElementById("diffTab").className=view==="diff"?"active":"";document.getElementById("bothTab").className=view==="both"?"active":"";if(mainMode!=="formulas")document.getElementById("formulaTab").className=""}
+function applyView(){var nodes=document.querySelectorAll("[data-col]"),i,c,hide;for(i=0;i<nodes.length;i++){c=parseInt(nodes[i].getAttribute("data-col"),10);hide=view==="ann"?(c>=5):view==="diff"?(c<=7):false;if(hide)nodes[i].classList.add("hidden");else nodes[i].classList.remove("hidden")}document.getElementById("annTab").className=view==="ann"?"active":"";document.getElementById("diffTab").className=view==="diff"?"active":"";document.getElementById("bothTab").className=view==="both"?"active":"";if(mainMode!=="formulas")document.getElementById("formulaTab").className="";if(mainMode!=="charts")document.getElementById("chartsTab").className=""}
 function chooseCell(id){if(editing&&id!==selected){exprText+=id;syncComposer();return}selected=id;document.getElementById("selectedInfo").textContent=id;renderSheet()}
 function setStatus(text,type){var s=document.getElementById("status");s.textContent=text;s.className="status "+(type||"")}
 function same(a,b){return typeof a==="number"&&typeof b==="number"&&isFinite(a)&&isFinite(b)&&Math.abs(a-b)<=Math.max(.011,Math.abs(b)*1e-8)}
@@ -589,7 +704,7 @@ var tasks=[
  {compare:true,cell:"M74",title:"Сравнение двух схем",text:"Откройте итоговое сравнение: сопоставьте сумму выплат, переплату и размер первого платежа.",hint:"При одинаковых условиях дифференцированная схема обычно дает меньшую переплату, но более высокий первый платеж."}
 ];
 
-function prepareStep(){mainMode="trainer";document.getElementById("formulaPage").classList.remove("show");document.getElementById("taskCard").classList.remove("hidden");document.querySelector(".work").classList.remove("hidden");document.querySelector(".dock").classList.remove("hidden");var t=tasks[step];if(t.before)t.before();selected=taskTargets(t)[0];view=step<7?"ann":step<14?"diff":"both";recalc();renderAll();scrollTarget()}
+function prepareStep(){mainMode="trainer";document.getElementById("formulaPage").classList.remove("show");document.getElementById("chartsPage").classList.remove("show");document.getElementById("taskCard").classList.remove("hidden");document.querySelector(".work").classList.remove("hidden");document.querySelector(".dock").classList.remove("hidden");var t=tasks[step];if(t.before)t.before();selected=taskTargets(t)[0];view=step<7?"ann":step<14?"diff":"both";recalc();renderAll();scrollTarget()}
 function renderTask(){var t=tasks[step],n=step+1,total=tasks.length,targets=taskTargets(t);document.getElementById("stepChip").textContent="Шаг "+n+" из "+total;document.getElementById("targetChip").textContent=t.compare?"ИТОГ":targets.join(" + ");document.getElementById("progressFill").style.width=(n/total*100)+"%";document.getElementById("taskTitle").textContent=t.title;document.getElementById("taskText").textContent=t.text;document.getElementById("selectedInfo").textContent=selected;document.getElementById("scheduleAction").className=t.schedule?"schedule-action show":"schedule-action";if(t.schedule){var nn=Math.round(getValue(t.schedule==="ann"?"C5":"K5",{}));document.getElementById("buildScheduleBtn").textContent="Построить остальные "+Math.max(0,nn-1)+" платежей";}setStatus(t.compare?"готово к сравнению":"ожидает решения","")}
 function renderStats(){function put(id,cell,suf){var v=getValue(cell,{});document.getElementById(id).textContent=typeof v==="number"&&isFinite(v)?fmt(v,2)+(suf||""):"—"}put("annPay","C8"," ₽");put("annTotal","E74"," ₽");put("annOver","E75"," ₽");put("diffFirst","M13"," ₽");put("diffLast","M72"," ₽");put("diffTotal","M74"," ₽")}
 function renderAll(){renderSheet();renderTask();renderStats();applyView()}
@@ -622,17 +737,106 @@ function load(){try{var o=JSON.parse(localStorage.getItem(storageKey)||"null");i
 function scrollTarget(){setTimeout(function(){var t=tasks[step],id=taskTargets(t)[0],el=document.querySelector("td[data-id='"+id+"']");if(el&&el.scrollIntoView)el.scrollIntoView({block:"center",inline:"center"})},30)}
 
 
+
+function loanChartData(){
+  var S=getValue("C1",{}),p=getValue("C2",{}),years=getValue("C3",{}),freq=getValue("C4",{});
+  var N=Math.round(years*freq),r=p/freq,beta=1+r,annPay,ann=[],diff=[],balAnn=[],balDiff=[];
+  var i,balance,interest,principal,payment,basePrincipal,annTotal=0,diffTotal=0;
+  if(!isFinite(S)||!isFinite(p)||!isFinite(years)||!isFinite(freq)||S<=0||freq<=0||N<1||N>60)return null;
+
+  annPay=mroundExcel(S*Math.pow(beta,N)*(beta-1)/(Math.pow(beta,N)-1),.01);
+  balance=S;balAnn.push(balance);
+  for(i=1;i<=N;i++){
+    interest=mroundExcel(balance*r,.01);
+    if(i===N){principal=balance;payment=principal+interest;balance=0}
+    else{payment=annPay;principal=payment-interest;balance=balance-principal}
+    ann.push({month:i,payment:payment,balance:Math.max(0,balance)});
+    balAnn.push(Math.max(0,balance));annTotal+=payment;
+  }
+
+  basePrincipal=mroundExcel(S/N,.01);
+  balance=S;balDiff.push(balance);
+  for(i=1;i<=N;i++){
+    interest=mroundExcel(balance*r,.01);
+    principal=(i===N)?balance:basePrincipal;
+    payment=principal+interest;balance=balance-principal;
+    diff.push({month:i,payment:payment,balance:Math.max(0,balance)});
+    balDiff.push(Math.max(0,balance));diffTotal+=payment;
+  }
+  return {S:S,N:N,ann:ann,diff:diff,balAnn:balAnn,balDiff:balDiff,annPay:annPay,annTotal:annTotal,diffTotal:diffTotal,annOver:annTotal-S,diffOver:diffTotal-S};
+}
+function svgEsc(x){return String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function compactMoney(v){if(Math.abs(v)>=1000000)return (v/1000000).toFixed(v>=10000000?0:1).replace(".",",")+" млн";if(Math.abs(v)>=1000)return Math.round(v/1000)+" тыс.";return Math.round(v).toString()}
+function chartMoney(v){return fmt(v,2)+" ₽"}
+function lineChartSvg(a,b,N,maxY){
+  var W=800,H=280,L=62,R=18,T=18,B=38,pw=W-L-R,ph=H-T-B,i,y,pa=[],pb=[],h=[],ticks=[0,.25,.5,.75,1];
+  function px(k){return L+(N<=1?0:(k-1)/(N-1))*pw}function py(v){return T+ph-(Math.max(0,v)/maxY)*ph}
+  for(i=0;i<a.length;i++)pa.push(px(i+1).toFixed(1)+","+py(a[i]).toFixed(1));
+  for(i=0;i<b.length;i++)pb.push(px(i+1).toFixed(1)+","+py(b[i]).toFixed(1));
+  h.push('<svg viewBox="0 0 '+W+' '+H+'" role="img">');
+  for(i=0;i<ticks.length;i++){y=T+ph-ticks[i]*ph;h.push('<line class="chart-gridline" x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'"/>');h.push('<text class="chart-label" x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end">'+svgEsc(compactMoney(maxY*ticks[i]))+'</text>')}
+  h.push('<line class="chart-axis" x1="'+L+'" y1="'+(T+ph)+'" x2="'+(W-R)+'" y2="'+(T+ph)+'"/>');
+  h.push('<text class="chart-label" x="'+L+'" y="'+(H-12)+'" text-anchor="middle">1</text>');
+  h.push('<text class="chart-label" x="'+px(Math.max(1,Math.ceil(N/2)))+'" y="'+(H-12)+'" text-anchor="middle">'+Math.max(1,Math.ceil(N/2))+'</text>');
+  h.push('<text class="chart-label" x="'+px(N)+'" y="'+(H-12)+'" text-anchor="middle">'+N+'</text>');
+  h.push('<polyline class="chart-line-ann" points="'+pa.join(" ")+'"/><polyline class="chart-line-diff" points="'+pb.join(" ")+'"/></svg>');
+  return h.join("");
+}
+function balanceChartSvg(a,b,N,S){
+  var W=800,H=280,L=62,R=18,T=18,B=38,pw=W-L-R,ph=H-T-B,i,y,pa=[],pb=[],h=[],ticks=[0,.25,.5,.75,1];
+  function px(k){return L+(k/N)*pw}function py(v){return T+ph-(Math.max(0,v)/S)*ph}
+  for(i=0;i<a.length;i++)pa.push(px(i).toFixed(1)+","+py(a[i]).toFixed(1));
+  for(i=0;i<b.length;i++)pb.push(px(i).toFixed(1)+","+py(b[i]).toFixed(1));
+  h.push('<svg viewBox="0 0 '+W+' '+H+'" role="img">');
+  for(i=0;i<ticks.length;i++){y=T+ph-ticks[i]*ph;h.push('<line class="chart-gridline" x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'"/>');h.push('<text class="chart-label" x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end">'+svgEsc(compactMoney(S*ticks[i]))+'</text>')}
+  h.push('<line class="chart-axis" x1="'+L+'" y1="'+(T+ph)+'" x2="'+(W-R)+'" y2="'+(T+ph)+'"/>');
+  h.push('<text class="chart-label" x="'+L+'" y="'+(H-12)+'" text-anchor="middle">0</text>');
+  h.push('<text class="chart-label" x="'+px(Math.ceil(N/2))+'" y="'+(H-12)+'" text-anchor="middle">'+Math.ceil(N/2)+'</text>');
+  h.push('<text class="chart-label" x="'+px(N)+'" y="'+(H-12)+'" text-anchor="middle">'+N+'</text>');
+  h.push('<polyline class="chart-line-ann" points="'+pa.join(" ")+'"/><polyline class="chart-line-diff" points="'+pb.join(" ")+'"/></svg>');
+  return h.join("");
+}
+function totalsChartSvg(d){
+  var W=800,H=280,L=62,R=18,T=20,B=52,ph=H-T-B,maxY=Math.max(d.annTotal,d.diffTotal)*1.08;
+  var bars=[{x:140,v:d.annTotal,c:"chart-bar-ann",a:"Всего",b:"Аннуитет"},{x:275,v:d.diffTotal,c:"chart-bar-diff",a:"Всего",b:"Дифф."},{x:475,v:d.annOver,c:"chart-bar-ann chart-bar-over",a:"Переплата",b:"Аннуитет"},{x:610,v:d.diffOver,c:"chart-bar-diff chart-bar-over",a:"Переплата",b:"Дифф."}],h=['<svg viewBox="0 0 '+W+' '+H+'" role="img">'],ticks=[0,.25,.5,.75,1],i,y,x,bh;
+  for(i=0;i<ticks.length;i++){y=T+ph-ticks[i]*ph;h.push('<line class="chart-gridline" x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'"/>');h.push('<text class="chart-label" x="'+(L-8)+'" y="'+(y+4)+'" text-anchor="end">'+svgEsc(compactMoney(maxY*ticks[i]))+'</text>')}
+  for(i=0;i<bars.length;i++){x=bars[i];bh=(x.v/maxY)*ph;h.push('<rect class="'+x.c+'" x="'+x.x+'" y="'+(T+ph-bh)+'" width="72" height="'+bh+'" rx="7"/>');h.push('<text class="chart-label" x="'+(x.x+36)+'" y="'+(T+ph+17)+'" text-anchor="middle">'+x.a+'</text>');h.push('<text class="chart-label" x="'+(x.x+36)+'" y="'+(T+ph+32)+'" text-anchor="middle">'+x.b+'</text>');h.push('<text class="chart-label" x="'+(x.x+36)+'" y="'+Math.max(T+12,T+ph-bh-7)+'" text-anchor="middle">'+svgEsc(compactMoney(x.v))+'</text>')}
+  h.push('</svg>');return h.join("");
+}
+function renderCharts(){
+  var d=loanChartData(),summary=document.getElementById("chartSummary"),i,maxPay=0,ap=[],dp=[];
+  if(!d){summary.innerHTML="<div class='chart-stat'><b>Проверьте условия</b><small>График сейчас нельзя построить.</small></div>";return}
+  for(i=0;i<d.N;i++){ap.push(d.ann[i].payment);dp.push(d.diff[i].payment);maxPay=Math.max(maxPay,d.ann[i].payment,d.diff[i].payment)}
+  summary.innerHTML=
+    "<div class='chart-stat'><span>Аннуитетный платёж</span><b>"+chartMoney(d.annPay)+"</b><small>почти постоянный</small></div>"+
+    "<div class='chart-stat'><span>Первый дифф. платёж</span><b>"+chartMoney(d.diff[0].payment)+"</b><small>самый высокий</small></div>"+
+    "<div class='chart-stat'><span>Переплата, аннуитет</span><b>"+chartMoney(d.annOver)+"</b><small>"+fmt(d.annOver/d.S*100,2)+" %</small></div>"+
+    "<div class='chart-stat'><span>Переплата, дифф.</span><b>"+chartMoney(d.diffOver)+"</b><small>"+fmt(d.diffOver/d.S*100,2)+" %</small></div>";
+  document.getElementById("paymentChart").innerHTML=lineChartSvg(ap,dp,d.N,maxPay*1.08);
+  document.getElementById("balanceChart").innerHTML=balanceChartSvg(d.balAnn,d.balDiff,d.N,d.S);
+  document.getElementById("totalsChart").innerHTML=totalsChartSvg(d);
+  var cheaper=d.diffTotal<d.annTotal?"дифференцированная":"аннуитетная",delta=Math.abs(d.annTotal-d.diffTotal);
+  document.getElementById("chartConclusion").innerHTML="<b>Вывод:</b> при текущих условиях "+cheaper+" схема имеет меньшую общую сумму выплат на <b>"+chartMoney(delta)+"</b>. Аннуитет удобнее постоянным платежом, а дифференцированная схема быстрее уменьшает основной долг.";
+}
+function showCharts(){
+  mainMode="charts";closeComposer();
+  document.getElementById("taskCard").classList.add("hidden");document.querySelector(".work").classList.add("hidden");document.querySelector(".dock").classList.add("hidden");
+  document.getElementById("formulaPage").classList.remove("show");document.getElementById("chartsPage").classList.add("show");
+  document.getElementById("annTab").className="";document.getElementById("diffTab").className="";document.getElementById("bothTab").className="";document.getElementById("formulaTab").className="";document.getElementById("chartsTab").className="active";
+  renderCharts();
+}
+
 function showFormulas(){
   mainMode="formulas";
   closeComposer();
   document.getElementById("taskCard").classList.add("hidden");
   document.querySelector(".work").classList.add("hidden");
   document.querySelector(".dock").classList.add("hidden");
-  document.getElementById("formulaPage").classList.add("show");
+  document.getElementById("chartsPage").classList.remove("show");document.getElementById("formulaPage").classList.add("show");
   document.getElementById("annTab").className="";
   document.getElementById("diffTab").className="";
   document.getElementById("bothTab").className="";
-  document.getElementById("formulaTab").className="active";
+  document.getElementById("chartsTab").className="";document.getElementById("formulaTab").className="active";
 }
 function showTrainer(v){
   mainMode="trainer";
@@ -640,14 +844,15 @@ function showTrainer(v){
   document.querySelector(".work").classList.remove("hidden");
   document.querySelector(".dock").classList.remove("hidden");
   document.getElementById("formulaPage").classList.remove("show");
+  document.getElementById("chartsPage").classList.remove("show");
   if(v)view=v;
   renderSheet();
   applyView();
-  document.getElementById("formulaTab").className="";
+  document.getElementById("formulaTab").className="";document.getElementById("chartsTab").className="";
 }
 
 // events
-document.getElementById("annTab").onclick=function(){showTrainer("ann")};document.getElementById("diffTab").onclick=function(){showTrainer("diff")};document.getElementById("bothTab").onclick=function(){showTrainer("both")};document.getElementById("formulaTab").onclick=showFormulas;
+document.getElementById("annTab").onclick=function(){showTrainer("ann")};document.getElementById("diffTab").onclick=function(){showTrainer("diff")};document.getElementById("bothTab").onclick=function(){showTrainer("both")};document.getElementById("formulaTab").onclick=showFormulas;document.getElementById("chartsTab").onclick=showCharts;document.getElementById("refreshChartsBtn").onclick=renderCharts;
 document.getElementById("conditionsBtn").onclick=showConditions;document.getElementById("menuBtn").onclick=function(){document.getElementById("menuPanel").classList.toggle("open")};document.getElementById("summaryBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");showSummary()};document.getElementById("newBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");newVariant()};document.getElementById("solutionBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");solution()};document.getElementById("resetBtn").onclick=function(){document.getElementById("menuPanel").classList.remove("open");reset()};
 document.getElementById("editBtn").onclick=openComposer;document.getElementById("closeComposer").onclick=closeComposer;document.getElementById("cancelEdit").onclick=closeComposer;document.getElementById("saveCell").onclick=saveCell;document.getElementById("checkBtn").onclick=check;document.getElementById("nextBtn").onclick=next;document.getElementById("hintBtn").onclick=hint;document.getElementById("buildScheduleBtn").onclick=buildSchedule;
 var keys=document.querySelectorAll("[data-key]"),ki;for(ki=0;ki<keys.length;ki++)keys[ki].onclick=function(){key(this.getAttribute("data-key"))};
