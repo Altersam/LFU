@@ -6,7 +6,7 @@
 <title>Кредитная лаборатория — простой тренажёр</title>
 <style>
 :root{--bg:#f3f6fa;--panel:#fff;--text:#172033;--muted:#667085;--line:#dce2ea;--accent:#3157d5;--accent2:#eaf0ff;--good:#138a55;--warn:#b76a00;--ann:#eef3ff;--diff:#edf9f3;--principal:#5d7ee5;--interest:#f0a33b;--shadow:0 8px 26px rgba(25,36,61,.08)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--bg)}button,input{font:inherit}button{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:12px;min-height:44px;padding:8px 12px;font-weight:700}button.primary{background:var(--accent);border-color:var(--accent);color:#fff}button:disabled{opacity:.45}.app{height:100vh;display:flex;flex-direction:column}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--bg)}button,input{font:inherit}button{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:12px;min-height:44px;padding:8px 12px;font-weight:700}button.primary{background:var(--accent);border-color:var(--accent);color:#fff}button:disabled{opacity:.45}.app{height:100dvh;display:flex;flex-direction:column}
 .top{flex:0 0 auto;background:#fff;border-bottom:1px solid var(--line);padding:8px 10px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;z-index:10}.brand{font-weight:900;font-size:18px;white-space:nowrap}.brand span{display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;border-radius:10px;background:var(--accent);color:#fff;margin-right:7px}.main-tabs{display:flex;gap:5px;justify-content:center}.main-tabs button{min-height:38px;padding:6px 13px;font-size:13px}.main-tabs button.active{background:var(--accent2);color:#2447ae;border-color:#cdd8ff}.settings{width:44px;padding:0;font-size:20px}
 .taskcard{flex:0 0 auto;background:#fff;border-bottom:1px solid var(--line);padding:9px 11px;box-shadow:0 4px 15px rgba(30,45,70,.035)}.taskline{display:flex;align-items:center;gap:8px}.step{font-size:12px;background:#eef2ff;color:#3157d5;padding:5px 8px;border-radius:999px;font-weight:800;white-space:nowrap}.progress{height:7px;flex:1;background:#e9edf4;border-radius:999px;overflow:hidden}.progress>i{display:block;height:100%;background:var(--accent);width:0}.taskcard h2{font-size:17px;margin:7px 0 3px}.taskcard p{font-size:13px;line-height:1.35;margin:0;color:#475467}.taskmeta{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}.targetchip{padding:4px 8px;background:#fff1c5;border:1px solid #efd47f;border-radius:999px;font-weight:900;color:#745400}.status{margin-left:auto;font-weight:800}.status.ok{color:var(--good)}.status.warn{color:var(--warn)}
 .work{flex:1;min-height:0;display:flex;flex-direction:column}.subtabs{flex:0 0 auto;display:flex;gap:4px;padding:6px;background:#f8fafc;border-bottom:1px solid var(--line)}.subtabs button{flex:1;min-height:36px;padding:4px;font-size:12px}.subtabs button.active{background:#fff;border-color:#b9c5d8;box-shadow:0 2px 6px rgba(0,0,0,.04)}.sheetwrap{flex:1;min-height:0;overflow:auto;background:#fff;overscroll-behavior:contain}.sheet{border-collapse:separate;border-spacing:0;table-layout:fixed;min-width:1040px}.sheet th,.sheet td{height:37px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 6px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sheet thead th{position:sticky;top:0;z-index:4;background:#edf1f6;text-align:center}.rowh{position:sticky;left:0;z-index:3;background:#edf1f6!important;text-align:right;color:#778198;width:40px;min-width:40px}.sheet thead .rowh{z-index:6}.sheet td{min-width:105px;background:#fff}.sheet td.label{background:#fafbfc;font-weight:700}.sheet td.input{background:#fff5d5;font-weight:800}.sheet td.ann{background:var(--ann)}.sheet td.diff{background:var(--diff)}.sheet td.head{background:#e7ebf2;font-weight:900;text-align:center}.sheet td.num{text-align:right;font-variant-numeric:tabular-nums}.sheet td.target{box-shadow:inset 0 0 0 3px #efae00}.sheet td.selected{outline:3px solid var(--accent);outline-offset:-3px;background:#dfe7ff!important}.sheet td.pickable{cursor:pointer}.sheet td.pickable:hover{box-shadow:inset 0 0 0 2px #9fb2ef}
@@ -24,7 +24,7 @@
 @keyframes candidatePulse{50%{box-shadow:inset 0 0 0 3px var(--accent),0 0 0 3px rgba(49,87,213,.12)}}
 .builder-error{color:#a32920!important;font-weight:800}
 @media(max-width:900px){
-.app{padding-left:74px}.top{position:fixed;left:0;top:0;bottom:0;width:74px;height:100vh;display:flex!important;flex-direction:column;align-items:stretch;padding:8px 6px;gap:7px;border-right:1px solid var(--line);border-bottom:0;box-shadow:4px 0 16px rgba(30,45,70,.06);z-index:20}
+.app{padding-left:74px}.top{position:fixed;left:0;top:0;bottom:0;width:74px;height:100dvh;display:flex!important;flex-direction:column;align-items:stretch;padding:8px 6px;gap:7px;border-right:1px solid var(--line);border-bottom:0;box-shadow:4px 0 16px rgba(30,45,70,.06);z-index:20}
 .brand{display:flex;align-items:center;justify-content:center;height:48px;font-size:0;margin-bottom:2px}.brand .brandicon{width:38px;height:38px;margin:0;border-radius:11px;font-size:14px}.brand small{display:none}
 .main-tabs{display:flex!important;flex-direction:column;gap:6px;width:100%;grid-area:auto!important}.main-tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:100%;min-height:62px;padding:5px 2px;border-radius:12px;white-space:normal;line-height:1}.main-tabs button b{display:block;font-size:21px;line-height:21px}.main-tabs button span{display:block;font-size:9.5px;font-weight:800;line-height:1.05}
 .settings{margin-top:auto!important;width:100%!important;height:62px;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px 2px;border-radius:12px}.settings b{display:block;font-size:21px;line-height:21px}.settings span{display:block;font-size:9.5px;line-height:1}
@@ -41,68 +41,44 @@ button,.sheet td{touch-action:manipulation}
   .builder-help{font-size:11px!important}
 }
 
-/* v18 — Aurora 4 / Gecko ESR78 compatibility */
-html,body{height:100%;min-height:100%;overflow:hidden}
-.app{height:100vh!important;min-height:100vh!important;max-height:100vh!important;overflow:hidden}
-.sheetwrap{
-  overflow:scroll!important;
-  -webkit-overflow-scrolling:touch;
-  touch-action:pan-x pan-y!important;
-  position:relative;
-  min-height:0!important;
-}
-.sheet td,.sheet th{touch-action:auto!important}
-.page{overflow:scroll!important;-webkit-overflow-scrolling:touch;touch-action:pan-y!important}
-.chart-scroll{overflow-x:scroll!important;touch-action:pan-x!important}
-@media(max-width:900px){
-  .top{height:100vh!important;max-height:100vh!important}
-  .work{min-height:0!important;overflow:hidden!important}
-  .sheetwrap{padding-bottom:118px!important}
-  .builder.open{
-    position:fixed!important;
-    left:74px!important;right:0!important;bottom:0!important;top:auto!important;
-    z-index:40!important;
-    display:flex!important;flex-wrap:wrap!important;align-items:center!important;
-    gap:5px 7px!important;
-    max-height:116px!important;height:auto!important;
-    overflow:hidden!important;
-    padding:6px 8px!important;
-    background:#fff!important;border-top:2px solid #cfd7e6!important;
-    box-shadow:0 -6px 20px rgba(22,34,60,.16)!important
-  }
-  .builder-head{display:flex!important;flex:0 0 116px!important;margin:0!important;min-width:0!important}
-  .builder-head b{font-size:12px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-  .builder-head span,.builder-close{display:none!important}
-  .template{
-    display:flex!important;flex:1 1 300px!important;height:38px!important;min-height:38px!important;
-    padding:3px 5px!important;overflow-x:scroll!important;overflow-y:hidden!important;
-    touch-action:pan-x!important;font-size:13px!important;white-space:nowrap!important
-  }
-  .slot{height:29px!important;min-height:29px!important;min-width:56px!important;padding:2px 5px!important;font-size:10px!important}
-  .slot.filled{font-size:12px!important}
-  .builder-bottom{display:flex!important;flex:0 0 190px!important;gap:5px!important;margin:0!important}
-  .preview{padding:4px 6px!important;font-size:9px!important;min-width:70px!important}
-  .preview b{display:block!important;font-size:12px!important;margin:1px 0 0!important}
-  .builder-bottom button{min-width:105px!important;min-height:38px!important;height:38px!important;padding:4px 6px!important;font-size:10px!important}
-  .builder-help{
-    flex:1 0 100%!important;margin:0!important;padding:0 2px!important;
-    font-size:10px!important;line-height:14px!important;height:14px!important;
-    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important
-  }
-  .actionbox.open{
-    position:fixed!important;left:74px!important;right:0!important;bottom:0!important;z-index:40!important;
-    max-height:92px!important;padding:7px 8px!important;background:#fff!important;border-top:2px solid #cfd7e6!important;
-    box-shadow:0 -6px 20px rgba(22,34,60,.16)!important
-  }
-}
+/* v19 Aurora legacy layout: no fixed/flex viewport scrolling */
+html,body{height:auto!important;min-height:0!important;overflow:visible!important;position:static!important}
+body{margin:0!important;-webkit-overflow-scrolling:touch!important}
+.app{height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;display:block!important;padding:0!important}
+.top{position:static!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:auto!important;height:auto!important;max-height:none!important;display:block!important;padding:7px 8px!important;border-right:0!important;border-bottom:1px solid var(--line)!important;box-shadow:none!important}
+.brand{display:inline-block!important;height:auto!important;font-size:14px!important;vertical-align:middle!important;margin:0 8px 6px 0!important}
+.brand .brandicon{width:30px!important;height:30px!important;font-size:12px!important;margin-right:5px!important;display:inline-flex!important}
+.main-tabs{display:inline-block!important;width:auto!important;vertical-align:middle!important;margin-bottom:5px!important}
+.main-tabs button{display:inline-block!important;width:auto!important;height:38px!important;min-height:38px!important;padding:5px 9px!important;margin:0 2px 2px 0!important;font-size:11px!important;line-height:1.1!important}
+.main-tabs button b{display:none!important}.main-tabs button span{display:inline!important;font-size:11px!important}
+.settings{display:inline-block!important;float:right!important;width:auto!important;height:38px!important;min-height:38px!important;margin:0!important;padding:5px 9px!important;font-size:11px!important}
+.settings b{display:none!important}.settings span{display:inline!important;font-size:11px!important}
+.taskcard{display:block!important;position:static!important;padding:7px 8px!important}
+.taskcard h2{font-size:15px!important;margin:5px 0 2px!important}.taskcard p{display:block!important;max-height:none!important;overflow:visible!important;font-size:12px!important}
+.work{display:block!important;overflow:visible!important;min-height:0!important;height:auto!important}
+.subtabs{display:block!important;padding:5px 7px!important;white-space:nowrap!important;overflow-x:auto!important}
+.subtabs button{display:inline-block!important;width:auto!important;min-height:34px!important;padding:5px 10px!important;font-size:11px!important}
+.builder,.actionbox{position:static!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;box-shadow:none!important;border-top:0!important;border-bottom:2px solid #cfd7e6!important;background:#fff!important;z-index:auto!important}
+.builder.open{display:block!important;padding:7px 8px!important}
+.builder-head{display:block!important;margin:0 0 5px!important}.builder-head b{font-size:13px!important}.builder-head span{display:inline!important;font-size:11px!important;margin-left:5px!important}.builder-close{display:none!important}
+.template{display:block!important;min-height:0!important;height:auto!important;max-height:none!important;overflow-x:auto!important;white-space:nowrap!important;padding:6px!important;font-size:14px!important;border-radius:8px!important}
+.slot{display:inline-block!important;min-width:58px!important;min-height:30px!important;height:auto!important;padding:5px 6px!important;margin:1px!important;font-size:11px!important;text-align:center!important;vertical-align:middle!important}
+.slot.filled{font-size:12px!important}.builder-help{display:block!important;margin:5px 0!important;white-space:normal!important;overflow:visible!important;font-size:11px!important}
+.builder-bottom{display:block!important}.preview{display:inline-block!important;width:calc(100% - 160px)!important;min-width:0!important;padding:7px 8px!important;vertical-align:middle!important}.preview b{display:inline!important;font-size:14px!important;margin-left:4px!important}
+.builder-bottom button{display:inline-block!important;width:150px!important;min-width:150px!important;min-height:40px!important;padding:6px!important;vertical-align:middle!important;font-size:11px!important}
+.actionbox.open{display:block!important;padding:8px!important}.actioncopy{display:block!important;margin-bottom:6px!important}.actionbox button{display:block!important;width:100%!important;min-width:0!important}
+.legacy-scroll-tools{display:block!important;padding:5px 7px!important;background:#eef2f7!important;border-bottom:1px solid var(--line)!important;white-space:nowrap!important}
+.legacy-scroll-tools button{display:inline-block!important;min-width:44px!important;min-height:36px!important;padding:5px 8px!important;margin-right:4px!important;font-size:12px!important}
+.sheetwrap{display:block!important;position:static!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;overflow-x:scroll!important;overflow-y:visible!important;padding:0 0 24px!important;background:#fff!important;-webkit-overflow-scrolling:touch!important;touch-action:auto!important}
+.sheet{display:table!important;min-width:960px!important;width:auto!important}
+.sheet thead th,.rowh{position:static!important}
+.sheet td,.sheet th{touch-action:auto!important;user-select:none!important;-webkit-user-select:none!important}
+.page{position:static!important;height:auto!important;max-height:none!important;overflow:visible!important;padding:9px 7px 30px!important}
+.page.show{display:block!important}.chart-scroll{overflow-x:scroll!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch!important}
+.modal{position:fixed!important}
 @media(max-width:520px){
-  .sheetwrap{padding-bottom:130px!important}
-  .builder.open{left:64px!important;max-height:128px!important;padding:5px 6px!important}
-  .builder-head{flex-basis:90px!important}
-  .template{order:3!important;flex-basis:100%!important;height:36px!important;min-height:36px!important}
-  .builder-bottom{flex:1 1 180px!important}
-  .builder-help{order:4!important}
-  .actionbox.open{left:64px!important}
+ .builder-bottom .preview{width:100%!important;margin-bottom:5px!important}.builder-bottom button{width:100%!important;min-width:0!important}
+ .settings{float:none!important}.brand{display:block!important}.main-tabs{display:block!important}
 }
 
 </style>
@@ -111,11 +87,13 @@ html,body{height:100%;min-height:100%;overflow:hidden}
 <div class="app">
 <header class="top"><div class="brand"><span class="brandicon">ƒx</span><small>Кредит</small></div><div class="main-tabs"><button id="tabTrain" class="active"><b>▦</b><span>Тренажёр</span></button><button id="tabFormulas"><b>ƒx</b><span>Формулы</span></button><button id="tabCharts"><b>▥</b><span>Графики</span></button></div><button class="settings" id="settingsBtn"><b>⚙</b><span>Условия</span></button></header>
 <section class="taskcard" id="taskCard"><div class="taskline"><span class="step" id="stepChip">Шаг 1</span><div class="progress"><i id="progressFill"></i></div></div><h2 id="taskTitle"></h2><p id="taskText"></p><div class="taskmeta"><span>Цель:</span><span class="targetchip" id="targetChip">C5</span><span class="status" id="status">выберите подсвеченную ячейку</span></div></section>
-<section class="work" id="work"><div class="subtabs"><button id="annView" class="active">Аннуитет</button><button id="diffView">Дифференцированный</button><button id="bothView">Оба</button></div><div class="sheetwrap" id="sheetWrap"><table class="sheet" id="sheet"></table></div></section>
-<section class="page" id="formulasPage"><div class="page-shell"><div class="hero"><h2>Формулы</h2><p>Смысловая шпаргалка. В тренажёре ничего печатать не нужно — ячейки выбираются касанием.</p></div><div class="formula-grid"><div class="card"><h3>Аннуитетный кредит</h3><div class="frow"><b>Количество платежей</b><code>N = n × m</code></div><div class="frow"><b>Ставка за период</b><code>r = p ÷ m</code></div><div class="frow"><b>Коэффициент</b><code>β = 1 + r</code></div><div class="frow"><b>Платёж</b><code>X = S·βᴺ·(β−1) ÷ (βᴺ−1)</code></div><div class="frow"><b>Проценты</b><code>остаток × r</code></div><div class="frow"><b>Основной долг</b><code>платёж − проценты</code></div></div><div class="card"><h3>Дифференцированный кредит</h3><div class="frow"><b>Количество платежей</b><code>N = n × m</code></div><div class="frow"><b>Ставка за период</b><code>r = p ÷ m</code></div><div class="frow"><b>Основной долг за период</b><code>S ÷ N</code></div><div class="frow"><b>Проценты</b><code>остаток × r</code></div><div class="frow"><b>Платёж</b><code>основной долг + проценты</code></div><div class="frow"><b>Новый остаток</b><code>остаток − основной долг</code></div></div></div></div></section>
-<section class="page" id="chartsPage"><div class="page-shell"><div class="hero"><h2>Графики</h2><p>Каждый месяц — отдельный столбец. Диаграммы строятся по текущему N, до 100 платежей.</p></div><div class="chart-card"><h3>Стоимость кредита: тело + переплата</h3><p>Разница — верхний сегмент переплаты.</p><div class="legend"><span><i class="principal-dot"></i>Тело кредита</span><span><i class="interest-dot"></i>Переплата</span></div><div class="chart-scroll"><div class="chart-wide" id="totalChart"></div></div></div><div class="chart-card"><h3>Платёж по каждому месяцу</h3><div class="legend"><span><i class="ann-dot"></i>Аннуитет</span><span><i class="diff-dot"></i>Дифф.</span></div><div class="chart-scroll"><div class="chart-wide" id="paymentsChart"></div></div></div><div class="chart-card"><h3>Состав аннуитетного платежа</h3><div class="legend"><span><i class="principal-dot"></i>Основной долг</span><span><i class="interest-dot"></i>Проценты</span></div><div class="chart-scroll"><div class="chart-wide" id="annParts"></div></div></div><div class="chart-card"><h3>Состав дифференцированного платежа</h3><div class="legend"><span><i class="principal-dot"></i>Основной долг</span><span><i class="interest-dot"></i>Проценты</span></div><div class="chart-scroll"><div class="chart-wide" id="diffParts"></div></div></div></div></section>
 <section class="builder" id="builder"><div class="builder-head"><b id="builderTitle">Соберите формулу</b><span id="builderSub"></span><button class="builder-close" id="builderClose">×</button></div><div class="template" id="template"></div><div class="builder-help" id="builderHelp"></div><div class="builder-bottom"><div class="preview">Результат:<b id="preview">—</b></div><button class="primary" id="commitBtn" disabled>Записать результат</button></div></section>
 <section class="actionbox" id="actionBox"><div class="actioncopy"><b id="actionTitle"></b><span id="actionText"></span></div><button class="primary" id="actionBtn"></button></section>
+<section class="work" id="work"><div class="subtabs"><button id="annView" class="active">Аннуитет</button><button id="diffView">Дифференцированный</button><button id="bothView">Оба</button></div><div class="legacy-scroll-tools"><button type="button" id="goFormulaBtn">↑ Формула</button><button type="button" id="scrollLeftBtn">←</button><button type="button" id="scrollRightBtn">→</button><button type="button" id="scrollUpBtn">▲</button><button type="button" id="scrollDownBtn">▼</button></div><div class="sheetwrap" id="sheetWrap"><table class="sheet" id="sheet"></table></div></section>
+<section class="page" id="formulasPage"><div class="page-shell"><div class="hero"><h2>Формулы</h2><p>Смысловая шпаргалка. В тренажёре ничего печатать не нужно — ячейки выбираются касанием.</p></div><div class="formula-grid"><div class="card"><h3>Аннуитетный кредит</h3><div class="frow"><b>Количество платежей</b><code>N = n × m</code></div><div class="frow"><b>Ставка за период</b><code>r = p ÷ m</code></div><div class="frow"><b>Коэффициент</b><code>β = 1 + r</code></div><div class="frow"><b>Платёж</b><code>X = S·βᴺ·(β−1) ÷ (βᴺ−1)</code></div><div class="frow"><b>Проценты</b><code>остаток × r</code></div><div class="frow"><b>Основной долг</b><code>платёж − проценты</code></div></div><div class="card"><h3>Дифференцированный кредит</h3><div class="frow"><b>Количество платежей</b><code>N = n × m</code></div><div class="frow"><b>Ставка за период</b><code>r = p ÷ m</code></div><div class="frow"><b>Основной долг за период</b><code>S ÷ N</code></div><div class="frow"><b>Проценты</b><code>остаток × r</code></div><div class="frow"><b>Платёж</b><code>основной долг + проценты</code></div><div class="frow"><b>Новый остаток</b><code>остаток − основной долг</code></div></div></div></div></section>
+<section class="page" id="chartsPage"><div class="page-shell"><div class="hero"><h2>Графики</h2><p>Каждый месяц — отдельный столбец. Диаграммы строятся по текущему N, до 100 платежей.</p></div><div class="chart-card"><h3>Стоимость кредита: тело + переплата</h3><p>Разница — верхний сегмент переплаты.</p><div class="legend"><span><i class="principal-dot"></i>Тело кредита</span><span><i class="interest-dot"></i>Переплата</span></div><div class="chart-scroll"><div class="chart-wide" id="totalChart"></div></div></div><div class="chart-card"><h3>Платёж по каждому месяцу</h3><div class="legend"><span><i class="ann-dot"></i>Аннуитет</span><span><i class="diff-dot"></i>Дифф.</span></div><div class="chart-scroll"><div class="chart-wide" id="paymentsChart"></div></div></div><div class="chart-card"><h3>Состав аннуитетного платежа</h3><div class="legend"><span><i class="principal-dot"></i>Основной долг</span><span><i class="interest-dot"></i>Проценты</span></div><div class="chart-scroll"><div class="chart-wide" id="annParts"></div></div></div><div class="chart-card"><h3>Состав дифференцированного платежа</h3><div class="legend"><span><i class="principal-dot"></i>Основной долг</span><span><i class="interest-dot"></i>Проценты</span></div><div class="chart-scroll"><div class="chart-wide" id="diffParts"></div></div></div></div></section>
+
+
 </div>
 <div class="modal" id="modal"><div class="dialog"><h2>Условия кредита</h2><div class="fields"><div class="field"><label>Сумма, ₽</label><input id="condS" type="number" inputmode="decimal"></div><div class="field"><label>Годовая ставка, %</label><input id="condP" type="number" inputmode="decimal"></div><div class="field"><label>Срок, лет</label><input id="condN" type="number" inputmode="decimal"></div><div class="field"><label>Выплат в год</label><input id="condM" type="number" inputmode="numeric"></div></div><div class="count"><span>Количество платежей</span><b id="condCount">60 / 100</b></div><div class="dialog-actions"><button id="modalCancel">Отмена</button><button class="primary" id="modalApply">Применить</button></div></div></div>
 <script>
@@ -217,17 +195,19 @@ function partsBars(items){var n=items.length,g=n<=60?18:14,W=Math.max(820,75+n*g
 function totalBars(d){var W=720,H=270,L=60,T=20,Bt=45,ph=H-T-Bt,max=Math.max(d.annTotal,d.diffTotal)*1.08,arr=[{x:180,o:d.annOver},{x:430,o:d.diffOver}],h=['<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'">'];ticks(max).forEach(function(v){var y=T+ph-v/max*ph;h.push('<line class="grid" x1="'+L+'" y1="'+y+'" x2="'+(W-20)+'" y2="'+y+'"/><text class="chart-label" x="'+(L-7)+'" y="'+(y+3)+'" text-anchor="end">'+compact(v)+'</text>')});for(var i=0;i<2;i++){var a=arr[i],body=d.S/max*ph,over=a.o/max*ph;h.push('<rect class="bar-pr" x="'+a.x+'" y="'+(T+ph-body)+'" width="110" height="'+body+'" rx="5"/><rect class="bar-int" x="'+a.x+'" y="'+(T+ph-body-over)+'" width="110" height="'+over+'" rx="5"/><text class="chart-label" x="'+(a.x+55)+'" y="'+(H-15)+'" text-anchor="middle">'+(i===0?'Аннуитет':'Дифф.')+'</text>')}h.push('</svg>');return h.join("")}
 function renderCharts(){var d=loanData(),p=wideBars(d.ann,d.diff),a=partsBars(d.ann),df=partsBars(d.diff);document.getElementById("totalChart").innerHTML=totalBars(d);document.getElementById("paymentsChart").style.width=p.w+"px";document.getElementById("paymentsChart").innerHTML=p.svg;document.getElementById("annParts").style.width=a.w+"px";document.getElementById("annParts").innerHTML=a.svg;document.getElementById("diffParts").style.width=df.w+"px";document.getElementById("diffParts").innerHTML=df.svg}function showCharts(){mode="charts";closeBuilder();closeAction();document.getElementById("taskCard").classList.add("hidden");document.getElementById("work").classList.add("hidden");document.getElementById("formulasPage").classList.remove("show");document.getElementById("chartsPage").classList.add("show");document.getElementById("tabTrain").className="";document.getElementById("tabFormulas").className="";document.getElementById("tabCharts").className="active";renderCharts()}
 function conditions(){var m=document.getElementById("modal");document.getElementById("condS").value=val("C1");document.getElementById("condP").value=val("C2")*100;document.getElementById("condN").value=val("C3");document.getElementById("condM").value=val("C4");updCount();m.classList.add("show")}function updCount(){var y=+document.getElementById("condN").value||0,f=+document.getElementById("condM").value||0;document.getElementById("condCount").textContent=Math.round(y*f)+" / "+MAXN}function applyCond(){var S=+document.getElementById("condS").value,p=+document.getElementById("condP").value,y=+document.getElementById("condN").value,f=+document.getElementById("condM").value,n=Math.round(y*f);if(!(S>0&&p>=0&&y>0&&f>0)||n>MAXN){alert("Проверьте данные. Максимум 100 платежей.");return}setup();set("C1",S);set("K1",S);set("C2",p/100);set("K2",p/100);set("C3",y);set("K3",y);set("C4",f);set("K4",f);step=0;selected="";view="ann";document.getElementById("modal").classList.remove("show");showTrain()}
-function fixAuroraViewport(){
-  var h=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight;
-  var app=document.querySelector('.app'),top=document.querySelector('.top');
-  if(app&&h){app.style.height=h+'px';app.style.minHeight=h+'px';app.style.maxHeight=h+'px'}
-  if(top){if(window.innerWidth<=900&&h){top.style.height=h+'px';top.style.maxHeight=h+'px'}else{top.style.height='';top.style.maxHeight=''}}
-}
-window.addEventListener('resize',fixAuroraViewport,false);
-window.addEventListener('orientationchange',function(){setTimeout(fixAuroraViewport,60)},false);
-fixAuroraViewport();
 document.getElementById("sheet").onclick=function(e){var n=e.target;while(n&&n!==this&&n.tagName!=="TD")n=n.parentNode;if(n&&n.tagName==="TD")cellClickId(n.getAttribute("data-id"))};
-document.getElementById("commitBtn").onclick=commit;document.getElementById("builderClose").onclick=function(){builderOpen=false;render()};document.getElementById("tabTrain").onclick=showTrain;document.getElementById("tabFormulas").onclick=showFormulas;document.getElementById("tabCharts").onclick=showCharts;document.getElementById("annView").onclick=function(){view="ann";render()};document.getElementById("diffView").onclick=function(){view="diff";render()};document.getElementById("bothView").onclick=function(){view="both";render()};document.getElementById("settingsBtn").onclick=conditions;document.getElementById("modalCancel").onclick=function(){document.getElementById("modal").classList.remove("show")};document.getElementById("modalApply").onclick=applyCond;document.getElementById("condN").oninput=updCount;document.getElementById("condM").oninput=updCount;setup();render();
+document.getElementById("commitBtn").onclick=commit;document.getElementById("builderClose").onclick=function(){builderOpen=false;render()};document.getElementById("tabTrain").onclick=showTrain;document.getElementById("tabFormulas").onclick=showFormulas;document.getElementById("tabCharts").onclick=showCharts;document.getElementById("annView").onclick=function(){view="ann";render()};document.getElementById("diffView").onclick=function(){view="diff";render()};document.getElementById("bothView").onclick=function(){view="both";render()};document.getElementById("settingsBtn").onclick=conditions;document.getElementById("modalCancel").onclick=function(){document.getElementById("modal").classList.remove("show")};document.getElementById("modalApply").onclick=applyCond;document.getElementById("condN").oninput=updCount;document.getElementById("condM").oninput=updCount;
+function legacyScrollBy(dx,dy){
+  var w=document.getElementById("sheetWrap");
+  if(dx&&w)w.scrollLeft=(w.scrollLeft||0)+dx;
+  if(dy){if(window.scrollBy)window.scrollBy(0,dy);else document.documentElement.scrollTop=(document.documentElement.scrollTop||0)+dy}
+}
+var gl=document.getElementById("goFormulaBtn");if(gl)gl.onclick=function(){var b=document.getElementById("builder");if(b&&b.scrollIntoView)b.scrollIntoView(true)};
+var sl=document.getElementById("scrollLeftBtn");if(sl)sl.onclick=function(){legacyScrollBy(-320,0)};
+var sr=document.getElementById("scrollRightBtn");if(sr)sr.onclick=function(){legacyScrollBy(320,0)};
+var su=document.getElementById("scrollUpBtn");if(su)su.onclick=function(){legacyScrollBy(0,-420)};
+var sd=document.getElementById("scrollDownBtn");if(sd)sd.onclick=function(){legacyScrollBy(0,420)};
+setup();render();
 })();
 </script>
 </body></html>
