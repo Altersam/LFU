@@ -66,6 +66,49 @@ button.tabon{background:#e9efff;border-color:#b9c8fb;color:#2345a5}
 .choosehint{background:#eef6ff;border:1px solid #cdddf7;border-radius:8px;padding:6px 8px;margin:6px 0;font-size:11px;line-height:1.3;color:#294b7a}
 .nextSection{width:100%;margin-top:8px}
 @media(max-width:520px){.simpleFlow td{display:block;width:100%;margin:4px 0}.simpleFlow .arrow{display:block;width:100%;transform:rotate(90deg)}.theorySteps li{font-size:12px;padding:8px 9px}.theorySteps li b{font-size:14px}}
+
+.casebox{border:2px solid #cfdcff;background:#f5f8ff}
+.caselead{font-size:15px;line-height:1.45;margin:5px 0 10px}
+.twopath{width:100%;border-collapse:separate;border-spacing:7px 0}
+.twopath td{width:50%;vertical-align:top;border-radius:10px;padding:10px}
+.twopath .yes{background:#eef9f2;border:1px solid #bfe4cd}
+.twopath .no{background:#fff6e7;border:1px solid #efd6a3}
+.twopath b{display:block;font-size:14px;margin-bottom:4px}
+.bodyrule{margin-top:9px;padding:9px 10px;background:#eef2ff;border-left:4px solid #3157d5;border-radius:6px;font-size:13px}
+.examtag{display:inline-block;padding:3px 7px;border-radius:20px;background:#3157d5;color:#fff;font-size:10px;font-weight:bold;margin-bottom:5px}
+.scenariocard{padding:9px 10px;border:1px solid #dce3ef;border-radius:9px;background:#fafcff;margin-top:8px}
+.scenariocard b{display:block;margin-bottom:3px}
+.branchhint{padding:7px 9px;border-radius:8px;background:#fff8e8;border:1px solid #efdba9;font-size:12px;margin:7px 0}
+@media(max-width:650px){.twopath,.twopath tbody,.twopath tr,.twopath td{display:block;width:100%}.twopath td{margin-bottom:7px}}
+
+
+/* v23 — scenario simulator */
+.scenarioGrid{width:100%;border-collapse:separate;border-spacing:8px}
+.scenarioGrid td{vertical-align:top;width:50%}
+.scenarioPanel{border:1px solid #dce3ef;border-radius:10px;padding:10px;background:#fff}
+.scenarioPanel h3{margin:0 0 7px;font-size:15px}
+.scenarioFields{width:100%;border-collapse:collapse}
+.scenarioFields td{padding:5px;width:50%}
+.scenarioFields label{display:block;font-size:11px;color:#697486;margin-bottom:3px}
+.scenarioFields input,.scenarioFields select{width:100%;height:39px;border:1px solid #ccd4df;border-radius:7px;padding:0 7px;background:#fff;color:#1f2937;font-size:14px}
+.scenarioActions{margin-top:8px}
+.scenarioActions button{margin-right:5px;margin-bottom:5px}
+.compareTable{width:100%;border-collapse:collapse;font-size:12px}
+.compareTable th,.compareTable td{padding:7px 8px;border-bottom:1px solid #e5e9ef;text-align:right}
+.compareTable th:first-child,.compareTable td:first-child{text-align:left}
+.compareTable th{background:#f1f4f8}
+.compareTable .better{background:#effaf4;color:#12623d;font-weight:bold}
+.compareTable .emph{font-weight:bold;color:#2145a5}
+.scenarioResult{margin-top:8px;padding:9px 10px;border-radius:9px;background:#eef7f2;border:1px solid #c8e4d3;font-size:13px;line-height:1.45}
+.scenarioNote{font-size:11px;color:#697486;margin-top:6px}
+.scenarioCharts .chartbox{margin-top:10px}
+.scenarioChartInner{min-height:235px}
+.scenarioChartInner svg{display:block}
+.scenarioLegend{font-size:11px;margin:5px 0;color:#596579}
+.scenarioLegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 8px;vertical-align:middle}
+.scA{background:#3157d5}.scB{background:#1b9b67}.scBody{background:#5d7ee5}.scDeferred{background:#f0a33b}
+@media(max-width:700px){.scenarioGrid,.scenarioGrid tbody,.scenarioGrid tr,.scenarioGrid td{display:block;width:100%}.scenarioGrid td{padding:0 0 8px}.scenarioFields td{display:block;width:100%;padding:4px 0}.compareTable{font-size:11px}.compareTable th,.compareTable td{padding:6px 4px}}
+
 </style>
 </head>
 <body>
@@ -76,7 +119,8 @@ button.tabon{background:#e9efff;border-color:#b9c8fb;color:#2345a5}
       <button id="navTheory" class="tabon" onclick="showPage('theory')">1. Теория</button>
       <button id="navSettings" onclick="showPage('settings')">2. Условия</button>
       <button id="navLesson" onclick="showPage('lesson')">3. Задание</button>
-      <button id="navChart" onclick="showPage('chart')">4. График</button>
+      <button id="navScenario" onclick="showPage('scenario')">4. Сценарии</button>
+      <button id="navChart" onclick="showPage('chart')">5. График</button>
     </div>
   </div>
 
@@ -85,7 +129,7 @@ button.tabon{background:#e9efff;border-color:#b9c8fb;color:#2345a5}
       <h1>Задание</h1>
       <p>Собираем расчёт по шагам. Формулы печатать не нужно: выбираем подходящие величины и сразу видим результат.</p>
     </div>
-    <div class="box notice"><b>Как работать:</b> прочитай короткое пояснение → выбери нужные величины → запиши результат → переходи дальше. Ошибочный вариант можно нажимать без страха — тренажёр подскажет.</div>
+    <div class="box notice"><b>Как работать:</b> прочитай короткое пояснение → выбери нужные величины → запиши результат → переходи дальше. Ошибочный вариант можно нажимать без страха — тренажёр подскажет.</div><div class="box branchhint"><b>Кейс Ивана:</b> сначала увидим, почему после перехода на бюджет тело кредита перестаёт расти. Затем отдельно посчитаем ветку «если бы Иван остался на платном».</div>
     <div class="box">
       <div class="stepmeta">Шаг <b id="stepNo">1</b> из <span id="stepTotal">1</span></div>
       <div class="progressline"><span id="progress"></span></div>
@@ -96,8 +140,32 @@ button.tabon{background:#e9efff;border-color:#b9c8fb;color:#2345a5}
     <div class="box" id="lessonSummary"></div>
   </div>
 
+  <div id="pageScenario" class="page">
+    <div class="box hero"><h1>Сценарии: что изменится?</h1><p>Здесь не нужно проходить задание заново. Поменяй условия — тренажёр сразу пересчитает оба варианта и построит сравнение.</p></div>
+    <div class="box notice"><b>Идея:</b> сравниваем выбранный сценарий перехода на бюджет с вариантом «Иван остался на платном до конца». Меняются только условия — вся математика пересчитывается автоматически.</div>
+    <div class="box">
+      <table class="scenarioFields"><tr>
+        <td><label>Стоимость обучения за год, ₽</label><input id="scAnnual" type="number" value="300000" onkeyup="scenarioInputChanged()" onchange="scenarioInputChanged()"></td>
+        <td><label>Срок обучения, лет</label><input id="scYears" type="number" value="4" min="2" max="6" onchange="scenarioYearsChanged()"></td>
+      </tr><tr>
+        <td><label>Ставка для учебной модели, % годовых</label><input id="scRate" type="number" value="3" min="0" max="30" step="0.1" onkeyup="scenarioInputChanged()" onchange="scenarioInputChanged()"></td>
+        <td><label>Погашение после льготы, лет</label><input id="scRepayYears" type="number" value="15" min="1" max="20" onchange="scenarioInputChanged()"></td>
+      </tr><tr>
+        <td colspan="2"><label>Что произошло с Иваном?</label><select id="scBudgetFrom" onchange="scenarioInputChanged()"></select></td>
+      </tr></table>
+      <div class="scenarioActions"><button class="primary" onclick="renderScenario()">Пересчитать</button><button onclick="resetScenarioIvan()">Вернуть кейс Ивана</button><button onclick="loadScenarioFromSettings()">Взять текущие условия</button></div>
+      <div class="scenarioNote">Учебная модель: если Иван переходит на бюджет, новые транши прекращаются. Уже выданное тело кредита остаётся и продолжает участвовать в расчёте процентов.</div>
+    </div>
+    <div class="box" id="scenarioCompare"></div>
+    <div class="scenarioCharts">
+      <div class="chartbox"><h3>Как меняется тело кредита</h3><p>Каждый новый оплаченный семестр добавляет новый транш. После перехода на бюджет рост останавливается.</p><div class="scenarioLegend"><i class="scA"></i>Выбранный сценарий <i class="scB"></i>Остался на платном</div><div class="scrollBtns"><button onclick="moveChart('scDebtScroll',-320)">←</button><button onclick="moveChart('scDebtScroll',320)">→</button></div><div id="scDebtScroll" class="scrollbox"><div id="scDebtChart" class="chartinner scenarioChartInner"></div></div></div>
+      <div class="chartbox"><h3>Платёж студента по месяцам</h3><p>Видно, как ранний переход на бюджет влияет не только на тело кредита, но и на будущие выплаты.</p><div class="scenarioLegend"><i class="scA"></i>Выбранный сценарий <i class="scB"></i>Остался на платном</div><div class="scrollBtns"><button onclick="moveChart('scPayScroll',-320)">←</button><button onclick="moveChart('scPayScroll',320)">→</button></div><div id="scPayScroll" class="scrollbox"><div id="scPayChart" class="chartinner scenarioChartInner"></div></div></div>
+    </div>
+    <div class="box"><button class="primary nextSection" onclick="showPage('chart')">Открыть полный график текущих условий →</button></div>
+  </div>
+
   <div id="pageChart" class="page">
-    <div class="box hero"><h1>График кредита</h1><p>Здесь видны все месяцы: когда банк переводит деньги вузу, сколько студент платит во время учёбы и что происходит после льготного периода.</p></div>
+    <div class="box hero"><h1>График кредита</h1><p>Основной длинный график показывает ветку «Иван не перешёл на бюджет». Если он перешёл на бюджет, тело кредита останавливается после первого транша.</p></div>
     <div class="box" id="timelineBox"></div>
     <div class="box" id="statsBox"></div>
     <div class="chartbox"><h3>Долг растёт ступеньками</h3><p>Новый семестр — новый транш банком университету.</p><div class="legend"><i class="blue"></i>Основной долг</div><div class="scrollBtns"><button onclick="moveChart('debtScroll',-320)">←</button><button onclick="moveChart('debtScroll',320)">→</button></div><div id="debtScroll" class="scrollbox"><div id="debtChart" class="chartinner"></div></div></div>
@@ -111,6 +179,17 @@ button.tabon{background:#e9efff;border-color:#b9c8fb;color:#2345a5}
       <h2>Представь обычную учёбу в вузе</h2>
       <p>Обучение платное, но семья не отдаёт сразу всю сумму. Банк помогает оплатить учёбу, а студент возвращает деньги позже.</p>
       <table class="simpleFlow"><tr><td><b>1</b><br>Банк платит вузу</td><td class="arrow">→</td><td><b>2</b><br>Студент учится</td><td class="arrow">→</td><td><b>3</b><br>Платит проценты</td><td class="arrow">→</td><td><b>4</b><br>После льготы возвращает долг</td></tr></table>
+    </div>
+    <div class="box casebox">
+      <span class="examtag">КЕЙС ДЛЯ ЗАДАЧИ</span>
+      <h2>Ивану не хватило двух баллов до бюджета</h2>
+      <p class="caselead">В 2025 году Иван поступил на платное место и взял образовательный кредит. Первый семестр банк оплатил вузу. Иван хорошо учился и со второго семестра перешёл на бюджет.</p>
+      <div class="bodyrule"><b>Тело кредита</b> — это сумма, которую банк уже реально выдал на оплату обучения и которую ещё нужно вернуть.</div>
+      <table class="twopath"><tr>
+        <td class="yes"><b>Перешёл на бюджет</b>Новых платных семестров нет → банк больше не делает новые транши → <b>тело кредита перестаёт расти.</b></td>
+        <td class="no"><b>Не перешёл</b>Каждый новый семестр банк снова платит вузу → <b>тело кредита увеличивается после каждого транша.</b></td>
+      </tr></table>
+      <p style="margin-bottom:0"><b>Для ЕГЭ важна эта логика:</b> сначала понять, в какой момент меняется долг, а уже потом считать проценты и платежи.</p>
     </div>
     <div class="box">
       <h2>Пять правил, которые нужно понять</h2>
@@ -134,6 +213,10 @@ button.tabon{background:#e9efff;border-color:#b9c8fb;color:#2345a5}
 
   <div id="pageSettings" class="page">
     <div class="box hero"><h1>Условия</h1><p>Выбери стоимость и срок обучения. Остальные правила кредита уже заданы и менять их в задании не нужно.</p></div>
+    <div class="box">
+      <b>Сюжет задачи</b>
+      <div class="scenariocard"><b>Иван, 2025 год</b>До бюджета не хватило 2 баллов. Первый семестр оплачивается образовательным кредитом. После этого сравним два варианта: Иван перешёл на бюджет / Иван остался на платном.</div>
+    </div>
     <div class="box">
       <table class="fields"><tr><td><label>Стоимость обучения за год, ₽</label><input id="setAnnual" type="number" value="300000"></td><td><label>Срок обучения, лет</label><input id="setYears" type="number" value="4" min="2" max="6"></td></tr><tr><td><label>Ставка для студента</label><input class="lock" value="3% годовых" disabled></td><td><label>Оплата вузу</label><input class="lock" value="2 раза в год (по семестрам)" disabled></td></tr><tr><td><label>После выпуска</label><input class="lock" value="+ 9 месяцев льготы" disabled></td><td><label>Погашение после льготы</label><input class="lock" value="15 лет (180 месяцев)" disabled></td></tr></table>
       <button class="primary" style="width:100%;margin-top:8px" onclick="applySettings()">Применить условия</button>
@@ -193,6 +276,7 @@ function buildModel(){
 function v(key){
   var m=MODEL;
   if(key=='annual')return m.annual;if(key=='years')return m.years;if(key=='semesters')return 2;if(key=='semester')return m.semester;if(key=='total')return m.total;if(key=='rate')return m.rate;if(key=='monthsYear')return 12;if(key=='rm')return m.rm;
+  if(key=='budgetDebt')return m.semester;if(key=='noBudgetDebt')return m.total;
   if(key=='debt1')return m.semester;if(key=='int1')return m.semester*m.rm;if(key=='share40')return .4;if(key=='share60')return .6;if(key=='pay1')return m.semester*m.rm*.4;if(key=='defer60')return m.semester*m.rm*.6;
   if(key=='debt2')return m.annual;if(key=='int2')return m.annual*m.rm;if(key=='pay2')return m.annual*m.rm*.4;
   if(key=='debtY2')return m.semester*3;if(key=='intY2')return m.semester*3*m.rm;if(key=='payY2')return m.semester*3*m.rm*.6;
@@ -200,41 +284,43 @@ function v(key){
   return 0;
 }
 function labelVal(key){
-  if(key=='annual')return fmtMoney(v(key));if(key=='years')return v(key)+' года';if(key=='semesters')return '2';if(key=='semester'||key=='total'||key.indexOf('debt')==0||key.indexOf('int')==0||key.indexOf('pay')==0||key=='defer60'||key=='fullDebt'||key=='fullInt'||key=='deferred'||key=='postBase'||key=='postPay')return fmtMoney(v(key));
+  if(key=='annual')return fmtMoney(v(key));if(key=='years')return v(key)+' года';if(key=='semesters')return '2';if(key=='semester'||key=='total'||key=='budgetDebt'||key=='noBudgetDebt'||key.indexOf('debt')==0||key.indexOf('int')==0||key.indexOf('pay')==0||key=='defer60'||key=='fullDebt'||key=='fullInt'||key=='deferred'||key=='postBase'||key=='postPay')return fmtMoney(v(key));
   if(key=='rate'||key=='rm'||key.indexOf('share')==0)return fmtPct(v(key),key=='rm'?3:0);if(key.indexOf('Months')>0||key=='monthsYear'||key=='studyMonths'||key=='graceExtra'||key=='graceMonths'||key=='repayMonths')return v(key)+' мес.';if(key=='repayYears')return v(key)+' лет';return String(v(key));
 }
 function sourceLabel(key){
-  var L={annual:'Стоимость года',years:'Срок обучения',semesters:'Семестров в году',semester:'Цена семестра',total:'Вся стоимость обучения',rate:'Годовая ставка',monthsYear:'Месяцев в году',rm:'Месячная ставка',debt1:'Долг после 1-го транша',int1:'Текущие проценты',share40:'Доля оплаты в 1-й год',share60:'Отложенная доля в 1-й год',pay1:'Платёж студента',defer60:'Отложено',debt2:'Долг после 2-го транша',int2:'Проценты после 2-го транша',pay2:'Платёж после 2-го транша',debtY2:'Долг после 3-го транша',intY2:'Текущие проценты 2-го года',payY2:'Платёж 2-го года',share100:'Доля оплаты с 3-го года',fullDebt:'Основной долг после всех траншей',fullInt:'Проценты в месяц к концу учёбы',studyMonths:'Месяцев учёбы',graceExtra:'Дополнительная льгота',graceMonths:'Весь льготный период',deferred:'Отложенные проценты',postBase:'Сумма к погашению',repayYears:'Срок погашения',repayMonths:'Платежей после льготы',postPay:'Платёж после льготы'};return L[key]||key;
+  var L={annual:'Стоимость года',years:'Срок обучения',semesters:'Семестров в году',semester:'Цена семестра',total:'Вся стоимость обучения',rate:'Годовая ставка',monthsYear:'Месяцев в году',rm:'Месячная ставка',debt1:'Долг после 1-го транша',int1:'Текущие проценты',share40:'Доля оплаты в 1-й год',share60:'Отложенная доля в 1-й год',pay1:'Платёж студента',defer60:'Отложено',debt2:'Долг после 2-го транша',int2:'Проценты после 2-го транша',pay2:'Платёж после 2-го транша',debtY2:'Долг после 3-го транша',intY2:'Текущие проценты 2-го года',payY2:'Платёж 2-го года',share100:'Доля оплаты с 3-го года',fullDebt:'Основной долг после всех траншей',fullInt:'Проценты в месяц к концу учёбы',studyMonths:'Месяцев учёбы',graceExtra:'Дополнительная льгота',graceMonths:'Весь льготный период',deferred:'Отложенные проценты',postBase:'Сумма к погашению',repayYears:'Срок погашения',repayMonths:'Платежей после льготы',postPay:'Платёж после льготы',budgetDebt:'Тело кредита после перехода на бюджет',noBudgetDebt:'Тело кредита, если остался на платном'};return L[key]||key;
 }
 function slot(k,name){return {k:k,name:name}}
 function createSteps(){
   STEPS=[
     {title:'Сколько стоит один семестр?',text:'Банк будет переводить деньги университету частями. Сначала найдём размер одного транша.',formula:['Цена семестра = ',slot('annual','стоимость года'),' ÷ ',slot('semesters','2 семестра')],sources:['annual','semesters','years','rate'],result:'semester'},
     {title:'Сколько стоит всё обучение?',text:'Теперь найдём общую сумму, которую банк постепенно перечислит университету за все годы.',formula:['Вся учёба = ',slot('annual','стоимость года'),' × ',slot('years','годы')],sources:['annual','years','semester','rate'],result:'total'},
+    {title:'Кейс Ивана: что банк успел выдать?',text:'До перехода на бюджет банк оплатил только первый семестр. Поэтому тело кредита пока равно одному траншу.',formula:['Тело кредита = ',slot('semester','оплаченный 1-й семестр')],sources:['semester','annual','total','rate'],result:'debt1'},
+    {title:'Иван перешёл на бюджет со 2-го семестра',text:'Новых платных семестров больше нет. Значит, новых траншей тоже нет и тело кредита не увеличивается.',formula:['Тело после перехода = ',slot('debt1','уже выданный долг')],sources:['debt1','semester','total','annual'],result:'budgetDebt'},
+    {title:'А если Иван НЕ перешёл на бюджет?',text:'Тогда банк продолжал бы оплачивать каждый семестр. К концу обучения тело кредита выросло бы до полной стоимости учёбы.',formula:['Тело к концу учёбы = ',slot('total','вся стоимость обучения')],sources:['total','semester','debt1','annual'],result:'noBudgetDebt'},
     {title:'Какая ставка действует за месяц?',text:'Ставка для студента — 3% годовых. Для школьной модели делим её на 12 месяцев.',formula:['Месячная ставка = ',slot('rate','3%'),' ÷ ',slot('monthsYear','12 месяцев')],sources:['rate','monthsYear','semester','years'],result:'rm'},
-    {title:'Первый транш: какой теперь долг?',text:'В начале первого семестра банк оплачивает университету один семестр.',formula:['Основной долг = ',slot('semester','цена семестра')],sources:['semester','annual','total','rate'],result:'debt1'},
     {title:'Сколько процентов начислится за месяц?',text:'Проценты считаются только от уже использованных денег, а не от всей будущей стоимости обучения.',formula:['Проценты = ',slot('debt1','текущий долг'),' × ',slot('rm','месячная ставка')],sources:['debt1','rm','total','share40'],result:'int1'},
     {title:'Что студент платит в первый год?',text:'В первый год студент оплачивает только 40% текущих процентов.',formula:['Платёж = ',slot('int1','начисленные проценты'),' × ',slot('share40','40%')],sources:['int1','share40','share60','debt1'],result:'pay1'},
     {title:'Что происходит с остальными процентами?',text:'Оставшиеся 60% процентов первого года не исчезают — их оплата откладывается.',formula:['Отложено = ',slot('int1','начисленные проценты'),' × ',slot('share60','60%')],sources:['int1','share60','share40','pay1'],result:'defer60'},
-    {title:'Пришёл второй семестр',text:'Банк перечисляет университету ещё один транш. Основной долг становится больше.',formula:['Новый долг = ',slot('debt1','старый долг'),' + ',slot('semester','новый транш')],sources:['debt1','semester','total','int1'],result:'debt2'},
+    {title:'Ветка: Иван остался на платном',text:'Если Иван не перешёл на бюджет, во втором семестре банк перечисляет вузу ещё один транш. Тело кредита становится больше.',formula:['Новый долг = ',slot('debt1','старый долг'),' + ',slot('semester','новый транш')],sources:['debt1','semester','total','int1'],result:'debt2'},
     {title:'Почему платёж уже вырос?',text:'После второго транша проценты начисляются уже на большую сумму. В первый год по-прежнему платится 40%.',formula:['Платёж = ',slot('debt2','новый долг'),' × ',slot('rm','месячная ставка'),' × ',slot('share40','40%')],sources:['debt2','rm','share40','share60'],result:'pay2'},
     {title:'Что меняется во второй год?',text:'Во второй год студент платит уже 60% текущих процентов. Возьмём момент сразу после третьего транша.',formula:['Платёж 2-го года = ',slot('debtY2','долг после 3-го транша'),' × ',slot('rm','месячная ставка'),' × ',slot('share60','60%')],sources:['debtY2','rm','share60','share40'],result:'payY2'},
     {title:'А с третьего года?',text:'С третьего года и до конца льготного периода текущие проценты оплачиваются полностью.',formula:['Оплачиваемая доля = ',slot('share100','100% текущих процентов')],sources:['share100','share60','share40','rate'],result:'share100'},
-    {title:'Какой основной долг получится к выпуску?',text:'За время учёбы банк оплатит все семестры. Основной долг равен полной стоимости обучения.',formula:['Основной долг = ',slot('total','вся стоимость обучения')],sources:['total','semester','annual','deferred'],result:'fullDebt'},
+    {title:'Если Иван остался на платном: долг к выпуску',text:'В этой ветке банк оплатил все семестры. Поэтому тело кредита к выпуску равно полной стоимости обучения.',formula:['Основной долг = ',slot('total','вся стоимость обучения')],sources:['total','semester','annual','deferred'],result:'fullDebt'},
     {title:'Сколько текущих процентов в месяц к концу учёбы?',text:'Когда все транши уже выданы, проценты считаются от полной использованной суммы.',formula:['Проценты = ',slot('fullDebt','основной долг'),' × ',slot('rm','месячная ставка')],sources:['fullDebt','rm','postBase','rate'],result:'fullInt'},
     {title:'Сколько длится льготный период?',text:'Он включает весь срок обучения и ещё 9 месяцев после выпуска.',formula:['Льготный период = ',slot('studyMonths','месяцы учёбы'),' + ',slot('graceExtra','9 месяцев')],sources:['studyMonths','graceExtra','repayMonths','years'],result:'graceMonths'},
     {title:'Куда делись проценты, которые не платили первые два года?',text:'Тренажёр уже просуммировал отложенные части процентов по каждому из первых 24 месяцев.',formula:['Отложенные проценты = ',slot('deferred','сумма за 24 месяца')],sources:['deferred','fullInt','total','payY2'],result:'deferred'},
     {title:'С какой суммы начинается погашение после льготы?',text:'В учебной модели к основному долгу добавляем отложенные проценты первых двух лет.',formula:['К погашению = ',slot('fullDebt','основной долг'),' + ',slot('deferred','отложенные проценты')],sources:['fullDebt','deferred','total','fullInt'],result:'postBase'},
     {title:'Сколько месяцев можно возвращать долг?',text:'Максимальный срок после окончания льготного периода — 15 лет.',formula:['Платежей = ',slot('repayYears','15 лет'),' × ',slot('monthsYear','12 месяцев')],sources:['repayYears','monthsYear','graceMonths','years'],result:'repayMonths'},
     {title:'Какой будет равный платёж после льготы?',text:'Длинную аннуитетную формулу вводить не нужно. Выберите три входные величины — тренажёр рассчитает платёж сам.',formula:['Нужны: ',slot('postBase','сумма к погашению'),', ',slot('rm','месячная ставка'),', ',slot('repayMonths','число платежей')],sources:['postBase','rm','repayMonths','fullDebt'],result:'postPay',system:true},
-    {action:true,title:'Построим весь график',text:'Тренажёр рассчитает каждый месяц: транши университету, проценты во время учёбы и 180 платежей после льготного периода.',button:'Построить график и посмотреть вывод'}
+    {action:true,title:'Теперь можно менять условия',text:'Основную логику мы разобрали. Перейдём в сценарии: там можно менять условия без повторного прохождения задания.',button:'Открыть сценарии'}
   ];
 }
 function uniqueSlots(step){var a=[],i,x;for(i=0;i<step.formula.length;i++){x=step.formula[i];if(typeof x=='object'&&a.indexOf(x.k)<0)a.push(x.k)}return a}
 function showPage(name){
-  var names=['Lesson','Chart','Theory','Settings'],i,id,n;
+  var names=['Lesson','Scenario','Chart','Theory','Settings'],i,id,n;
   for(i=0;i<names.length;i++){n=names[i];id='page'+n;byId(id).className='page'+((name.toLowerCase()==n.toLowerCase())?' show':'');byId('nav'+n).className=(name.toLowerCase()==n.toLowerCase())?'tabon':''}
-  if(name=='lesson')renderLesson();if(name=='chart')renderCharts();if(name=='settings')renderSettingsPreview();window.scrollTo(0,0)
+  if(name=='lesson')renderLesson();if(name=='scenario')renderScenario();if(name=='chart')renderCharts();if(name=='settings')renderSettingsPreview();window.scrollTo(0,0)
 }
 function renderLesson(){
   var step=STEPS[stepIndex],pct=Math.round((stepIndex+1)*100/STEPS.length);byId('stepNo').innerHTML=stepIndex+1;byId('stepTotal').innerHTML=STEPS.length;byId('progress').style.width=pct+'%';byId('lessonTitle').innerHTML=escapeHtml(step.title);byId('lessonText').innerHTML=escapeHtml(step.text);
@@ -245,6 +331,8 @@ function renderLesson(){
 function stepWhy(step){
   var map={
     semester:'Цена года делится на два, потому что банк оплачивает два семестра отдельно.',
+    budgetDebt:'После перехода на бюджет новых платных услуг нет, поэтому новых траншей не появляется и тело кредита не растёт.',
+    noBudgetDebt:'Если обучение остаётся платным, каждый новый семестр добавляет новый транш. Поэтому тело кредита постепенно доходит до полной стоимости обучения.',
     total:'Стоимость одного года повторяется столько раз, сколько лет длится обучение.',
     rm:'Годовая ставка относится к целому году. Для одного месяца берём её двенадцатую часть.',
     debt1:'В долг попадают только деньги, которые банк уже перечислил вузу.',
@@ -279,11 +367,70 @@ function pickSource(key,btn){
 function updateCalcResult(step){var b=byId('nextStepBtn'),r=byId('stepResult');if(slotPos>=slotOrder.length){r.innerHTML=escapeHtml(labelVal(step.result));b.disabled=false}else{r.innerHTML='—';b.disabled=true}}
 function commitStep(){lessonDone[stepIndex]=1;if(stepIndex<STEPS.length-1){stepIndex++;renderLesson();window.scrollTo(0,0)}else{showPage('chart')}}
 function renderAction(step){byId('lessonBody').innerHTML='<div class="actionbox"><h3>'+escapeHtml(step.title)+'</h3><p>'+escapeHtml(step.text)+'</p><button class="good" onclick="finishLesson()">'+escapeHtml(step.button)+'</button></div>'}
-function finishLesson(){lessonDone[stepIndex]=1;showPage('chart')}
+function finishLesson(){lessonDone[stepIndex]=1;showPage('scenario')}
 function renderLessonSummary(){var m=MODEL;byId('lessonSummary').innerHTML='<b>Наш пример:</b><table class="summaryTable"><tr><td>Стоимость года</td><td class="num">'+fmtMoney(m.annual)+'</td></tr><tr><td>Срок</td><td class="num">'+m.years+' года</td></tr><tr><td>Ставка</td><td class="num">3%</td></tr><tr><td>Один семестр</td><td class="num">'+fmtMoney(m.semester)+'</td></tr><tr><td>Всего обучение</td><td class="num">'+fmtMoney(m.total)+'</td></tr></table>'}
-function renderSettingsPreview(){var a=parseFloat(byId('setAnnual').value)||0,y=parseInt(byId('setYears').value,10)||0,total=a*y,sem=a/2;byId('settingsPreview').innerHTML='<b>Предварительно:</b><table class="summaryTable"><tr><td>Один семестр</td><td class="num">'+fmtMoney(sem)+'</td></tr><tr><td>Всего обучение</td><td class="num">'+fmtMoney(total)+'</td></tr><tr><td>Траншей банком вузу</td><td class="num">'+(y*2)+'</td></tr><tr><td>Льготный период</td><td class="num">'+(y*12+9)+' мес.</td></tr></table>'}
+function renderSettingsPreview(){var a=parseFloat(byId('setAnnual').value)||0,y=parseInt(byId('setYears').value,10)||0,total=a*y,sem=a/2;byId('settingsPreview').innerHTML='<b>Предварительно:</b><table class="summaryTable"><tr><td>Один семестр</td><td class="num">'+fmtMoney(sem)+'</td></tr><tr><td>Тело, если Иван перешёл на бюджет</td><td class="num">'+fmtMoney(sem)+'</td></tr><tr><td>Тело, если Иван остался на платном до выпуска</td><td class="num">'+fmtMoney(total)+'</td></tr><tr><td>Максимум траншей банком вузу</td><td class="num">'+(y*2)+'</td></tr><tr><td>Льготный период</td><td class="num">'+(y*12+9)+' мес.</td></tr></table>'}
 function applySettings(){var a=parseFloat(byId('setAnnual').value),y=parseInt(byId('setYears').value,10);if(!(a>0)||!(y>=2&&y<=6)){alert('Укажите стоимость больше 0 и срок от 2 до 6 лет.');return}CFG.annual=a;CFG.years=y;buildModel();createSteps();stepIndex=0;lessonDone={};renderSettingsPreview();alert('Условия применены. Теперь переходите во вкладку «Задание».')}
-function renderTimeline(){var y=MODEL.years;byId('timelineBox').innerHTML='<b>Три режима платежей</b><table class="timeline"><tr><td class="t1">1-й год<br>платим 40% процентов</td><td class="t2">2-й год<br>платим 60%</td><td class="t3">3-й год → выпуск<br>платим 100%</td><td class="t4">+ 9 месяцев<br>ещё только проценты</td><td class="t5">15 лет<br>возврат долга</td></tr></table>'}
+
+var SCENARIO_TIMER=0;
+function scenarioModel(annual,years,rate,repayYears,budgetFrom){
+  var semesters=years*2,funded=(budgetFrom>0?budgetFrom-1:semesters),semCost=annual/2,rm=rate/12,studyMonths=years*12,graceMonths=studyMonths+9,repayMonths=repayYears*12;
+  var schedule=[],principal=0,deferred=0,totalPaidGrace=0,totalPost=0,m,tranche,interest,factor,paid,deferPart,stage,postBase,postPay,balance,principalPaid,payment;
+  if(funded<0)funded=0;if(funded>semesters)funded=semesters;
+  for(m=1;m<=graceMonths;m++){
+    tranche=0;
+    if(m<=studyMonths&&((m-1)%6==0)&&(((m-1)/6)<funded)){tranche=semCost;principal+=tranche}
+    interest=principal*rm;factor=m<=12?.4:(m<=24?.6:1);paid=interest*factor;deferPart=interest-paid;deferred+=deferPart;totalPaidGrace+=paid;
+    if(m<=12)stage='1-й год';else if(m<=24)stage='2-й год';else if(m<=studyMonths)stage='Учёба';else stage='После выпуска';
+    schedule.push({month:m,stage:stage,tranche:money(tranche),principal:money(principal),interest:money(interest),paid:money(paid),deferred:money(deferPart),principalPaid:0,balance:money(principal)});
+  }
+  postBase=principal+deferred;postPay=postBase>0?annuity(postBase,rm,repayMonths):0;balance=postBase;
+  for(m=1;m<=repayMonths;m++){
+    interest=balance*rm;payment=postPay;principalPaid=payment-interest;
+    if(m==repayMonths||principalPaid>balance){principalPaid=balance;payment=interest+principalPaid}
+    balance-=principalPaid;if(balance<.005)balance=0;totalPost+=payment;
+    schedule.push({month:graceMonths+m,stage:'Погашение',tranche:0,principal:money(postBase),interest:money(interest),paid:money(payment),deferred:0,principalPaid:money(principalPaid),balance:money(balance)});
+  }
+  return {annual:annual,years:years,rate:rate,rm:rm,semester:semCost,semesters:semesters,fundedSemesters:funded,budgetFrom:budgetFrom,studyMonths:studyMonths,graceMonths:graceMonths,repayMonths:repayMonths,body:money(principal),deferred:money(deferred),postBase:money(postBase),postPay:money(postPay),totalPaidGrace:money(totalPaidGrace),totalPost:money(totalPost),grandTotal:money(totalPaidGrace+totalPost),schedule:schedule};
+}
+function scenarioLabel(model){if(model.budgetFrom>0)return 'Бюджет с '+model.budgetFrom+'-го семестра';return 'Остался на платном'}
+function fillScenarioBudgetOptions(){
+  var y=parseInt(byId('scYears').value,10)||CFG.years,sel=byId('scBudgetFrom'),old=parseInt(sel.value,10),max=y*2,i,h='<option value="0">Не перешёл — платное до конца</option>';
+  for(i=2;i<=max;i++)h+='<option value="'+i+'">Перешёл на бюджет с '+i+'-го семестра</option>';
+  sel.innerHTML=h;if(old>=2&&old<=max)sel.value=old;else sel.value=2;
+}
+function scenarioYearsChanged(){fillScenarioBudgetOptions();scenarioInputChanged()}
+function scenarioInputChanged(){if(SCENARIO_TIMER)clearTimeout(SCENARIO_TIMER);SCENARIO_TIMER=setTimeout(function(){renderScenario()},180)}
+function loadScenarioFromSettings(){byId('scAnnual').value=CFG.annual;byId('scYears').value=CFG.years;byId('scRate').value=(CFG.rate*100);byId('scRepayYears').value=CFG.repayYears;fillScenarioBudgetOptions();byId('scBudgetFrom').value=2;renderScenario()}
+function resetScenarioIvan(){byId('scAnnual').value=300000;byId('scYears').value=4;byId('scRate').value=3;byId('scRepayYears').value=15;fillScenarioBudgetOptions();byId('scBudgetFrom').value=2;renderScenario()}
+function scenarioValues(){
+  var annual=parseFloat(byId('scAnnual').value),years=parseInt(byId('scYears').value,10),ratePct=parseFloat(byId('scRate').value),repayYears=parseInt(byId('scRepayYears').value,10),budgetFrom=parseInt(byId('scBudgetFrom').value,10);
+  if(!(annual>0))annual=CFG.annual;if(!(years>=2&&years<=6))years=CFG.years;if(!(ratePct>=0&&ratePct<=30))ratePct=CFG.rate*100;if(!(repayYears>=1&&repayYears<=20))repayYears=CFG.repayYears;
+  return {annual:annual,years:years,rate:ratePct/100,repayYears:repayYears,budgetFrom:budgetFrom||0};
+}
+function renderScenario(){
+  if(!byId('scBudgetFrom').options.length)fillScenarioBudgetOptions();
+  var c=scenarioValues(),compareFrom=(c.budgetFrom>0?0:2),a=scenarioModel(c.annual,c.years,c.rate,c.repayYears,c.budgetFrom),b=scenarioModel(c.annual,c.years,c.rate,c.repayYears,compareFrom),saving=b.grandTotal-a.grandTotal,bodySaving=b.body-a.body;
+  var h='<b>Сравнительная таблица</b><table class="compareTable"><tr><th>Показатель</th><th>'+escapeHtml(scenarioLabel(a))+'</th><th>'+escapeHtml(scenarioLabel(b))+'</th></tr>'+
+    '<tr><td>Семестров оплатил банк</td><td>'+a.fundedSemesters+' из '+a.semesters+'</td><td>'+b.fundedSemesters+' из '+b.semesters+'</td></tr>'+
+    '<tr><td>Тело кредита</td><td class="emph">'+fmtMoney(a.body)+'</td><td>'+fmtMoney(b.body)+'</td></tr>'+
+    '<tr><td>Отложенные проценты</td><td>'+fmtMoney(a.deferred)+'</td><td>'+fmtMoney(b.deferred)+'</td></tr>'+
+    '<tr><td>К погашению после льготы</td><td>'+fmtMoney(a.postBase)+'</td><td>'+fmtMoney(b.postBase)+'</td></tr>'+
+    '<tr><td>Платёж после льготы</td><td>'+fmtMoney(a.postPay)+'</td><td>'+fmtMoney(b.postPay)+'</td></tr>'+
+    '<tr><td>Всего заплатит студент</td><td>'+fmtMoney(a.grandTotal)+'</td><td>'+fmtMoney(b.grandTotal)+'</td></tr></table>';
+  if(c.budgetFrom>0)h+='<div class="scenarioResult"><b>Что изменилось:</b> переход на бюджет уменьшил тело кредита на <b>'+fmtMoney(bodySaving)+'</b>, а общую сумму выплат в учебной модели — примерно на <b>'+fmtMoney(saving)+'</b>. Новые транши прекращаются с '+c.budgetFrom+'-го семестра.</div>';
+  else h+='<div class="scenarioResult"><b>Что изменилось:</b> если Иван не перешёл на бюджет, банк продолжает делать новые транши. По сравнению с переходом со 2-го семестра тело кредита больше на <b>'+fmtMoney(a.body-b.body)+'</b>, а общая сумма выплат в учебной модели — примерно на <b>'+fmtMoney(a.grandTotal-b.grandTotal)+'</b>.</div>';
+  byId('scenarioCompare').innerHTML=h;drawScenarioPair('scDebtChart',a,b,'body');drawScenarioPair('scPayChart',a,b,'pay');
+}
+function drawScenarioPair(holderId,a,b,kind){
+  var n=Math.max(a.schedule.length,b.schedule.length),w=Math.max(900,n*7+70),h=245,L=55,T=12,B=28,ph=h-T-B,max=0,i,va,vb,x,bw=3,ha,hb,y,tick,html='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'">';
+  for(i=0;i<n;i++){va=i<a.schedule.length?(kind=='body'?a.schedule[i].balance:a.schedule[i].paid):0;vb=i<b.schedule.length?(kind=='body'?b.schedule[i].balance:b.schedule[i].paid):0;if(va>max)max=va;if(vb>max)max=vb}if(max<=0)max=1;max*=1.06;
+  for(i=0;i<=4;i++){tick=max*i/4;y=T+ph-(tick/max)*ph;html+='<line x1="'+L+'" y1="'+y+'" x2="'+(w-10)+'" y2="'+y+'" stroke="#e6ebf2" stroke-width="1"/><text x="'+(L-5)+'" y="'+(y+3)+'" font-size="9" text-anchor="end" fill="#6d7789">'+compact(tick)+'</text>'}
+  for(i=0;i<n;i++){va=i<a.schedule.length?(kind=='body'?a.schedule[i].balance:a.schedule[i].paid):0;vb=i<b.schedule.length?(kind=='body'?b.schedule[i].balance:b.schedule[i].paid):0;x=L+i*7+1;ha=(va/max)*ph;hb=(vb/max)*ph;html+='<rect x="'+x+'" y="'+(T+ph-ha)+'" width="'+bw+'" height="'+ha+'" fill="#3157d5"/><rect x="'+(x+3)+'" y="'+(T+ph-hb)+'" width="'+bw+'" height="'+hb+'" fill="#1b9b67"/>';if((i+1)==1||(i+1)==a.studyMonths||(i+1)==a.graceMonths||(i+1)==n)html+='<text x="'+(x+2)+'" y="'+(h-8)+'" font-size="8" text-anchor="middle" fill="#6d7789">'+(i+1)+'</text>'}
+  html+='</svg>';var holder=byId(holderId);holder.style.width=w+'px';holder.innerHTML=html;
+}
+
+function renderTimeline(){var y=MODEL.years;byId('timelineBox').innerHTML='<b>Сначала сравним тело кредита</b><table class="twopath" style="margin:7px 0 10px"><tr><td class="yes"><b>Иван перешёл на бюджет</b>Новых траншей нет → тело остаётся '+fmtMoney(MODEL.semester)+'.</td><td class="no"><b>Иван не перешёл</b>Каждый семестр новый транш → тело растёт до '+fmtMoney(MODEL.total)+'.</td></tr></table><b>Дальше график показывает ветку «не перешёл»</b><table class="timeline"><tr><td class="t1">1-й год<br>платим 40% процентов</td><td class="t2">2-й год<br>платим 60%</td><td class="t3">3-й год → выпуск<br>платим 100%</td><td class="t4">+ 9 месяцев<br>ещё только проценты</td><td class="t5">15 лет<br>возврат долга</td></tr></table>'}
 function renderStats(){var m=MODEL;byId('statsBox').innerHTML='<table class="miniGrid"><tr><td><div class="stat"><span>Основной долг к выпуску</span><b>'+fmtMoney(m.total)+'</b></div></td><td><div class="stat"><span>Отложенные проценты первых 2 лет</span><b>'+fmtMoney(m.deferred)+'</b></div></td></tr><tr><td><div class="stat"><span>Платёж после льготы</span><b>'+fmtMoney(m.postPay)+'</b></div></td><td><div class="stat"><span>Льготный период</span><b>'+m.graceMonths+' мес.</b></div></td></tr></table>'}
 function drawBarChart(holderId,kind){
   var s=MODEL.schedule,n=s.length,w=Math.max(900,n*5+70),h=245,L=55,T=12,B=28,ph=h-T-B,max=0,i,item,val,html='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'">',x,bw=3,hh,y,tick;
@@ -297,7 +444,7 @@ function moveChart(id,dx){var el=byId(id);el.scrollLeft=el.scrollLeft+dx}
 function renderCharts(){renderTimeline();renderStats();drawBarChart('debtChart','debt');drawBarChart('payChart','pay')}
 function toggleSchedule(){var h=byId('scheduleHolder'),b=byId('toggleTableBtn');if(h.style.display=='none'){renderSchedule();h.style.display='block';b.innerHTML='Скрыть полный график'}else{h.style.display='none';b.innerHTML='Показать полный помесячный график'}}
 function renderSchedule(){var s=MODEL.schedule,i,x,h='<div class="fullTableWrap"><table class="fullTable"><tr><th>Месяц</th><th>Этап</th><th>Банк → вуз</th><th>Долг</th><th>Начислено %</th><th>Платёж</th><th>Отложено</th><th>Погашено долга</th><th>Остаток</th></tr>';for(i=0;i<s.length;i++){x=s[i];h+='<tr><td>'+(i+1)+'</td><td>'+escapeHtml(x.stage)+'</td><td class="num">'+fmtMoney(x.tranche)+'</td><td class="num">'+fmtMoney(x.principal)+'</td><td class="num">'+fmtMoney(x.interest)+'</td><td class="num">'+fmtMoney(x.paid)+'</td><td class="num">'+fmtMoney(x.deferred)+'</td><td class="num">'+fmtMoney(x.principalPaid)+'</td><td class="num">'+fmtMoney(x.balance)+'</td></tr>'}h+='</table></div><div class="scrollBtns"><button onclick="window.scrollTo(0,0)">↑ Наверх</button></div>';byId('scheduleHolder').innerHTML=h}
-function init(){buildModel();createSteps();byId('setAnnual').value=CFG.annual;byId('setYears').value=CFG.years;renderLesson();renderSettingsPreview();showPage('theory')}
+function init(){buildModel();createSteps();byId('setAnnual').value=CFG.annual;byId('setYears').value=CFG.years;byId('scAnnual').value=CFG.annual;byId('scYears').value=CFG.years;byId('scRate').value=CFG.rate*100;byId('scRepayYears').value=CFG.repayYears;fillScenarioBudgetOptions();byId('scBudgetFrom').value=2;renderLesson();renderSettingsPreview();renderScenario();showPage('theory')}
 init();
 </script>
 </body>
