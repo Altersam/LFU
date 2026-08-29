@@ -1,1431 +1,2620 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ЛФУ · online · исправленная версия</title><style>
-:root{--bg:#eef3f5;--card:#fff;--ink:#17233b;--muted:#66717c;--line:#dfe6e9;--teal:#0b7285}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Arial,sans-serif}
-header{padding:24px 16px;background:linear-gradient(135deg,#fff,#eefbfc);border-bottom:1px solid var(--line)}
-.wrap{max-width:1700px;margin:auto}h1{margin:0;font-size:clamp(1.7rem,4vw,2.6rem)}h2{margin:0 0 8px}
-main{padding:14px 9px 40px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px;margin:10px 0}
-.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px}.metric{background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:10px;padding:12px}.metric strong{display:block;font-size:1.6rem}.metric span{font-size:.67rem;color:var(--muted);font-weight:800;text-transform:uppercase}
-.note{background:#f0fbfc;border-left:4px solid var(--teal);padding:11px;border-radius:9px}.warn{background:#fff9db;border:1px solid #ffe066;padding:11px;border-radius:9px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.card{border:1px solid var(--line);border-radius:9px;padding:11px;background:#fafcfd}.card strong{display:block;font-size:1.3rem}
-.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:9px;margin-top:8px}table{width:100%;border-collapse:collapse;font-size:.76rem}th,td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{background:#f2f7f8;font-size:.65rem;text-transform:uppercase}tr:last-child td{border-bottom:0}
-small{display:block;color:var(--muted);font-size:.64rem}.time{font-weight:800;white-space:nowrap}.url{color:#999;min-width:200px}
-details{border:1px solid var(--line);border-radius:9px;margin:6px 0;overflow:hidden;background:#fff}summary{padding:10px 12px;background:#f8fbfc;font-weight:800;cursor:pointer}summary span{float:right;color:var(--muted);font-size:.67rem}
-.chat{white-space:pre-line;background:#f8fafb;border:1px solid var(--line);border-radius:9px;padding:10px;font-family:monospace}
-.nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.nav a{background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 9px;text-decoration:none;color:var(--teal);font-weight:800;font-size:.72rem}
-@media(max-width:800px){.grid3{grid-template-columns:1fr}th,td{font-size:.69rem;padding:7px}}
-</style></head><body>
-<header><div class="wrap"><div style="color:#0b7285;font-weight:800;font-size:.72rem">ЛФУ · МТС Линк · 2026/27</div>
-<h1>Онлайн-уроки: диспетчерский план</h1>
-<p><b>Исправлено 28.08.2026:</b> английский Селивановой/Мезенцевой и усиленный промтинг исключены из online-блока 10Т. Online-четверг 10Т — 7 занятий и заканчивается около 15:20.</p>
-<div class="nav"><a href="#summary">Сводка</a><a href="#meetings">Встречи</a><a href="#ready">Готовность</a><a href="#edu">EDU</a><a href="#teachers">Учителя</a><a href="#classes">Классы</a><a href="#subjects">Предметы</a><a href="#all">Все online</a></div>
-</div></header><main><div class="wrap">
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ЛФУ · online-расписание</title>
+<style>
+:root {
+  --bg:#eef3f5; --card:#fff; --ink:#17233b; --muted:#68737d; --line:#dfe6e9;
+  --teal:#0b7285; --teal2:#1098ad; --soft:#f3fbfc; --current:#d3f9d8; --current-border:#2f9e44;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI",Arial,sans-serif}
+header{background:linear-gradient(135deg,#fff 0%,#eefbfc 100%);border-bottom:1px solid var(--line);padding:24px 16px 19px}
+.wrap{max-width:1650px;margin:auto}
+.eyebrow{font-size:.7rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+h1{margin:3px 0 8px;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.05;letter-spacing:-.035em}
+h2{margin:1px 0 0;font-size:1.35rem}
+p{color:#52606b}
+.nav{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.nav a{text-decoration:none;background:#fff;border:1px solid var(--line);color:var(--teal);font-weight:800;border-radius:99px;padding:7px 11px;font-size:.72rem}
+main{padding:15px 9px 42px}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-bottom:12px}
+.metric{background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:11px;padding:13px 14px}
+.metric strong{display:block;font-size:1.7rem;line-height:1.05}
+.metric span{display:block;color:var(--muted);font-size:.66rem;text-transform:uppercase;font-weight:850;margin-top:4px}
+.current-status{position:sticky;top:0;z-index:10;background:rgba(238,243,245,.95);backdrop-filter:blur(8px);padding:8px 0;margin-bottom:7px}
+.current-pill{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;box-shadow:0 1px 4px #00000010}
+.current-pill b{color:var(--teal)}
+.current-dot{width:9px;height:9px;border-radius:50%;background:#adb5bd}
+.current-pill.live .current-dot{background:var(--current-border);box-shadow:0 0 0 4px #d3f9d8}
+.day-section{background:#fff;border:1px solid var(--line);border-radius:13px;margin:12px 0;padding:15px;box-shadow:0 1px 3px #0000000d}
+.day-section.today{border-color:#74c0fc;box-shadow:0 0 0 3px #e7f5ff}
+.day-header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px}
+.day-kpis{display:flex;gap:7px;flex-wrap:wrap}
+.day-kpis span{background:#f8fafb;border:1px solid var(--line);border-radius:99px;padding:5px 9px;font-size:.68rem;color:var(--muted)}
+.day-kpis b{color:var(--ink)}
+.slots{border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.slot-row{display:grid;grid-template-columns:142px 1fr;border-bottom:1px solid var(--line);background:#fff;transition:.15s}
+.slot-row:last-child{border-bottom:0}
+.slot-row.current{background:var(--current);box-shadow:inset 5px 0 0 var(--current-border)}
+.slot-time{padding:13px 12px;font-size:.88rem;font-weight:900;display:flex;align-items:center;gap:4px;position:relative;white-space:nowrap}
+.slot-time i{font-style:normal;color:#9aa3aa}
+.now-badge{display:none;margin-left:7px;background:var(--current-border);color:#fff;border-radius:99px;padding:3px 7px;font-size:.58rem;letter-spacing:.04em}
+.slot-row.current .now-badge{display:inline-block}
+.slot-lessons{display:flex;flex-wrap:wrap;gap:7px;padding:8px 10px;border-left:1px solid var(--line)}
+.lesson-card{min-width:210px;flex:1 1 225px;max-width:360px;background:#f8fbfc;border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.slot-row.current .lesson-card{background:#fff;border-color:#b2f2bb}
+.lesson-card .class{font-weight:900;font-size:.78rem}
+.lesson-card .subject{font-weight:750;color:var(--teal);font-size:.74rem;margin-top:2px}
+.lesson-card .teacher{font-size:.65rem;color:var(--muted);margin-top:3px}
+.section{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px;margin:13px 0}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:9px}
+.section-title p{margin:0;font-size:.72rem}
+details{border:1px solid var(--line);border-radius:9px;margin:7px 0;overflow:hidden;background:#fff}
+summary{padding:10px 12px;background:#f8fbfc;cursor:pointer;display:flex;justify-content:space-between;gap:12px;font-weight:850}
+summary small{color:var(--muted);font-size:.66rem;font-weight:700}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:.74rem}
+th,td{padding:8px 9px;border-top:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:.63rem;color:#59656f;text-transform:uppercase;background:#f7fafb}
+.time{font-weight:850;white-space:nowrap}
+.footer{font-size:.68rem;color:var(--muted);margin-top:14px}
+@media(max-width:750px){
+  .day-header{align-items:flex-start;flex-direction:column}
+  .slot-row{grid-template-columns:92px 1fr}
+  .slot-time{font-size:.73rem;padding:10px 8px;align-items:flex-start;flex-direction:column;gap:0}
+  .slot-time i{display:none}
+  .now-badge{margin:5px 0 0}
+  .slot-lessons{padding:6px}
+  .lesson-card{min-width:180px;max-width:none}
+  .metrics{grid-template-columns:1fr 1fr}
+}
+@media print{
+  body{background:#fff} .current-status,.nav{display:none}
+  .day-section,.section{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+  <div class="eyebrow">Лицей Финансового университета · ONLINE 2026/27</div>
+  <h1>Оперативное расписание online-занятий</h1>
+  <p>Только необходимое: общая сводка, распределение по времени и дням, расписание по преподавателям и классам.</p>
+  <nav class="nav">
+    <a href="#days">По дням</a>
+    <a href="#teachers">По учителям</a>
+    <a href="#classes">По классам</a>
+  </nav>
+</div>
+</header>
 
-<section class="metrics" id="summary">
-<div class="metric"><strong>65</strong><span>online-карточек</span></div>
-<div class="metric"><strong>27</strong><span>online-преподавателей</span></div>
-<div class="metric"><strong>28</strong><span>классов / траекторий</span></div>
-<div class="metric"><strong>11</strong><span>online-предметов</span></div>
-<div class="metric"><strong>65</strong><span>постоянных встреч</span></div>
-<div class="metric"><strong>21</strong><span>курсов EDU.FA.RU</span></div>
-<div class="metric"><strong>6</strong><span>пик одновременно</span></div>
+<main><div class="wrap">
+
+<section class="metrics">
+  <article class="metric"><strong>65</strong><span>online-занятий в сетке</span></article>
+  <article class="metric"><strong>27</strong><span>online-преподавателей</span></article>
+  <article class="metric"><strong>28</strong><span>классов / траекторий</span></article>
+  <article class="metric"><strong>11</strong><span>предметов online</span></article>
+  <article class="metric"><strong>22</strong><span>занятий во вторник</span></article>
+  <article class="metric"><strong>27</strong><span>занятий в среду</span></article>
+  <article class="metric"><strong>16</strong><span>занятий в четверг</span></article>
 </section>
 
-<section class="panel"><h2>Что исправлено</h2>
-<p class="warn"><b>10Т:</b> четверг — 7 online-занятий примерно до 15:20. Английский Селивановой/Мезенцевой проходит очно (кабинеты 22/31), а усиленный промтинг находится вне четвергового online-блока. Поэтому Селиванова, Мезенцева и преподаватель промтинга не входят в online-команду на основании этих занятий.</p>
-<div class="grid3">
-<div class="card"><b>Вт · 08.09.2026</b><strong>22</strong>online-карточек · 15 преподавателей<br><small>последняя online-запись: 15:20</small></div><div class="card"><b>Ср · 09.09.2026</b><strong>27</strong>online-карточек · 16 преподавателей<br><small>последняя online-запись: 14:05</small></div><div class="card"><b>Чт · 10.09.2026</b><strong>16</strong>online-карточек · 12 преподавателей<br><small>последняя online-запись: 15:20</small></div>
-</div></section>
+<div class="current-status">
+  <div class="current-pill" id="currentPill">
+    <span class="current-dot"></span>
+    <span id="currentText"><b>Сейчас:</b> определяю текущий слот…</span>
+  </div>
+</div>
 
-<section class="panel" id="meetings"><h2>Постоянные встречи МТС Линк</h2>
-<p class="note">1 постоянная встреча = учебная аудитория + предмет. Разные классы одного учителя не смешиваем.</p>
-<div class="tablewrap"><table><thead><tr><th>№</th><th>Аудитория + предмет</th><th>Учитель</th><th>Когда</th><th>Формат</th><th>Участники</th><th>Ссылка</th><th>Создана</th><th>ЭлЖур</th><th>Тест</th></tr></thead><tbody><tr><td>1</td><td><b>9А</b><small>Биология</small></td>
-<td>Лазарева Татьяна Геннадьевна</td>
-<td>Чт 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>2</td><td><b>9А</b><small>География</small></td>
-<td>Ермолаев Фёдор Сергеевич</td>
-<td>Чт 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>3</td><td><b>9А</b><small>История</small></td>
-<td>Хозиев Сергей Заурбекович</td>
-<td>Чт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>4</td><td><b>9А</b><small>Литература</small></td>
-<td>Володина Юлия Сергеевна</td>
-<td>Чт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>5</td><td><b>9А + 9Б</b><small>Основы безопасности и защиты Родины</small></td>
-<td>Лазарева Татьяна Геннадьевна</td>
-<td>Чт 10:35–11:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>6</td><td><b>9Б</b><small>География</small></td>
-<td>Ермолаев Фёдор Сергеевич</td>
-<td>Чт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>7</td><td><b>9Б</b><small>История</small></td>
-<td>Хозиев Сергей Заурбекович</td>
-<td>Чт 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>8</td><td><b>9Б</b><small>Литература</small></td>
-<td>Павлов Дмитрий Игоревич</td>
-<td>Чт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>9</td><td><b>10А</b><small>Литература</small></td>
-<td>Капустина Галина Леонидовна</td>
-<td>Вт 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>10</td><td><b>10А</b><small>Математика</small></td>
-<td>Крылова Екатерина Юрьевна</td>
-<td>Вт 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>11</td><td><b>10А + 10Б</b><small>Информатика</small></td>
-<td>Коптяева Мария Александровна</td>
-<td>Вт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>12</td><td><b>10А + 10Б</b><small>История</small></td>
-<td>Козырев Борис Александрович</td>
-<td>Вт 14:35–15:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>13</td><td><b>10А + 10Б + 10В + 10Г + 10Д гумы</b><small>Основы безопасности и защиты Родины</small></td>
-<td>Хлопникова Наталья Юрьевна</td>
-<td>Вт 10:35–11:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>14</td><td><b>10А · гр. 1</b><small>Обществознание</small></td>
-<td>Коновалов Максим Анатольевич</td>
-<td>Вт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>15</td><td><b>10А · гр. 2</b><small>Обществознание</small></td>
-<td>Смирнов Алексей Сергеевич</td>
-<td>Вт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>16</td><td><b>10Б</b><small>Литература</small></td>
-<td>Федоров Александр Александрович</td>
-<td>Вт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>17</td><td><b>10Б</b><small>Математика</small></td>
-<td>Сахаров Роман Анатольевич</td>
-<td>Вт 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>18</td><td><b>10Б</b><small>Обществознание</small></td>
-<td>Смирнов Алексей Сергеевич</td>
-<td>Вт 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>19</td><td><b>10В</b><small>Литература</small></td>
-<td>Оськина Екатерина Алексеевна</td>
-<td>Вт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>20</td><td><b>10В</b><small>Математика</small></td>
-<td>Кучумова Амалия Искандеровна</td>
-<td>Вт 14:35–15:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>21</td><td><b>10В</b><small>Обществознание</small></td>
-<td>Козырев Борис Александрович</td>
-<td>Вт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>22</td><td><b>10В + 10Г</b><small>История</small></td>
-<td>Козырев Борис Александрович</td>
-<td>Вт 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>23</td><td><b>10В + 10Г + 10Д гумы</b><small>Информатика</small></td>
-<td>Коптяева Мария Александровна</td>
-<td>Вт 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>24</td><td><b>10Г</b><small>Литература</small></td>
-<td>Капустина Галина Леонидовна</td>
-<td>Вт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>25</td><td><b>10Г</b><small>Математика</small></td>
-<td>Крылова Екатерина Юрьевна</td>
-<td>Вт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>26</td><td><b>10Г</b><small>Обществознание</small></td>
-<td>Бычков Михаил Андреевич</td>
-<td>Вт 14:35–15:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>27</td><td><b>10Д гумы</b><small>Литература</small></td>
-<td>Павлов Дмитрий Игоревич</td>
-<td>Вт 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>28</td><td><b>10Д гумы</b><small>Математика</small></td>
-<td>Куликова Ирина Владимировна</td>
-<td>Вт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>29</td><td><b>10Д гумы</b><small>Обществознание</small></td>
-<td>Козырев Борис Александрович</td>
-<td>Вт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>30</td><td><b>10Т ИИ</b><small>AI-проект</small></td>
-<td>Душкин Р.В.</td>
-<td>Чт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>31</td><td><b>10Т ИИ + 10Т Мех</b><small>ИИ-грамотность</small></td>
-<td>Душкин Р.В.</td>
-<td>Чт 14:35–15:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>32</td><td><b>10Т ИИ + 10Т Мех</b><small>Литература</small></td>
-<td>Оськина Екатерина Алексеевна</td>
-<td>Чт 10:35–11:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>33</td><td><b>10Т ИИ + 10Т Мех</b><small>Математика</small></td>
-<td>Эйсымонт Инна Михайловна</td>
-<td>Чт 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>34</td><td><b>10Т ИИ + 10Т Мех</b><small>Обществознание</small></td>
-<td>Коновалов Максим Анатольевич</td>
-<td>Чт 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>35</td><td><b>10Т ИИ + 10Т Мех</b><small>Основы безопасности и защиты Родины</small></td>
-<td>Хлопникова Наталья Юрьевна</td>
-<td>Чт 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>36</td><td><b>10Т ИИ + 10Т Мех</b><small>Физика</small></td>
-<td>Правдина Людмила Вениаминовна</td>
-<td>Чт 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>37</td><td><b>10Т Мех</b><small>Информатика</small></td>
-<td>Коптяева Мария Александровна</td>
-<td>Чт 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>38</td><td><b>11А</b><small>Литература</small></td>
-<td>Демушов Кирилл Геннадьевич</td>
-<td>Ср 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>39</td><td><b>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</b><small>Биология</small></td>
-<td>Лазарева Татьяна Геннадьевна</td>
-<td>Вт 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>40</td><td><b>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</b><small>Основы безопасности и защиты Родины</small></td>
-<td>Хлопникова Наталья Юрьевна</td>
-<td>Ср 10:35–11:20</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>41</td><td><b>11А · гр. 1 + 11А · гр. 2</b><small>Математика</small></td>
-<td>Ненаглядова Ксения Николаевна</td>
-<td>Ср 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>42</td><td><b>11А · гр. 1 + 11А · гр. 2</b><small>Обществознание</small></td>
-<td>Ихнева Валерия Евгеньевна</td>
-<td>Ср 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>43</td><td><b>11А ИКТ + 11Б ИКТ</b><small>Информатика</small></td>
-<td>Коптяева Мария Александровна</td>
-<td>Ср 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>44</td><td><b>11А Ист + 11Б Ист + 11В Ист</b><small>История</small></td>
-<td>Бычков Михаил Андреевич</td>
-<td>Ср 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>45</td><td><b>11Б</b><small>Литература</small></td>
-<td>Павлов Дмитрий Игоревич</td>
-<td>Ср 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>46</td><td><b>11Б · гр. 1 + 11Б · гр. 2</b><small>Математика</small></td>
-<td>Дубенецкая Елена Рудольфовна</td>
-<td>Ср 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>47</td><td><b>11Б · гр. 1 + 11Б · гр. 2</b><small>Обществознание</small></td>
-<td>Коновалов Максим Анатольевич</td>
-<td>Ср 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>48</td><td><b>11В</b><small>Литература</small></td>
-<td>Федоров Александр Александрович</td>
-<td>Ср 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>49</td><td><b>11В · гр. 1 + 11В · гр. 2</b><small>Математика</small></td>
-<td>Куликова Ирина Владимировна</td>
-<td>Ср 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>50</td><td><b>11В · гр. 1 + 11В · гр. 2</b><small>Обществознание</small></td>
-<td>Хозиев Сергей Заурбекович</td>
-<td>Ср 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>51</td><td><b>11В ИКТ + 11Г ИКТ</b><small>Информатика</small></td>
-<td>Коптяева Мария Александровна</td>
-<td>Ср 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>52</td><td><b>11Г</b><small>Литература</small></td>
-<td>Джурич Мария Романовна</td>
-<td>Ср 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>53</td><td><b>11Г · гр. 1 + 11Г · гр. 2</b><small>Математика</small></td>
-<td>Дубенецкая Елена Рудольфовна</td>
-<td>Ср 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>54</td><td><b>11Г · гр. 1 + 11Г · гр. 2</b><small>Обществознание</small></td>
-<td>Хозиев Сергей Заурбекович</td>
-<td>Ср 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>55</td><td><b>11Г Ист + 11Д Техи + 11Е Ист</b><small>История</small></td>
-<td>Бычков Михаил Андреевич</td>
-<td>Ср 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>56</td><td><b>11Д</b><small>Литература</small></td>
-<td>Джурич Мария Романовна</td>
-<td>Ср 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>57</td><td><b>11Д ИКТ + 11Е ИКТ</b><small>Информатика</small></td>
-<td>Коптяева Мария Александровна</td>
-<td>Ср 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>58</td><td><b>11Д Техи</b><small>Информатика</small></td>
-<td>Коптяева Мария Александровна</td>
-<td>Ср 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>59</td><td><b>11Д Техи</b><small>Математика</small></td>
-<td>Куликова Ирина Владимировна</td>
-<td>Ср 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>60</td><td><b>11Д Техи</b><small>Обществознание</small></td>
-<td>Смирнов Алексей Сергеевич</td>
-<td>Ср 08:30–09:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>61</td><td><b>11Д гумы</b><small>Математика</small></td>
-<td>Новикова Ольга Васильевна</td>
-<td>Ср 09:30–10:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>62</td><td><b>11Д гумы</b><small>Обществознание</small></td>
-<td>Бычков Михаил Андреевич</td>
-<td>Ср 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>63</td><td><b>11Е</b><small>Литература</small></td>
-<td>Капустина Галина Леонидовна</td>
-<td>Ср 11:30–12:15</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>64</td><td><b>11Е · гр. 1 + 11Е · гр. 2</b><small>Математика</small></td>
-<td>Ненаглядова Ксения Николаевна</td>
-<td>Ср 13:20–14:05</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr><tr><td>65</td><td><b>11Е · гр. 1 + 11Е · гр. 2</b><small>Обществознание</small></td>
-<td>Коновалов Максим Анатольевич</td>
-<td>Ср 12:25–13:10</td>
-<td>Встреча</td><td>____</td><td class="url">____________________________</td>
-<td>□</td><td>□</td><td>□</td></tr></tbody></table></div></section>
+<div id="days">
 
-<section class="panel" id="ready"><h2>Готовность online-преподавателей</h2>
-<div class="chat">✅ Перед первым online-уроком: «готов».
-🔴 Проблема: ВРЕМЯ · КЛАСС · ФИО · ЧТО НЕ РАБОТАЕТ.
-⏱ После каждого урока завершить отдельную сессию/запись.
-📌 Детям ссылка только через ЭлЖур.</div>
-<details open><summary>Вт · 08.09.2026 · 15 преподавателей</summary><div class="tablewrap"><table><thead><tr><th>Учитель</th><th>Уроков</th><th>Встреч</th><th>Организация</th><th>Вуз-5000</th><th>Встречи</th><th>ЭлЖур</th><th>READY</th></tr></thead><tbody><tr><td><b>Бычков Михаил Андреевич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Капустина Галина Леонидовна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Козырев Борис Александрович</b></td><td>4</td><td>4</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Коновалов Максим Анатольевич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Коптяева Мария Александровна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Крылова Екатерина Юрьевна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Куликова Ирина Владимировна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Кучумова Амалия Искандеровна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Лазарева Татьяна Геннадьевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Оськина Екатерина Алексеевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Павлов Дмитрий Игоревич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Сахаров Роман Анатольевич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Смирнов Алексей Сергеевич</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Федоров Александр Александрович</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Хлопникова Наталья Юрьевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr></tbody></table></div></details><details ><summary>Ср · 09.09.2026 · 16 преподавателей</summary><div class="tablewrap"><table><thead><tr><th>Учитель</th><th>Уроков</th><th>Встреч</th><th>Организация</th><th>Вуз-5000</th><th>Встречи</th><th>ЭлЖур</th><th>READY</th></tr></thead><tbody><tr><td><b>Бычков Михаил Андреевич</b></td><td>3</td><td>3</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Демушов Кирилл Геннадьевич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Джурич Мария Романовна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Дубенецкая Елена Рудольфовна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Ихнева Валерия Евгеньевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Капустина Галина Леонидовна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Коновалов Максим Анатольевич</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Коптяева Мария Александровна</b></td><td>4</td><td>4</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Куликова Ирина Владимировна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Ненаглядова Ксения Николаевна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Новикова Ольга Васильевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Павлов Дмитрий Игоревич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Смирнов Алексей Сергеевич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Федоров Александр Александрович</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Хлопникова Наталья Юрьевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Хозиев Сергей Заурбекович</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr></tbody></table></div></details><details ><summary>Чт · 10.09.2026 · 12 преподавателей</summary><div class="tablewrap"><table><thead><tr><th>Учитель</th><th>Уроков</th><th>Встреч</th><th>Организация</th><th>Вуз-5000</th><th>Встречи</th><th>ЭлЖур</th><th>READY</th></tr></thead><tbody><tr><td><b>Володина Юлия Сергеевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Душкин Р.В.</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Ермолаев Фёдор Сергеевич</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Коновалов Максим Анатольевич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Коптяева Мария Александровна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Лазарева Татьяна Геннадьевна</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Оськина Екатерина Алексеевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Павлов Дмитрий Игоревич</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Правдина Людмила Вениаминовна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Хлопникова Наталья Юрьевна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Хозиев Сергей Заурбекович</b></td><td>2</td><td>2</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr><tr><td><b>Эйсымонт Инна Михайловна</b></td><td>1</td><td>1</td><td>□</td><td>□</td><td>□</td><td>□</td><td>□</td></tr></tbody></table></div></details>
+      <section class="day-section" id="day-2">
+        <div class="day-header">
+          <div>
+            <div class="eyebrow">Вт · online-день</div>
+            <h2>Вторник</h2>
+          </div>
+          <div class="day-kpis">
+            <span><b>22</b> занятий</span>
+            <span><b>15</b> учителей</span>
+            <span><b>12</b> классов/траекторий</span>
+          </div>
+        </div>
+        <div class="slots">
+          <div class="slot-row" data-weekday="2" data-start="08:30" data-end="09:15">
+            <div class="slot-time">
+              <span>08:30</span>
+              <i>–</i>
+              <span>09:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</div>
+                <div class="subject">Биология</div>
+                <div class="teacher">Лазарева Татьяна Геннадьевна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="2" data-start="09:30" data-end="10:15">
+            <div class="slot-time">
+              <span>09:30</span>
+              <i>–</i>
+              <span>10:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10А</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Крылова Екатерина Юрьевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Б</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Сахаров Роман Анатольевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10В + 10Г</div>
+                <div class="subject">История</div>
+                <div class="teacher">Козырев Борис Александрович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Д гумы</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Павлов Дмитрий Игоревич</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="2" data-start="10:35" data-end="11:20">
+            <div class="slot-time">
+              <span>10:35</span>
+              <i>–</i>
+              <span>11:20</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10А + 10Б + 10В + 10Г + 10Д гумы</div>
+                <div class="subject">Основы безопасности и защиты Родины</div>
+                <div class="teacher">Хлопникова Наталья Юрьевна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="2" data-start="11:30" data-end="12:15">
+            <div class="slot-time">
+              <span>11:30</span>
+              <i>–</i>
+              <span>12:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10А</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Капустина Галина Леонидовна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Б</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Смирнов Алексей Сергеевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10В + 10Г + 10Д гумы</div>
+                <div class="subject">Информатика</div>
+                <div class="teacher">Коптяева Мария Александровна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="2" data-start="12:25" data-end="13:10">
+            <div class="slot-time">
+              <span>12:25</span>
+              <i>–</i>
+              <span>13:10</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10А · гр. 1</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Коновалов Максим Анатольевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10А · гр. 2</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Смирнов Алексей Сергеевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Б</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Федоров Александр Александрович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10В</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Оськина Екатерина Алексеевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Г</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Крылова Екатерина Юрьевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Д гумы</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Козырев Борис Александрович</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="2" data-start="13:20" data-end="14:05">
+            <div class="slot-time">
+              <span>13:20</span>
+              <i>–</i>
+              <span>14:05</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10А + 10Б</div>
+                <div class="subject">Информатика</div>
+                <div class="teacher">Коптяева Мария Александровна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10В</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Козырев Борис Александрович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Г</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Капустина Галина Леонидовна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Д гумы</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Куликова Ирина Владимировна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="2" data-start="14:35" data-end="15:20">
+            <div class="slot-time">
+              <span>14:35</span>
+              <i>–</i>
+              <span>15:20</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10А + 10Б</div>
+                <div class="subject">История</div>
+                <div class="teacher">Козырев Борис Александрович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10В</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Кучумова Амалия Искандеровна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Г</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Бычков Михаил Андреевич</div>
+              </article></div>
+          </div></div>
+      </section>
+      <section class="day-section" id="day-3">
+        <div class="day-header">
+          <div>
+            <div class="eyebrow">Ср · online-день</div>
+            <h2>Среда</h2>
+          </div>
+          <div class="day-kpis">
+            <span><b>27</b> занятий</span>
+            <span><b>16</b> учителей</span>
+            <span><b>19</b> классов/траекторий</span>
+          </div>
+        </div>
+        <div class="slots">
+          <div class="slot-row" data-weekday="3" data-start="08:30" data-end="09:15">
+            <div class="slot-time">
+              <span>08:30</span>
+              <i>–</i>
+              <span>09:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">11А</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Демушов Кирилл Геннадьевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Б</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Павлов Дмитрий Игоревич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11В</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Федоров Александр Александрович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Г · гр. 1 + 11Г · гр. 2</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Хозиев Сергей Заурбекович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Д ИКТ + 11Е ИКТ</div>
+                <div class="subject">Информатика</div>
+                <div class="teacher">Коптяева Мария Александровна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Д Техи</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Смирнов Алексей Сергеевич</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="3" data-start="09:30" data-end="10:15">
+            <div class="slot-time">
+              <span>09:30</span>
+              <i>–</i>
+              <span>10:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">11А ИКТ + 11Б ИКТ</div>
+                <div class="subject">Информатика</div>
+                <div class="teacher">Коптяева Мария Александровна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11В · гр. 1 + 11В · гр. 2</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Хозиев Сергей Заурбекович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Г Ист + 11Д Техи + 11Е Ист</div>
+                <div class="subject">История</div>
+                <div class="teacher">Бычков Михаил Андреевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Д гумы</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Новикова Ольга Васильевна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="3" data-start="10:35" data-end="11:20">
+            <div class="slot-time">
+              <span>10:35</span>
+              <i>–</i>
+              <span>11:20</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</div>
+                <div class="subject">Основы безопасности и защиты Родины</div>
+                <div class="teacher">Хлопникова Наталья Юрьевна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="3" data-start="11:30" data-end="12:15">
+            <div class="slot-time">
+              <span>11:30</span>
+              <i>–</i>
+              <span>12:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">11А Ист + 11Б Ист + 11В Ист</div>
+                <div class="subject">История</div>
+                <div class="teacher">Бычков Михаил Андреевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Г · гр. 1 + 11Г · гр. 2</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Дубенецкая Елена Рудольфовна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Д</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Джурич Мария Романовна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Е</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Капустина Галина Леонидовна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="3" data-start="12:25" data-end="13:10">
+            <div class="slot-time">
+              <span>12:25</span>
+              <i>–</i>
+              <span>13:10</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">11А · гр. 1 + 11А · гр. 2</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Ненаглядова Ксения Николаевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Б · гр. 1 + 11Б · гр. 2</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Дубенецкая Елена Рудольфовна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11В ИКТ + 11Г ИКТ</div>
+                <div class="subject">Информатика</div>
+                <div class="teacher">Коптяева Мария Александровна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Д Техи</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Куликова Ирина Владимировна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Д гумы</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Бычков Михаил Андреевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Е · гр. 1 + 11Е · гр. 2</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Коновалов Максим Анатольевич</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="3" data-start="13:20" data-end="14:05">
+            <div class="slot-time">
+              <span>13:20</span>
+              <i>–</i>
+              <span>14:05</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">11А · гр. 1 + 11А · гр. 2</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Ихнева Валерия Евгеньевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Б · гр. 1 + 11Б · гр. 2</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Коновалов Максим Анатольевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11В · гр. 1 + 11В · гр. 2</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Куликова Ирина Владимировна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Г</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Джурич Мария Романовна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Д Техи</div>
+                <div class="subject">Информатика</div>
+                <div class="teacher">Коптяева Мария Александровна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">11Е · гр. 1 + 11Е · гр. 2</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Ненаглядова Ксения Николаевна</div>
+              </article></div>
+          </div></div>
+      </section>
+      <section class="day-section" id="day-4">
+        <div class="day-header">
+          <div>
+            <div class="eyebrow">Чт · online-день</div>
+            <h2>Четверг</h2>
+          </div>
+          <div class="day-kpis">
+            <span><b>16</b> занятий</span>
+            <span><b>12</b> учителей</span>
+            <span><b>4</b> классов/траекторий</span>
+          </div>
+        </div>
+        <div class="slots">
+          <div class="slot-row" data-weekday="4" data-start="08:30" data-end="09:15">
+            <div class="slot-time">
+              <span>08:30</span>
+              <i>–</i>
+              <span>09:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10Т ИИ + 10Т Мех</div>
+                <div class="subject">Математика</div>
+                <div class="teacher">Эйсымонт Инна Михайловна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="4" data-start="09:30" data-end="10:15">
+            <div class="slot-time">
+              <span>09:30</span>
+              <i>–</i>
+              <span>10:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10Т ИИ + 10Т Мех</div>
+                <div class="subject">Основы безопасности и защиты Родины</div>
+                <div class="teacher">Хлопникова Наталья Юрьевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9А</div>
+                <div class="subject">Биология</div>
+                <div class="teacher">Лазарева Татьяна Геннадьевна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="4" data-start="10:35" data-end="11:20">
+            <div class="slot-time">
+              <span>10:35</span>
+              <i>–</i>
+              <span>11:20</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10Т ИИ + 10Т Мех</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Оськина Екатерина Алексеевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9А + 9Б</div>
+                <div class="subject">Основы безопасности и защиты Родины</div>
+                <div class="teacher">Лазарева Татьяна Геннадьевна</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="4" data-start="11:30" data-end="12:15">
+            <div class="slot-time">
+              <span>11:30</span>
+              <i>–</i>
+              <span>12:15</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10Т ИИ + 10Т Мех</div>
+                <div class="subject">Обществознание</div>
+                <div class="teacher">Коновалов Максим Анатольевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9А</div>
+                <div class="subject">География</div>
+                <div class="teacher">Ермолаев Фёдор Сергеевич</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9Б</div>
+                <div class="subject">История</div>
+                <div class="teacher">Хозиев Сергей Заурбекович</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="4" data-start="12:25" data-end="13:10">
+            <div class="slot-time">
+              <span>12:25</span>
+              <i>–</i>
+              <span>13:10</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10Т ИИ + 10Т Мех</div>
+                <div class="subject">Физика</div>
+                <div class="teacher">Правдина Людмила Вениаминовна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9А</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Володина Юлия Сергеевна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9Б</div>
+                <div class="subject">Литература</div>
+                <div class="teacher">Павлов Дмитрий Игоревич</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="4" data-start="13:20" data-end="14:05">
+            <div class="slot-time">
+              <span>13:20</span>
+              <i>–</i>
+              <span>14:05</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10Т ИИ</div>
+                <div class="subject">AI-проект</div>
+                <div class="teacher">Душкин Р.В.</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">10Т Мех</div>
+                <div class="subject">Информатика</div>
+                <div class="teacher">Коптяева Мария Александровна</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9А</div>
+                <div class="subject">История</div>
+                <div class="teacher">Хозиев Сергей Заурбекович</div>
+              </article>
+              <article class="lesson-card">
+                <div class="class">9Б</div>
+                <div class="subject">География</div>
+                <div class="teacher">Ермолаев Фёдор Сергеевич</div>
+              </article></div>
+          </div>
+          <div class="slot-row" data-weekday="4" data-start="14:35" data-end="15:20">
+            <div class="slot-time">
+              <span>14:35</span>
+              <i>–</i>
+              <span>15:20</span>
+              <b class="now-badge">СЕЙЧАС</b>
+            </div>
+            <div class="slot-lessons">
+              <article class="lesson-card">
+                <div class="class">10Т ИИ + 10Т Мех</div>
+                <div class="subject">ИИ-грамотность</div>
+                <div class="teacher">Душкин Р.В.</div>
+              </article></div>
+          </div></div>
+      </section>
+</div>
+
+<section class="section" id="teachers">
+  <div class="section-title">
+    <div><div class="eyebrow">Срез</div><h2>По преподавателям</h2></div>
+    <p>27 преподавателей</p>
+  </div>
+  
+    <details>
+      <summary>
+        <span>Бычков Михаил Андреевич</span>
+        <small>4 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>Обществознание</td>
+          <td>10Г</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>История</td>
+          <td>11Г Ист + 11Д Техи + 11Е Ист</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>История</td>
+          <td>11А Ист + 11Б Ист + 11В Ист</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td>11Д гумы</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Володина Юлия Сергеевна</span>
+        <small>1 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td>9А</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Демушов Кирилл Геннадьевич</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Литература</td>
+          <td>11А</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Джурич Мария Романовна</span>
+        <small>2 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Литература</td>
+          <td>11Д</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Литература</td>
+          <td>11Г</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Дубенецкая Елена Рудольфовна</span>
+        <small>2 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Математика</td>
+          <td>11Г · гр. 1 + 11Г · гр. 2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td>11Б · гр. 1 + 11Б · гр. 2</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Душкин Р.В.</span>
+        <small>2 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>AI-проект</td>
+          <td>10Т ИИ</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>ИИ-грамотность</td>
+          <td>10Т ИИ + 10Т Мех</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Ермолаев Фёдор Сергеевич</span>
+        <small>2 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>География</td>
+          <td>9А</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>География</td>
+          <td>9Б</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Ихнева Валерия Евгеньевна</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td>11А · гр. 1 + 11А · гр. 2</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Капустина Галина Леонидовна</span>
+        <small>3 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Литература</td>
+          <td>10А</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Литература</td>
+          <td>10Г</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Литература</td>
+          <td>11Е</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Козырев Борис Александрович</span>
+        <small>4 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>История</td>
+          <td>10В + 10Г</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td>10Д гумы</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td>10В</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>История</td>
+          <td>10А + 10Б</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Коновалов Максим Анатольевич</span>
+        <small>4 занятий · Вт / Ср / Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td>10А · гр. 1</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td>11Е · гр. 1 + 11Е · гр. 2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td>11Б · гр. 1 + 11Б · гр. 2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Обществознание</td>
+          <td>10Т ИИ + 10Т Мех</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Коптяева Мария Александровна</span>
+        <small>7 занятий · Вт / Ср / Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Информатика</td>
+          <td>10В + 10Г + 10Д гумы</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Информатика</td>
+          <td>10А + 10Б</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Информатика</td>
+          <td>11Д ИКТ + 11Е ИКТ</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Информатика</td>
+          <td>11А ИКТ + 11Б ИКТ</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Информатика</td>
+          <td>11В ИКТ + 11Г ИКТ</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Информатика</td>
+          <td>11Д Техи</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Информатика</td>
+          <td>10Т Мех</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Крылова Екатерина Юрьевна</span>
+        <small>2 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Математика</td>
+          <td>10А</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td>10Г</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Куликова Ирина Владимировна</span>
+        <small>3 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td>10Д гумы</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td>11Д Техи</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td>11В · гр. 1 + 11В · гр. 2</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Кучумова Амалия Искандеровна</span>
+        <small>1 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>Математика</td>
+          <td>10В</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Лазарева Татьяна Геннадьевна</span>
+        <small>3 занятий · Вт / Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Биология</td>
+          <td>9А</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td>9А + 9Б</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Ненаглядова Ксения Николаевна</span>
+        <small>2 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td>11А · гр. 1 + 11А · гр. 2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td>11Е · гр. 1 + 11Е · гр. 2</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Новикова Ольга Васильевна</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Математика</td>
+          <td>11Д гумы</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Оськина Екатерина Алексеевна</span>
+        <small>2 занятий · Вт / Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td>10В</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Литература</td>
+          <td>10Т ИИ + 10Т Мех</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Павлов Дмитрий Игоревич</span>
+        <small>3 занятий · Вт / Ср / Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Литература</td>
+          <td>10Д гумы</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Литература</td>
+          <td>11Б</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td>9Б</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Правдина Людмила Вениаминовна</span>
+        <small>1 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Физика</td>
+          <td>10Т ИИ + 10Т Мех</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Сахаров Роман Анатольевич</span>
+        <small>1 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Математика</td>
+          <td>10Б</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Смирнов Алексей Сергеевич</span>
+        <small>3 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Обществознание</td>
+          <td>10Б</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td>10А · гр. 2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Обществознание</td>
+          <td>11Д Техи</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Федоров Александр Александрович</span>
+        <small>2 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td>10Б</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Литература</td>
+          <td>11В</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Хлопникова Наталья Юрьевна</span>
+        <small>3 занятий · Вт / Ср / Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td>10А + 10Б + 10В + 10Г + 10Д гумы</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td>10Т ИИ + 10Т Мех</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Хозиев Сергей Заурбекович</span>
+        <small>4 занятий · Ср / Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Обществознание</td>
+          <td>11Г · гр. 1 + 11Г · гр. 2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Обществознание</td>
+          <td>11В · гр. 1 + 11В · гр. 2</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>История</td>
+          <td>9Б</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>История</td>
+          <td>9А</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>Эйсымонт Инна Михайловна</span>
+        <small>1 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс / группа</th><th></th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Математика</td>
+          <td>10Т ИИ + 10Т Мех</td>
+          <td></td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
 </section>
 
-<section class="panel" id="edu"><h2>Курсы EDU.FA.RU</h2>
-<p>Рекомендуемая схема: <b>1 курс = параллель + предмет</b>; внутри — группы Moodle по классам/подгруппам.</p>
-<div class="tablewrap"><table><thead><tr><th>Курс</th><th>Кого добавить</th><th>Учителя</th><th>Online-карточек</th><th>Что загружать</th></tr></thead><tbody><tr><td><b>ЛФУ 2026/27 · 9 класс · Биология · ONLINE</b></td>
-<td>9А</td>
-<td>Лазарева Татьяна Геннадьевна</td>
-<td>1</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 9 класс · География · ONLINE</b></td>
-<td>9А · 9Б</td>
-<td>Ермолаев Фёдор Сергеевич</td>
-<td>2</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 9 класс · История · ONLINE</b></td>
-<td>9А · 9Б</td>
-<td>Хозиев Сергей Заурбекович</td>
-<td>2</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 9 класс · Литература · ONLINE</b></td>
-<td>9А · 9Б</td>
-<td>Володина Юлия Сергеевна<br>Павлов Дмитрий Игоревич</td>
-<td>2</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 9 класс · Основы безопасности и защиты Родины · ONLINE</b></td>
-<td>9А · 9Б</td>
-<td>Лазарева Татьяна Геннадьевна</td>
-<td>1</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · AI-проект · ONLINE</b></td>
-<td>10Т ИИ</td>
-<td>Душкин Р.В.</td>
-<td>1</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · ИИ-грамотность · ONLINE</b></td>
-<td>10Т ИИ · 10Т Мех</td>
-<td>Душкин Р.В.</td>
-<td>1</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · Информатика · ONLINE</b></td>
-<td>10А · 10Б · 10В · 10Г · 10Д гумы · 10Т Мех</td>
-<td>Коптяева Мария Александровна</td>
-<td>3</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · История · ONLINE</b></td>
-<td>10А · 10Б · 10В · 10Г</td>
-<td>Козырев Борис Александрович</td>
-<td>2</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · Литература · ONLINE</b></td>
-<td>10А · 10Б · 10В · 10Г · 10Д гумы · 10Т ИИ · 10Т Мех</td>
-<td>Капустина Галина Леонидовна<br>Оськина Екатерина Алексеевна<br>Павлов Дмитрий Игоревич<br>Федоров Александр Александрович</td>
-<td>6</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · Математика · ONLINE</b></td>
-<td>10А · 10Б · 10В · 10Г · 10Д гумы · 10Т ИИ · 10Т Мех</td>
-<td>Крылова Екатерина Юрьевна<br>Куликова Ирина Владимировна<br>Кучумова Амалия Искандеровна<br>Сахаров Роман Анатольевич<br>Эйсымонт Инна Михайловна</td>
-<td>6</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · Обществознание · ONLINE</b></td>
-<td>10А · гр. 1 · 10А · гр. 2 · 10Б · 10В · 10Г · 10Д гумы · 10Т ИИ · 10Т Мех</td>
-<td>Бычков Михаил Андреевич<br>Козырев Борис Александрович<br>Коновалов Максим Анатольевич<br>Смирнов Алексей Сергеевич</td>
-<td>7</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · Основы безопасности и защиты Родины · ONLINE</b></td>
-<td>10А · 10Б · 10В · 10Г · 10Д гумы · 10Т ИИ · 10Т Мех</td>
-<td>Хлопникова Наталья Юрьевна</td>
-<td>2</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 10 класс · Физика · ONLINE</b></td>
-<td>10Т ИИ · 10Т Мех</td>
-<td>Правдина Людмила Вениаминовна</td>
-<td>1</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 11 класс · Биология · ONLINE</b></td>
-<td>11А · 11Б · 11В · 11Г · 11Д Техи · 11Д гумы · 11Е</td>
-<td>Лазарева Татьяна Геннадьевна</td>
-<td>1</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 11 класс · Информатика · ONLINE</b></td>
-<td>11А ИКТ · 11Б ИКТ · 11В ИКТ · 11Г ИКТ · 11Д ИКТ · 11Д Техи · 11Е ИКТ</td>
-<td>Коптяева Мария Александровна</td>
-<td>4</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 11 класс · История · ONLINE</b></td>
-<td>11А Ист · 11Б Ист · 11В Ист · 11Г Ист · 11Д Техи · 11Е Ист</td>
-<td>Бычков Михаил Андреевич</td>
-<td>2</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 11 класс · Литература · ONLINE</b></td>
-<td>11А · 11Б · 11В · 11Г · 11Д · 11Е</td>
-<td>Демушов Кирилл Геннадьевич<br>Джурич Мария Романовна<br>Капустина Галина Леонидовна<br>Павлов Дмитрий Игоревич<br>Федоров Александр Александрович</td>
-<td>6</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 11 класс · Математика · ONLINE</b></td>
-<td>11А · гр. 1 · 11А · гр. 2 · 11Б · гр. 1 · 11Б · гр. 2 · 11В · гр. 1 · 11В · гр. 2 · 11Г · гр. 1 · 11Г · гр. 2 · 11Д Техи · 11Д гумы · 11Е · гр. 1 · 11Е · гр. 2</td>
-<td>Дубенецкая Елена Рудольфовна<br>Куликова Ирина Владимировна<br>Ненаглядова Ксения Николаевна<br>Новикова Ольга Васильевна</td>
-<td>7</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 11 класс · Обществознание · ONLINE</b></td>
-<td>11А · гр. 1 · 11А · гр. 2 · 11Б · гр. 1 · 11Б · гр. 2 · 11В · гр. 1 · 11В · гр. 2 · 11Г · гр. 1 · 11Г · гр. 2 · 11Д Техи · 11Д гумы · 11Е · гр. 1 · 11Е · гр. 2</td>
-<td>Бычков Михаил Андреевич<br>Ихнева Валерия Евгеньевна<br>Коновалов Максим Анатольевич<br>Смирнов Алексей Сергеевич<br>Хозиев Сергей Заурбекович</td>
-<td>7</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr><tr><td><b>ЛФУ 2026/27 · 11 класс · Основы безопасности и защиты Родины · ONLINE</b></td>
-<td>11А · 11Б · 11В · 11Г · 11Д Техи · 11Д гумы · 11Е</td>
-<td>Хлопникова Наталья Юрьевна</td>
-<td>1</td><td>Запись/ссылка + ИИ-конспект + материалы</td></tr></tbody></table></div></section>
+<section class="section" id="classes">
+  <div class="section-title">
+    <div><div class="eyebrow">Срез</div><h2>По классам</h2></div>
+    <p>28 классов / траекторий</p>
+  </div>
+  
+    <details>
+      <summary>
+        <span>9А</span>
+        <small>5 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>География</td>
+          <td></td>
+          <td>Ермолаев Фёдор Сергеевич</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Володина Юлия Сергеевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>История</td>
+          <td></td>
+          <td>Хозиев Сергей Заурбекович</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>9Б</span>
+        <small>4 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Хозиев Сергей Заурбекович</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Павлов Дмитрий Игоревич</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>География</td>
+          <td></td>
+          <td>Ермолаев Фёдор Сергеевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>10А</span>
+        <small>7 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Крылова Екатерина Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Капустина Галина Леонидовна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Коновалов Максим Анатольевич</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Смирнов Алексей Сергеевич</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>История</td>
+          <td></td>
+          <td>Козырев Борис Александрович</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>10Б</span>
+        <small>6 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Сахаров Роман Анатольевич</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Смирнов Алексей Сергеевич</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Федоров Александр Александрович</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>История</td>
+          <td></td>
+          <td>Козырев Борис Александрович</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>10В</span>
+        <small>6 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Козырев Борис Александрович</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Оськина Екатерина Алексеевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Козырев Борис Александрович</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Кучумова Амалия Искандеровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>10Г</span>
+        <small>6 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Козырев Борис Александрович</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Крылова Екатерина Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Капустина Галина Леонидовна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>10Д гумы</span>
+        <small>5 занятий · Вт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Павлов Дмитрий Игоревич</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Козырев Борис Александрович</td>
+        </tr>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Куликова Ирина Владимировна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>10Т ИИ</span>
+        <small>7 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Эйсымонт Инна Михайловна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Оськина Екатерина Алексеевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Коновалов Максим Анатольевич</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Физика</td>
+          <td></td>
+          <td>Правдина Людмила Вениаминовна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>AI-проект</td>
+          <td></td>
+          <td>Душкин Р.В.</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>ИИ-грамотность</td>
+          <td></td>
+          <td>Душкин Р.В.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>10Т Мех</span>
+        <small>7 занятий · Чт</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Эйсымонт Инна Михайловна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Оськина Екатерина Алексеевна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Коновалов Максим Анатольевич</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Физика</td>
+          <td></td>
+          <td>Правдина Людмила Вениаминовна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr>
+        <tr>
+          <td><b>Чт</b></td>
+          <td class="time">14:35–15:20</td>
+          <td>ИИ-грамотность</td>
+          <td></td>
+          <td>Душкин Р.В.</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11А</span>
+        <small>7 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Демушов Кирилл Геннадьевич</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Ненаглядова Ксения Николаевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Ненаглядова Ксения Николаевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Ихнева Валерия Евгеньевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Ихнева Валерия Евгеньевна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11А ИКТ</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11А Ист</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Б</span>
+        <small>7 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Павлов Дмитрий Игоревич</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Дубенецкая Елена Рудольфовна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Дубенецкая Елена Рудольфовна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Коновалов Максим Анатольевич</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Коновалов Максим Анатольевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Б ИКТ</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Б Ист</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11В</span>
+        <small>7 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Федоров Александр Александрович</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Хозиев Сергей Заурбекович</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Хозиев Сергей Заурбекович</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Куликова Ирина Владимировна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Куликова Ирина Владимировна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11В ИКТ</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11В Ист</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Г</span>
+        <small>7 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Хозиев Сергей Заурбекович</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Хозиев Сергей Заурбекович</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Дубенецкая Елена Рудольфовна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Дубенецкая Елена Рудольфовна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Джурич Мария Романовна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Г ИКТ</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Г Ист</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Д</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Джурич Мария Романовна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Д ИКТ</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Д Техи</span>
+        <small>6 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Смирнов Алексей Сергеевич</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Куликова Ирина Владимировна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Д гумы</span>
+        <small>4 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Новикова Ольга Васильевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Е</span>
+        <small>7 занятий · Вт / Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Вт</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Биология</td>
+          <td></td>
+          <td>Лазарева Татьяна Геннадьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">10:35–11:20</td>
+          <td>Основы безопасности и защиты Родины</td>
+          <td></td>
+          <td>Хлопникова Наталья Юрьевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">11:30–12:15</td>
+          <td>Литература</td>
+          <td></td>
+          <td>Капустина Галина Леонидовна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Коновалов Максим Анатольевич</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">12:25–13:10</td>
+          <td>Обществознание</td>
+          <td></td>
+          <td>Коновалов Максим Анатольевич</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Ненаглядова Ксения Николаевна</td>
+        </tr>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">13:20–14:05</td>
+          <td>Математика</td>
+          <td></td>
+          <td>Ненаглядова Ксения Николаевна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Е ИКТ</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">08:30–09:15</td>
+          <td>Информатика</td>
+          <td></td>
+          <td>Коптяева Мария Александровна</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+    <details>
+      <summary>
+        <span>11Е Ист</span>
+        <small>1 занятий · Ср</small>
+      </summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>День</th><th>Время</th><th>Предмет</th><th></th><th>Учитель</th></tr></thead>
+          <tbody>
+        <tr>
+          <td><b>Ср</b></td>
+          <td class="time">09:30–10:15</td>
+          <td>История</td>
+          <td></td>
+          <td>Бычков Михаил Андреевич</td>
+        </tr></tbody>
+        </table>
+      </div>
+    </details>
+</section>
 
-<section class="panel" id="teachers"><h2>По учителю</h2><details><summary>Бычков Михаил Андреевич <span>4 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Обществознание</td>
-<td>10Г</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td>11Г Ист + 11Д Техи + 11Е Ист</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td>11А Ист + 11Б Ист + 11В Ист</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>11Д гумы</td><td></td></tr></tbody></table></div></details><details><summary>Володина Юлия Сергеевна <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>9А</td><td></td></tr></tbody></table></div></details><details><summary>Демушов Кирилл Геннадьевич <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11А</td><td></td></tr></tbody></table></div></details><details><summary>Джурич Мария Романовна <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>11Д</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td>11Г</td><td></td></tr></tbody></table></div></details><details><summary>Дубенецкая Елена Рудольфовна <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Математика</td>
-<td>11Г · гр. 1 + 11Г · гр. 2</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11Б · гр. 1 + 11Б · гр. 2</td><td></td></tr></tbody></table></div></details><details><summary>Душкин Р.В. <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>AI-проект</td>
-<td>10Т ИИ</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>ИИ-грамотность</td>
-<td>10Т ИИ + 10Т Мех</td><td></td></tr></tbody></table></div></details><details><summary>Ермолаев Фёдор Сергеевич <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>География</td>
-<td>9А</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>География</td>
-<td>9Б</td><td></td></tr></tbody></table></div></details><details><summary>Ихнева Валерия Евгеньевна <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>11А · гр. 1 + 11А · гр. 2</td><td></td></tr></tbody></table></div></details><details><summary>Капустина Галина Леонидовна <span>3 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>10А</td><td></td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td>10Г</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>11Е</td><td></td></tr></tbody></table></div></details><details><summary>Козырев Борис Александрович <span>4 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td>10В + 10Г</td><td></td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10Д гумы</td><td></td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>10В</td><td></td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>История</td>
-<td>10А + 10Б</td><td></td></tr></tbody></table></div></details><details><summary>Коновалов Максим Анатольевич <span>4 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10А · гр. 1</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>11Е · гр. 1 + 11Е · гр. 2</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>11Б · гр. 1 + 11Б · гр. 2</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td>10Т ИИ + 10Т Мех</td><td></td></tr></tbody></table></div></details><details><summary>Коптяева Мария Александровна <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Информатика</td>
-<td>10В + 10Г + 10Д гумы</td><td></td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>10А + 10Б</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Информатика</td>
-<td>11Д ИКТ + 11Е ИКТ</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Информатика</td>
-<td>11А ИКТ + 11Б ИКТ</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Информатика</td>
-<td>11В ИКТ + 11Г ИКТ</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>11Д Техи</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>10Т Мех</td><td></td></tr></tbody></table></div></details><details><summary>Крылова Екатерина Юрьевна <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>10А</td><td></td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>10Г</td><td></td></tr></tbody></table></div></details><details><summary>Куликова Ирина Владимировна <span>3 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>10Д гумы</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11Д Техи</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>11В · гр. 1 + 11В · гр. 2</td><td></td></tr></tbody></table></div></details><details><summary>Кучумова Амалия Искандеровна <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Математика</td>
-<td>10В</td><td></td></tr></tbody></table></div></details><details><summary>Лазарева Татьяна Геннадьевна <span>3 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Биология</td>
-<td>9А</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>9А + 9Б</td><td></td></tr></tbody></table></div></details><details><summary>Ненаглядова Ксения Николаевна <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11А · гр. 1 + 11А · гр. 2</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>11Е · гр. 1 + 11Е · гр. 2</td><td></td></tr></tbody></table></div></details><details><summary>Новикова Ольга Васильевна <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>11Д гумы</td><td></td></tr></tbody></table></div></details><details><summary>Оськина Екатерина Алексеевна <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>10В</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Литература</td>
-<td>10Т ИИ + 10Т Мех</td><td></td></tr></tbody></table></div></details><details><summary>Павлов Дмитрий Игоревич <span>3 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Литература</td>
-<td>10Д гумы</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11Б</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>9Б</td><td></td></tr></tbody></table></div></details><details><summary>Правдина Людмила Вениаминовна <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Физика</td>
-<td>10Т ИИ + 10Т Мех</td><td></td></tr></tbody></table></div></details><details><summary>Сахаров Роман Анатольевич <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>10Б</td><td></td></tr></tbody></table></div></details><details><summary>Смирнов Алексей Сергеевич <span>3 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td>10Б</td><td></td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10А · гр. 2</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td>11Д Техи</td><td></td></tr></tbody></table></div></details><details><summary>Федоров Александр Александрович <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>10Б</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11В</td><td></td></tr></tbody></table></div></details><details><summary>Хлопникова Наталья Юрьевна <span>3 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>10А + 10Б + 10В + 10Г + 10Д гумы</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Основы безопасности и защиты Родины</td>
-<td>10Т ИИ + 10Т Мех</td><td></td></tr></tbody></table></div></details><details><summary>Хозиев Сергей Заурбекович <span>4 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td>11Г · гр. 1 + 11Г · гр. 2</td><td></td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Обществознание</td>
-<td>11В · гр. 1 + 11В · гр. 2</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td>9Б</td><td></td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>История</td>
-<td>9А</td><td></td></tr></tbody></table></div></details><details><summary>Эйсымонт Инна Михайловна <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Математика</td>
-<td>10Т ИИ + 10Т Мех</td><td></td></tr></tbody></table></div></details></section>
-<section class="panel" id="classes"><h2>По классу</h2><details><summary>9А <span>5 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>География</td>
-<td></td><td>Ермолаев Фёдор Сергеевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td></td><td>Володина Юлия Сергеевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>История</td>
-<td></td><td>Хозиев Сергей Заурбекович</td></tr></tbody></table></div></details><details><summary>9Б <span>4 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td></td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td></td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>География</td>
-<td></td><td>Ермолаев Фёдор Сергеевич</td></tr></tbody></table></div></details><details><summary>10А <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td></td><td>Крылова Екатерина Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td></td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td></td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td></td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>История</td>
-<td></td><td>Козырев Борис Александрович</td></tr></tbody></table></div></details><details><summary>10Б <span>6 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td></td><td>Сахаров Роман Анатольевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td></td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td></td><td>Федоров Александр Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>История</td>
-<td></td><td>Козырев Борис Александрович</td></tr></tbody></table></div></details><details><summary>10В <span>6 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td></td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td></td><td>Оськина Екатерина Алексеевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td></td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Математика</td>
-<td></td><td>Кучумова Амалия Искандеровна</td></tr></tbody></table></div></details><details><summary>10Г <span>6 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td></td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td></td><td>Крылова Екатерина Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td></td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Обществознание</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr></tbody></table></div></details><details><summary>10Д гумы <span>5 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Литература</td>
-<td></td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td></td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td></td><td>Куликова Ирина Владимировна</td></tr></tbody></table></div></details><details><summary>10Т ИИ <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Математика</td>
-<td></td><td>Эйсымонт Инна Михайловна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Литература</td>
-<td></td><td>Оськина Екатерина Алексеевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td></td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Физика</td>
-<td></td><td>Правдина Людмила Вениаминовна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>AI-проект</td>
-<td></td><td>Душкин Р.В.</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>ИИ-грамотность</td>
-<td></td><td>Душкин Р.В.</td></tr></tbody></table></div></details><details><summary>10Т Мех <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Математика</td>
-<td></td><td>Эйсымонт Инна Михайловна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Литература</td>
-<td></td><td>Оськина Екатерина Алексеевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td></td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Физика</td>
-<td></td><td>Правдина Людмила Вениаминовна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>ИИ-грамотность</td>
-<td></td><td>Душкин Р.В.</td></tr></tbody></table></div></details><details><summary>11А <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td></td><td>Демушов Кирилл Геннадьевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td></td><td>Ненаглядова Ксения Николаевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td></td><td>Ненаглядова Ксения Николаевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td></td><td>Ихнева Валерия Евгеньевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td></td><td>Ихнева Валерия Евгеньевна</td></tr></tbody></table></div></details><details><summary>11А ИКТ <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>11А Ист <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr></tbody></table></div></details><details><summary>11Б <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td></td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td></td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td></td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td></td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td></td><td>Коновалов Максим Анатольевич</td></tr></tbody></table></div></details><details><summary>11Б ИКТ <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>11Б Ист <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr></tbody></table></div></details><details><summary>11В <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td></td><td>Федоров Александр Александрович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Обществознание</td>
-<td></td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Обществознание</td>
-<td></td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td></td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td></td><td>Куликова Ирина Владимировна</td></tr></tbody></table></div></details><details><summary>11В ИКТ <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>11В Ист <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr></tbody></table></div></details><details><summary>11Г <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td></td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td></td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Математика</td>
-<td></td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Математика</td>
-<td></td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td></td><td>Джурич Мария Романовна</td></tr></tbody></table></div></details><details><summary>11Г ИКТ <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>11Г Ист <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr></tbody></table></div></details><details><summary>11Д <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td></td><td>Джурич Мария Романовна</td></tr></tbody></table></div></details><details><summary>11Д ИКТ <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>11Д Техи <span>6 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td></td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td></td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>11Д гумы <span>4 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td></td><td>Новикова Ольга Васильевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr></tbody></table></div></details><details><summary>11Е <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td></td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td></td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td></td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td></td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td></td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td></td><td>Ненаглядова Ксения Николаевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td></td><td>Ненаглядова Ксения Николаевна</td></tr></tbody></table></div></details><details><summary>11Е ИКТ <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Информатика</td>
-<td></td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>11Е Ист <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td></td><td>Бычков Михаил Андреевич</td></tr></tbody></table></div></details></section>
-<section class="panel" id="subjects"><h2>По предмету</h2><details><summary>AI-проект <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>AI-проект</td>
-<td>10Т ИИ</td><td>Душкин Р.В.</td></tr></tbody></table></div></details><details><summary>Биология <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Биология</td>
-<td>9А</td><td>Лазарева Татьяна Геннадьевна</td></tr></tbody></table></div></details><details><summary>География <span>2 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>География</td>
-<td>9А</td><td>Ермолаев Фёдор Сергеевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>География</td>
-<td>9Б</td><td>Ермолаев Фёдор Сергеевич</td></tr></tbody></table></div></details><details><summary>ИИ-грамотность <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>ИИ-грамотность</td>
-<td>10Т ИИ + 10Т Мех</td><td>Душкин Р.В.</td></tr></tbody></table></div></details><details><summary>Информатика <span>7 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Информатика</td>
-<td>10В + 10Г + 10Д гумы</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>10А + 10Б</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Информатика</td>
-<td>11Д ИКТ + 11Е ИКТ</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Информатика</td>
-<td>11А ИКТ + 11Б ИКТ</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Информатика</td>
-<td>11В ИКТ + 11Г ИКТ</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>11Д Техи</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>10Т Мех</td><td>Коптяева Мария Александровна</td></tr></tbody></table></div></details><details><summary>История <span>6 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td>10В + 10Г</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>История</td>
-<td>10А + 10Б</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td>11Г Ист + 11Д Техи + 11Е Ист</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td>11А Ист + 11Б Ист + 11В Ист</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td>9Б</td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>История</td>
-<td>9А</td><td>Хозиев Сергей Заурбекович</td></tr></tbody></table></div></details><details><summary>Литература <span>14 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Литература</td>
-<td>10Д гумы</td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>10А</td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>10Б</td><td>Федоров Александр Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>10В</td><td>Оськина Екатерина Алексеевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td>10Г</td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11А</td><td>Демушов Кирилл Геннадьевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11Б</td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11В</td><td>Федоров Александр Александрович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>11Д</td><td>Джурич Мария Романовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>11Е</td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td>11Г</td><td>Джурич Мария Романовна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Литература</td>
-<td>10Т ИИ + 10Т Мех</td><td>Оськина Екатерина Алексеевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>9А</td><td>Володина Юлия Сергеевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>9Б</td><td>Павлов Дмитрий Игоревич</td></tr></tbody></table></div></details><details><summary>Математика <span>13 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>10А</td><td>Крылова Екатерина Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>10Б</td><td>Сахаров Роман Анатольевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>10Г</td><td>Крылова Екатерина Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>10Д гумы</td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Математика</td>
-<td>10В</td><td>Кучумова Амалия Искандеровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>11Д гумы</td><td>Новикова Ольга Васильевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Математика</td>
-<td>11Г · гр. 1 + 11Г · гр. 2</td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11А · гр. 1 + 11А · гр. 2</td><td>Ненаглядова Ксения Николаевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11Б · гр. 1 + 11Б · гр. 2</td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11Д Техи</td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>11В · гр. 1 + 11В · гр. 2</td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>11Е · гр. 1 + 11Е · гр. 2</td><td>Ненаглядова Ксения Николаевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Математика</td>
-<td>10Т ИИ + 10Т Мех</td><td>Эйсымонт Инна Михайловна</td></tr></tbody></table></div></details><details><summary>Обществознание <span>14 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td>10Б</td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10А · гр. 1</td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10А · гр. 2</td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10Д гумы</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>10В</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Обществознание</td>
-<td>10Г</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td>11Г · гр. 1 + 11Г · гр. 2</td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td>11Д Техи</td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Обществознание</td>
-<td>11В · гр. 1 + 11В · гр. 2</td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>11Д гумы</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>11Е · гр. 1 + 11Е · гр. 2</td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>11А · гр. 1 + 11А · гр. 2</td><td>Ихнева Валерия Евгеньевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>11Б · гр. 1 + 11Б · гр. 2</td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td>10Т ИИ + 10Т Мех</td><td>Коновалов Максим Анатольевич</td></tr></tbody></table></div></details><details><summary>Основы безопасности и защиты Родины <span>4 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>10А + 10Б + 10В + 10Г + 10Д гумы</td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Основы безопасности и защиты Родины</td>
-<td>10Т ИИ + 10Т Мех</td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>9А + 9Б</td><td>Лазарева Татьяна Геннадьевна</td></tr></tbody></table></div></details><details><summary>Физика <span>1 online</span></summary>
-<div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead>
-<tbody><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Физика</td>
-<td>10Т ИИ + 10Т Мех</td><td>Правдина Людмила Вениаминовна</td></tr></tbody></table></div></details></section>
-<section class="panel" id="all"><h2>Все online-уроки</h2><div class="tablewrap"><table><thead><tr><th>День</th><th>Время</th><th>Предмет</th><th>Класс</th><th>Учитель</th></tr></thead><tbody><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Биология</td>
-<td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td>10В + 10Г</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Литература</td>
-<td>10Д гумы</td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>10А</td><td>Крылова Екатерина Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>10Б</td><td>Сахаров Роман Анатольевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>10А + 10Б + 10В + 10Г + 10Д гумы</td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Информатика</td>
-<td>10В + 10Г + 10Д гумы</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>10А</td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td>10Б</td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>10Б</td><td>Федоров Александр Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>10В</td><td>Оськина Екатерина Алексеевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>10Г</td><td>Крылова Екатерина Юрьевна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10А · гр. 1</td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10А · гр. 2</td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>10Д гумы</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>10А + 10Б</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td>10Г</td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>10Д гумы</td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>10В</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>История</td>
-<td>10А + 10Б</td><td>Козырев Борис Александрович</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Математика</td>
-<td>10В</td><td>Кучумова Амалия Искандеровна</td></tr><tr>
-<td><b>Вт</b><small>08.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>Обществознание</td>
-<td>10Г</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Информатика</td>
-<td>11Д ИКТ + 11Е ИКТ</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11А</td><td>Демушов Кирилл Геннадьевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11Б</td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Литература</td>
-<td>11В</td><td>Федоров Александр Александрович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td>11Г · гр. 1 + 11Г · гр. 2</td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Обществознание</td>
-<td>11Д Техи</td><td>Смирнов Алексей Сергеевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Информатика</td>
-<td>11А ИКТ + 11Б ИКТ</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>История</td>
-<td>11Г Ист + 11Д Техи + 11Е Ист</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Математика</td>
-<td>11Д гумы</td><td>Новикова Ольга Васильевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Обществознание</td>
-<td>11В · гр. 1 + 11В · гр. 2</td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>11А + 11Б + 11В + 11Г + 11Д Техи + 11Д гумы + 11Е</td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td>11А Ист + 11Б Ист + 11В Ист</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>11Д</td><td>Джурич Мария Романовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Литература</td>
-<td>11Е</td><td>Капустина Галина Леонидовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Математика</td>
-<td>11Г · гр. 1 + 11Г · гр. 2</td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Информатика</td>
-<td>11В ИКТ + 11Г ИКТ</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11А · гр. 1 + 11А · гр. 2</td><td>Ненаглядова Ксения Николаевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11Б · гр. 1 + 11Б · гр. 2</td><td>Дубенецкая Елена Рудольфовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Математика</td>
-<td>11Д Техи</td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>11Д гумы</td><td>Бычков Михаил Андреевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Обществознание</td>
-<td>11Е · гр. 1 + 11Е · гр. 2</td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>11Д Техи</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Литература</td>
-<td>11Г</td><td>Джурич Мария Романовна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>11В · гр. 1 + 11В · гр. 2</td><td>Куликова Ирина Владимировна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Математика</td>
-<td>11Е · гр. 1 + 11Е · гр. 2</td><td>Ненаглядова Ксения Николаевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>11А · гр. 1 + 11А · гр. 2</td><td>Ихнева Валерия Евгеньевна</td></tr><tr>
-<td><b>Ср</b><small>09.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Обществознание</td>
-<td>11Б · гр. 1 + 11Б · гр. 2</td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">08:30–09:15</td><td>Математика</td>
-<td>10Т ИИ + 10Т Мех</td><td>Эйсымонт Инна Михайловна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Биология</td>
-<td>9А</td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">09:30–10:15</td><td>Основы безопасности и защиты Родины</td>
-<td>10Т ИИ + 10Т Мех</td><td>Хлопникова Наталья Юрьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Литература</td>
-<td>10Т ИИ + 10Т Мех</td><td>Оськина Екатерина Алексеевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">10:35–11:20</td><td>Основы безопасности и защиты Родины</td>
-<td>9А + 9Б</td><td>Лазарева Татьяна Геннадьевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>География</td>
-<td>9А</td><td>Ермолаев Фёдор Сергеевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>История</td>
-<td>9Б</td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">11:30–12:15</td><td>Обществознание</td>
-<td>10Т ИИ + 10Т Мех</td><td>Коновалов Максим Анатольевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>9А</td><td>Володина Юлия Сергеевна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Литература</td>
-<td>9Б</td><td>Павлов Дмитрий Игоревич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">12:25–13:10</td><td>Физика</td>
-<td>10Т ИИ + 10Т Мех</td><td>Правдина Людмила Вениаминовна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>AI-проект</td>
-<td>10Т ИИ</td><td>Душкин Р.В.</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>География</td>
-<td>9Б</td><td>Ермолаев Фёдор Сергеевич</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>Информатика</td>
-<td>10Т Мех</td><td>Коптяева Мария Александровна</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">13:20–14:05</td><td>История</td>
-<td>9А</td><td>Хозиев Сергей Заурбекович</td></tr><tr>
-<td><b>Чт</b><small>10.09.2026</small></td>
-<td class="time">14:35–15:20</td><td>ИИ-грамотность</td>
-<td>10Т ИИ + 10Т Мех</td><td>Душкин Р.В.</td></tr></tbody></table></div></section>
+<p class="footer">Статическая online-сетка с исправлением: Селиванова/Мезенцева и промтинг исключены из четвергового online-блока 10Т. Динамическая подсветка использует только локальное время устройства.</p>
+</div></main>
 
-</div></main></body></html>
+<script>
+(function(){
+  const now = new Date();
+  const jsDay = now.getDay(); // 0 вс ... 2 вт, 3 ср, 4 чт
+  const mins = now.getHours()*60 + now.getMinutes();
+  const pill = document.getElementById('currentPill');
+  const text = document.getElementById('currentText');
+  const dayNames = {2:'Вторник',3:'Среда',4:'Четверг'};
+  const rows = [...document.querySelectorAll('.slot-row')];
+  let current = null;
+
+  document.querySelectorAll('.day-section').forEach(s=>{
+    if(s.id === 'day-'+jsDay) s.classList.add('today');
+  });
+
+  for(const row of rows){
+    const wd = Number(row.dataset.weekday);
+    if(wd !== jsDay) continue;
+    const [sh,sm] = row.dataset.start.split(':').map(Number);
+    const [eh,em] = row.dataset.end.split(':').map(Number);
+    const start = sh*60+sm, end = eh*60+em;
+    if(mins >= start && mins <= end){
+      current = row;
+      row.classList.add('current');
+      break;
+    }
+  }
+
+  if(current){
+    pill.classList.add('live');
+    const start=current.dataset.start, end=current.dataset.end;
+    const cards=[...current.querySelectorAll('.lesson-card .class')].map(x=>x.textContent.trim());
+    text.innerHTML='<b>Сейчас · '+dayNames[jsDay]+' '+start+'–'+end+':</b> '+cards.join(' · ');
+  } else if(dayNames[jsDay]) {
+    const todayRows = rows.filter(r=>Number(r.dataset.weekday)===jsDay);
+    let next = null;
+    for(const row of todayRows){
+      const [h,m] = row.dataset.start.split(':').map(Number);
+      if(h*60+m > mins){ next=row; break; }
+    }
+    if(next){
+      text.innerHTML='<b>Сейчас:</b> перерыв. Следующий слот '+next.dataset.start+'–'+next.dataset.end+'.';
+    } else {
+      text.innerHTML='<b>'+dayNames[jsDay]+':</b> online-занятия на сегодня закончились.';
+    }
+  } else {
+    text.innerHTML='<b>Сейчас:</b> сегодня не основной online-день. Online-сетка: вторник, среда, четверг.';
+  }
+})();
+</script>
+</body>
+</html>
