@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Образовательный кредит</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f4f5f7;
+  --surface:#ffffff;
+  --surface-2:#fafbfc;
+  --ink:#101418;
+  --ink-2:#4a5158;
+  --muted:#7d858d;
+  --line:#e4e7eb;
+  --line-strong:#cfd4da;
+  --accent:#2a78d6;
+  --accent-soft:#eaf2fd;
+  --series-1:#2a78d6;
+  --series-2:#eb6834;
+  --green:#1f9254;
+  --green-bg:#e8f6ed;
+  --green-line:#9ad3b1;
+  --danger:#d03b3b;
+  --radius:16px;
+  --shadow:0 1px 2px rgba(16,20,24,.06), 0 8px 24px rgba(16,20,24,.05);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-size:16px;
+  line-height:1.45;
+  -webkit-text-size-adjust:100%;
+  min-height:100vh;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select{font:inherit;color:inherit}
+
+/* ---------- Шапка ---------- */
+.topbar{
+  position:sticky; top:0; z-index:30;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top);
+}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:10px 16px 0;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{
+  width:38px;height:38px;border-radius:11px;flex:0 0 auto;
+  background:linear-gradient(140deg,#2a78d6,#1c5cab);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:700;font-size:19px;letter-spacing:-.5px;
+}
+.brand h1{font-size:17px;margin:0;font-weight:650;letter-spacing:-.2px}
+.brand p{margin:0;font-size:12.5px;color:var(--muted)}
+.tabs{display:flex;gap:2px;margin-top:10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  border:0;background:none;padding:9px 14px 11px;font-size:14.5px;color:var(--muted);
+  border-bottom:2.5px solid transparent;white-space:nowrap;font-weight:500;
+}
+.tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tab:disabled{opacity:.4}
+
+main{max-width:1180px;margin:0 auto;padding:18px 16px 120px}
+.screen[hidden]{display:none}
+
+/* ---------- Чат ---------- */
+.chat-wrap{max-width:760px;margin:0 auto}
+.msg{display:flex;margin-bottom:12px;animation:pop .22s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg.bot{justify-content:flex-start}
+.msg.me{justify-content:flex-end}
+.bubble{
+  max-width:min(86%,560px);padding:12px 15px;border-radius:18px;
+  font-size:15.5px;box-shadow:var(--shadow);
+}
+.bot .bubble{background:var(--surface);border-bottom-left-radius:6px}
+.me .bubble{background:var(--accent);color:#fff;border-bottom-right-radius:6px;box-shadow:none;position:relative}
+.bubble .hint{display:block;margin-top:6px;font-size:13px;color:var(--muted);line-height:1.4}
+.edit-btn{
+  border:0;background:rgba(255,255,255,.22);color:#fff;border-radius:8px;
+  font-size:12px;padding:2px 8px;margin-left:10px;vertical-align:2px;
+}
+.dock{
+  position:fixed;left:0;right:0;bottom:0;z-index:25;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:saturate(180%) blur(12px);
+  border-top:1px solid var(--line);
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+}
+.dock-inner{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;
+  padding:9px 16px;font-size:14.5px;transition:.12s;
+}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.entry{display:flex;gap:10px}
+.entry input{
+  flex:1;min-width:0;border:1.5px solid var(--line-strong);border-radius:12px;
+  padding:13px 15px;font-size:16px;background:var(--surface);outline:none;
+}
+.entry input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.entry .unit{position:relative;flex:1;display:flex;align-items:center}
+.entry .unit input{width:100%}
+.entry .unit span{position:absolute;right:14px;color:var(--muted);font-size:14px;pointer-events:none}
+.send{
+  border:0;background:var(--accent);color:#fff;border-radius:12px;padding:0 20px;
+  font-size:15px;font-weight:600;flex:0 0 auto;
+}
+.send:disabled{opacity:.45}
+.dock-note{font-size:12.5px;color:var(--muted)}
+.err{color:var(--danger);font-size:13px}
+
+/* ---------- Карточки ---------- */
+.card{
+  background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:18px;margin-bottom:16px;
+}
+.card > h2{margin:0 0 4px;font-size:16px;font-weight:650;letter-spacing:-.2px}
+.card > .sub{margin:0 0 16px;font-size:13px;color:var(--muted)}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
+.tile{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:15px 16px}
+.tile .k{font-size:12.5px;color:var(--muted);margin-bottom:5px;line-height:1.3}
+.tile .v{font-size:22px;font-weight:650;letter-spacing:-.5px;line-height:1.15}
+.tile .v small{font-size:14px;font-weight:500;color:var(--ink-2)}
+.tile.hero{background:linear-gradient(140deg,#2a78d6,#1c5cab);color:#fff}
+.tile.hero .k{color:rgba(255,255,255,.8)}
+.tile.hero .v small{color:rgba(255,255,255,.85)}
+.tile.warn .v{color:var(--series-2)}
+
+/* ---------- Таблица ---------- */
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -18px;padding:0 18px}
+table.grid{border-collapse:separate;border-spacing:0;font-size:13.5px;min-width:100%}
+table.grid th,table.grid td{
+  border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+  padding:8px 10px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;
+}
+table.grid th.rowhead,table.grid td.rowhead{
+  text-align:left;white-space:normal;min-width:190px;position:sticky;left:0;z-index:2;
+  background:var(--surface);font-weight:500;font-variant-numeric:normal;
+}
+table.grid td.sym{text-align:left;color:var(--muted);font-size:12.5px;min-width:44px;
+  position:sticky;left:190px;z-index:2;background:var(--surface)}
+table.grid thead th{
+  background:var(--surface-2);font-weight:600;font-size:12.5px;color:var(--ink-2);
+  position:sticky;top:0;z-index:1;
+}
+table.grid thead th.rowhead{z-index:3}
+table.grid thead tr.groups th{text-align:center;color:var(--muted);font-weight:600;
+  text-transform:uppercase;letter-spacing:.4px;font-size:11px}
+table.grid tr.total td{border-bottom:none;font-weight:600;background:var(--surface-2)}
+table.grid tr.total td.rowhead,table.grid tr.total td.sym{background:var(--surface-2)}
+table.grid tr.sep td{border-top:2px solid var(--line-strong)}
+.cell-in{
+  width:100%;min-width:86px;border:1px solid var(--green-line);background:var(--green-bg);
+  border-radius:7px;padding:5px 7px;text-align:right;font-size:13.5px;
+  font-variant-numeric:tabular-nums;outline:none;
+}
+.cell-in:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(31,146,84,.15)}
+.legend-green{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted)}
+.legend-green i{width:13px;height:13px;border-radius:4px;background:var(--green-bg);
+  border:1px solid var(--green-line);display:inline-block}
+
+/* ---------- Графики ---------- */
+.vtabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.vtab{border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;
+  padding:7px 14px;font-size:13.5px;color:var(--ink-2)}
+.vtab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chart{width:100%;display:block;overflow:visible}
+.chart .grid-line{stroke:var(--line);stroke-width:1}
+.chart .axis{stroke:var(--line-strong);stroke-width:1}
+.chart text{fill:var(--muted);font-size:11px;font-family:inherit}
+.chart text.val{fill:var(--ink-2);font-size:11px;font-variant-numeric:tabular-nums}
+.chart .bar{transition:opacity .12s}
+.chart .bar:hover{opacity:.82}
+.chart-title{font-size:14px;font-weight:600;margin:0 0 2px}
+.chart-sub{font-size:12.5px;color:var(--muted);margin:0 0 10px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--ink-2)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:6px}
+#tip{
+  position:fixed;z-index:60;pointer-events:none;background:var(--ink);color:#fff;
+  padding:7px 10px;border-radius:9px;font-size:12.5px;line-height:1.35;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);opacity:0;transition:opacity .1s;max-width:220px;
+}
+#tip.on{opacity:1}
+#tip b{font-variant-numeric:tabular-nums}
+
+/* ---------- Кнопки ---------- */
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--line-strong);background:var(--surface);border-radius:12px;
+  padding:11px 17px;font-size:14.5px;font-weight:500;transition:.12s;
+}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{filter:brightness(1.06);color:#fff}
+.btn.ghost{border-color:transparent;color:var(--muted)}
+.btn.danger:hover{border-color:var(--danger);color:var(--danger)}
+
+/* ---------- Сравнение / сохранённые ---------- */
+.pickers{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+.picker label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.picker select{
+  width:100%;border:1.5px solid var(--line-strong);border-radius:12px;padding:11px 13px;
+  background:var(--surface);font-size:15px;
+}
+.cmp{width:100%;border-collapse:collapse;font-size:14px}
+.cmp th,.cmp td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:right;
+  font-variant-numeric:tabular-nums}
+.cmp th:first-child,.cmp td:first-child{text-align:left;font-variant-numeric:normal}
+.cmp thead th{font-size:12.5px;color:var(--muted);font-weight:600}
+.cmp .diff.up{color:var(--series-2)}
+.cmp .diff.down{color:var(--green)}
+.saved-item{
+  display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);
+}
+.saved-item:last-child{border-bottom:none}
+.saved-item .info{flex:1;min-width:0}
+.saved-item .nm{font-weight:550;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.saved-item .meta{font-size:12.5px;color:var(--muted)}
+.empty{color:var(--muted);font-size:14px;padding:10px 0}
+.notice{
+  background:#fff8e6;border:1px solid #f2dfae;color:#6b5518;border-radius:12px;
+  padding:11px 14px;font-size:13.5px;margin-bottom:14px;
+}
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);z-index:70;
+  background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;
+  opacity:0;transition:.2s;pointer-events:none;box-shadow:0 8px 28px rgba(0,0,0,.22);
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Печать ---------- */
+@media print{
+  @page{size:A4 landscape;margin:12mm}
+  body{background:#fff;font-size:11px}
+  .topbar,.dock,.actions,.vtabs,#tip,.no-print{display:none !important}
+  main{padding:0;max-width:none}
+  .card{box-shadow:none;border:1px solid #ccc;margin-bottom:10px;padding:12px}
+  .tiles{grid-template-columns:repeat(5,1fr);page-break-inside:avoid}
+  .tile{box-shadow:none;border:1px solid #ccc}
+  .tscroll,table.grid,.chart,.legend{page-break-inside:avoid}
+  .tile.hero{background:#fff;color:#000;border:2px solid #2a78d6}
+  .tile.hero .k{color:#555}
+  .tile.hero .v small{color:#555}
+  .tscroll{overflow:visible !important;margin:0;padding:0}
+  table.grid{font-size:8.6px;width:100%;table-layout:auto}
+  table.grid th,table.grid td{padding:3px 4px;position:static !important}
+  table.grid th.rowhead,table.grid td.rowhead{min-width:0;width:132px;font-size:8.6px}
+  table.grid td.sym{min-width:0;width:26px}
+  .cell-in{border:none;background:#eaf6ee;padding:1px 2px;font-size:8.6px;min-width:0;
+    border-radius:3px;-webkit-appearance:none;appearance:none}
+  .tile .v{font-size:15px}
+  .cmp th,.cmp td{padding:6px 6px}
+  .chart{max-height:none !important}
+  .screen[hidden]{display:none !important}
+  .print-only{display:block !important}
+}
+.print-only{display:none}
+@media (max-width:560px){
+  .bubble{max-width:92%}
+  main{padding:14px 12px 130px}
+  .card{padding:15px;border-radius:14px}
+  .tscroll{margin:0 -15px;padding:0 15px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">₽</div>
+      <div>
+        <h1>Образовательный кредит</h1>
+        <p>Расчёт платежей и переплаты · работает без интернета</p>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-screen="chat" aria-selected="true">Диалог</button>
+      <button class="tab" role="tab" data-screen="result" aria-selected="false">Расчёт</button>
+      <button class="tab" role="tab" data-screen="compare" aria-selected="false">Сравнение</button>
+      <button class="tab" role="tab" data-screen="saved" aria-selected="false">Сохранённые</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section class="screen" id="screen-chat">
+    <div class="chat-wrap" id="chatLog"></div>
+  </section>
+
+  <section class="screen" id="screen-result" hidden></section>
+
+  <section class="screen" id="screen-compare" hidden></section>
+
+  <section class="screen" id="screen-saved" hidden></section>
+</main>
+
+<div class="dock" id="dock" hidden>
+  <div class="dock-inner" id="dockInner"></div>
+</div>
+
+<div id="tip"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+/* ============================================================
+   ОБРАЗОВАТЕЛЬНЫЙ КРЕДИТ — автономное приложение (один файл)
+   Модель повторяет расчёт из Excel:
+     Sn  — сумма кредита на начало периода (накопительно)
+     αn  — pn / 12
+     Xn  — Sn · αn (льготный период)
+     Xk  — аннуитет: S·(1+α)^N·α / ((1+α)^N − 1), округление до копейки
+   ============================================================ */
+
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const MONTHS_PER_SEM = 6;
+
+/* ---------- форматирование ---------- */
+const _nf = {};
+function nf(d){ return _nf[d] || (_nf[d] = new Intl.NumberFormat('ru-RU', {minimumFractionDigits:d, maximumFractionDigits:d})); }
+function money(x, d){ if(!isFinite(x)) return '—'; return nf(d == null ? 2 : d).format(x); }
+function moneyAuto(x){
+  if(!isFinite(x)) return '—';
+  return Math.abs(x - Math.round(x)) < 1e-9 ? money(x, 0) : money(x, 2);
+}
+function pctTxt(x){
+  if(!isFinite(x)) return '—';
+  return (Math.abs(x - Math.round(x)) < 1e-9 ? money(x, 0) : money(x, 2)) + '%';
+}
+function short(x){
+  const a = Math.abs(x);
+  if(a >= 1e6) return money(x / 1e6, a >= 1e7 ? 1 : 2) + ' млн';
+  if(a >= 1e4) return money(Math.round(x / 1e3), 0) + ' тыс.';
+  if(a >= 1e3) return money(x / 1e3, 1) + ' тыс.';
+  return money(Math.round(x), 0);
+}
+function parseNum(s){
+  if(typeof s === 'number') return s;
+  const t = String(s).replace(/ /g,'').replace(/\s/g,'').replace(',', '.').replace(/[^0-9.\-]/g,'');
+  if(t === '' || t === '-' || t === '.') return NaN;
+  return parseFloat(t);
+}
+function dateTxt(ts){
+  const d = new Date(ts);
+  return d.toLocaleDateString('ru-RU', {day:'2-digit', month:'2-digit', year:'numeric'}) +
+         ', ' + d.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'});
+}
+function plural(n, one, few, many){
+  const m10 = n % 10, m100 = n % 100;
+  if(m10 === 1 && m100 !== 11) return one;
+  if(m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
+  return many;
+}
+
+/* ---------- модель ---------- */
+function buildState(a){
+  const S = a.semesters;
+  const costs = [];
+  for(let i = 0; i < S; i++){
+    if(a.costMode === 'each')      costs.push(a['cost_' + i]);
+    else if(a.costMode === 'index') costs.push(a.cost * Math.pow(1 + a.indexPct / 100, Math.floor(i / 2)));
+    else                            costs.push(a.cost);
+  }
+  const rates = [], counts = [];
+  for(let i = 0; i < S; i++){
+    const r = a.benefit ? (i < 2 ? a.baseRate * 0.4 : (i < 4 ? a.baseRate * 0.6 : a.baseRate)) : a.baseRate;
+    rates.push(Math.round(r * 1e6) / 1e6);
+    counts.push(i === S - 1 ? MONTHS_PER_SEM + a.graceMonths : MONTHS_PER_SEM);
+  }
+  rates.push(a.baseRate);
+  counts.push(Math.round(a.repayYears * 12));
+  return {
+    name: a.name || ('Расчёт от ' + new Date().toLocaleDateString('ru-RU')),
+    semesters: S, costs: costs, rates: rates, counts: counts,
+    baseRate: a.baseRate, benefit: a.benefit, graceMonths: a.graceMonths,
+    repayYears: a.repayYears, createdAt: Date.now()
+  };
+}
+
+function annuity(P, alpha, n){
+  if(!(n > 0)) return 0;
+  if(Math.abs(alpha) < 1e-12) return P / n;
+  const q = Math.pow(1 + alpha, n);
+  return P * q * alpha / (q - 1);
+}
+
+function compute(st){
+  const S = st.semesters, P = S + 1;
+  const names = [], Sn = [], alpha = [], X = [], sum = [];
+  let acc = 0;
+  for(let i = 0; i < S; i++){
+    acc += (+st.costs[i] || 0);
+    Sn.push(acc);
+    if(i < S - 1) names.push((i + 1) + ' семестр');
+    else names.push(S + ' семестр' + (st.graceMonths > 0 ? ' + ' + st.graceMonths + ' мес' : ''));
+  }
+  Sn.push(acc);
+  names.push('после трудоустройства');
+
+  for(let i = 0; i < P; i++){
+    const al = (+st.rates[i] || 0) / 100 / 12;
+    alpha.push(al);
+    const n = Math.round(+st.counts[i] || 0);
+    let x;
+    if(i < P - 1) x = Sn[i] * al;                                   // льготный период: только проценты
+    else          x = Math.round(annuity(Sn[i], al, n) * 100) / 100; // аннуитет, до копейки
+    X.push(x);
+    sum.push(x * n);
+  }
+  const total = sum.reduce((a, b) => a + b, 0);
+  const principal = Sn[P - 1];
+  const overpay = total - principal;
+  return {
+    S: S, P: P, names: names, Sn: Sn, alpha: alpha, X: X, sum: sum,
+    counts: st.counts.map(v => Math.round(+v || 0)),
+    rates: st.rates.map(v => +v || 0),
+    total: total, principal: principal, overpay: overpay,
+    overpayPct: principal ? Math.round(overpay / principal * 10000) / 100 : 0,
+    graceTotal: sum.slice(0, P - 1).reduce((a, b) => a + b, 0),
+    graceMonths: st.counts.slice(0, P - 1).reduce((a, b) => a + (+b || 0), 0)
+  };
+}
+
+/* ---------- хранилище ---------- */
+const LS_KEY = 'eduCredit.calcs.v1';
+let lsOk = true, memStore = [];
+function loadAll(){
+  if(!lsOk) return memStore;
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    memStore = raw ? JSON.parse(raw) : [];
+    return memStore;
+  }catch(e){ lsOk = false; return memStore; }
+}
+function saveAll(list){
+  memStore = list;
+  if(!lsOk) return false;
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(list)); return true; }
+  catch(e){ lsOk = false; return false; }
+}
+
+/* ---------- интерфейс: экраны, тосты ---------- */
+let current = null;   // текущий расчёт (state)
+let answers = {};     // ответы диалога
+let editId  = null;   // редактируемый шаг диалога
+
+function syncDockPad(){
+  const d = $('#dock'), m = document.querySelector('main');
+  if(!d || !m) return;
+  requestAnimationFrame(() => {
+    m.style.paddingBottom = d.hidden ? '' : (d.offsetHeight + 30) + 'px';
+  });
+}
+
+function showScreen(name){
+  $$('.screen').forEach(s => { s.hidden = (s.id !== 'screen-' + name); });
+  $$('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.screen === name)));
+  $('#dock').hidden = (name !== 'chat');
+  syncDockPad();
+  if(name === 'result')  renderResult();
+  if(name === 'compare') renderCompare();
+  if(name === 'saved')   renderSaved();
+  window.scrollTo(0, 0);
+}
+$$('.tab').forEach(t => t.addEventListener('click', () => {
+  if(t.dataset.screen !== 'chat' && t.dataset.screen !== 'saved' && !current){
+    toast('Сначала заполните диалог'); return;
+  }
+  showScreen(t.dataset.screen);
+}));
+
+let toastTimer = null;
+function toast(msg){
+  const el = $('#toast');
+  el.textContent = msg; el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
+}
+
+/* ============================================================
+   ЭТАП 1 — ДИАЛОГ
+   ============================================================ */
+function chips(vals, suffix){
+  return vals.map(v => ({label: v + (suffix || ''), value: v}));
+}
+
+function buildQueue(){
+  const S = (answers.semesters != null ? answers.semesters : 8);
+  const q = [];
+
+  q.push({
+    id:'semesters', type:'num', int:true, min:1, max:24, unit:'семестров',
+    q:'Сколько семестров длится обучение?',
+    hint:'8 — бакалавриат, 4 — магистратура, 10–12 — специалитет.',
+    chips: chips([4, 6, 8, 10, 12]),
+    fmt: v => v + ' ' + plural(v, 'семестр', 'семестра', 'семестров')
+  });
+
+  q.push({
+    id:'costMode', type:'choice',
+    q:'Как задать стоимость семестра?',
+    hint:'Стоимость можно будет поправить прямо в таблице.',
+    options:[
+      {label:'Одинаковая для всех', value:'same'},
+      {label:'Дорожает каждый год',  value:'index'},
+      {label:'Задам для каждого',    value:'each'}
+    ],
+    fmt: v => ({same:'Одинаковая для всех семестров', index:'Дорожает каждый год', each:'Задам для каждого семестра'})[v]
+  });
+
+  if(answers.costMode === 'each'){
+    for(let i = 0; i < S; i++){
+      q.push({
+        id:'cost_' + i, type:'money', min:0, max:1e9, unit:'₽',
+        q:'Стоимость ' + (i + 1) + '-го семестра?',
+        hint: i === 0 ? 'Сумма за один семестр, которую покрывает кредит.' : '',
+        chips: (i > 0 && answers['cost_' + (i - 1)] != null)
+               ? [{label:'Как в предыдущем — ' + moneyAuto(answers['cost_' + (i - 1)]) + ' ₽', value: answers['cost_' + (i - 1)]}]
+               : [],
+        fmt: v => moneyAuto(v) + ' ₽'
+      });
+    }
+  }else{
+    q.push({
+      id:'cost', type:'money', min:0, max:1e9, unit:'₽',
+      q: answers.costMode === 'index' ? 'Сколько стоит первый семестр?' : 'Сколько стоит один семестр?',
+      hint:'Сумма за один семестр, которую покрывает кредит.',
+      chips: chips([120000, 180000, 210000, 250000]).map(c => ({label: moneyAuto(c.value) + ' ₽', value: c.value})),
+      fmt: v => moneyAuto(v) + ' ₽'
+    });
+    if(answers.costMode === 'index'){
+      q.push({
+        id:'indexPct', type:'num', min:0, max:100, unit:'% в год',
+        q:'На сколько процентов дорожает обучение каждый год?',
+        hint:'Повышение применяется раз в два семестра.',
+        chips: chips([5, 8, 10, 15], ' %'),
+        fmt: v => '+' + pctTxt(v) + ' в год'
+      });
+    }
+  }
+
+  q.push({
+    id:'baseRate', type:'num', min:0, max:100, unit:'% годовых',
+    q:'Какая годовая ставка по кредиту?',
+    fmt: v => pctTxt(v) + ' годовых'
+  });
+
+  q.push({
+    id:'benefit', type:'choice',
+    q:'Рассчитать с господдержкой или без?',
+    options:[{label:'С господдержкой', value:true}, {label:'Без господдержки', value:false}],
+    fmt: v => v ? 'С господдержкой' : 'Без господдержки'
+  });
+
+  q.push({
+    id:'graceMonths', type:'num', int:true, min:0, max:36, unit:'месяцев',
+    q:'Сколько месяцев отсрочки после выпуска?',
+    chips: chips([0, 3, 6, 9, 12]),
+    fmt: v => v + ' ' + plural(v, 'месяц', 'месяца', 'месяцев') + ' отсрочки'
+  });
+
+  q.push({
+    id:'repayYears', type:'num', min:0.5, max:40, unit:'лет',
+    q:'За сколько лет выплачивается основной долг?',
+    chips: chips([5, 10, 15]),
+    fmt: v => v + ' ' + plural(v, 'год', 'года', 'лет') + ' (' + Math.round(v * 12) + ' платежей)'
+  });
+
+  q.push({
+    id:'name', type:'text',
+    q:'Как назвать этот расчёт?',
+    hint:'Под этим именем он сохранится на планшете.',
+    chips:[{label:'Расчёт от ' + new Date().toLocaleDateString('ru-RU'), value:'Расчёт от ' + new Date().toLocaleDateString('ru-RU')}],
+    fmt: v => v
+  });
+
+  return q;
+}
+
+function cursorIndex(queue){
+  for(let i = 0; i < queue.length; i++) if(answers[queue[i].id] === undefined) return i;
+  return queue.length;
+}
+
+function bubble(cls, html){
+  return '<div class="msg ' + cls + '"><div class="bubble">' + html + '</div></div>';
+}
+function esc(s){
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+function renderChat(){
+  const queue = buildQueue();
+  const cur = cursorIndex(queue);
+  const askIdx = (editId != null) ? queue.findIndex(s => s.id === editId) : cur;
+  let html = bubble('bot',
+    'Здравствуйте! Рассчитаем образовательный кредит.<br>Я задам несколько вопросов, а потом соберу таблицу с платежами и переплатой.' +
+    '<span class="hint">Любой ответ можно поправить — нажмите «изменить» рядом с ним.</span>');
+
+  for(let i = 0; i < queue.length; i++){
+    const st = queue[i];
+    if(answers[st.id] === undefined) break;
+    html += bubble('bot', esc(st.q));
+    html += bubble('me', esc(st.fmt(answers[st.id])) +
+      '<button class="edit-btn" data-edit="' + st.id + '">изменить</button>');
+  }
+
+  if(askIdx > -1 && askIdx < queue.length){
+    const st = queue[askIdx];
+    html += bubble('bot', esc(st.q) + (st.hint ? '<span class="hint">' + esc(st.hint) + '</span>' : ''));
+  }else{
+    html += bubble('bot', 'Готово — данных достаточно.<br>Собрал таблицу расчёта.' +
+      '<span class="hint">В таблице зелёные поля можно менять прямо на месте: итоги пересчитаются сразу.</span>');
+  }
+
+  const log = $('#chatLog');
+  log.innerHTML = html;
+  $$('[data-edit]', log).forEach(b => b.addEventListener('click', () => {
+    editId = b.dataset.edit; renderChat();
+  }));
+
+  renderDock(queue, askIdx);
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    window.scrollTo({top: document.body.scrollHeight, behavior: 'instant'});
+  }));
+}
+window.addEventListener('resize', syncDockPad);
+
+function renderDock(queue, askIdx){
+  const dock = $('#dockInner');
+  if(askIdx < 0 || askIdx >= queue.length){
+    dock.innerHTML =
+      '<div class="chips">' +
+        '<button class="chip primary" id="goResult">Показать расчёт →</button>' +
+        '<button class="chip" id="restart">Начать заново</button>' +
+      '</div>';
+    $('#goResult').addEventListener('click', () => { current = buildState(answers); showScreen('result'); });
+    $('#restart').addEventListener('click', restart);
+    syncDockPad();
+    return;
+  }
+
+  const st = queue[askIdx];
+  let html = '';
+
+  if(st.type === 'choice'){
+    html += '<div class="chips">' + st.options.map((o, i) =>
+      '<button class="chip' + (i === 0 ? ' primary' : '') + '" data-opt="' + i + '">' + esc(o.label) + '</button>'
+    ).join('') + '</div>';
+  }else{
+    if(st.chips && st.chips.length){
+      html += '<div class="chips">' + st.chips.map((c, i) =>
+        '<button class="chip" data-chip="' + i + '">' + esc(c.label) + '</button>'
+      ).join('') + '</div>';
+    }
+    const val = answers[st.id] !== undefined ? answers[st.id] : '';
+    html += '<div class="entry">' +
+      (st.unit
+        ? '<div class="unit"><input id="ansInput" type="text" inputmode="decimal" autocomplete="off" placeholder="Введите число" value="' + esc(val) + '"><span>' + esc(st.unit) + '</span></div>'
+        : '<input id="ansInput" type="text" autocomplete="off" placeholder="Введите ответ" value="' + esc(val) + '">') +
+      '<button class="send" id="sendBtn">OK</button></div>';
+  }
+
+  html += '<div class="dock-note" id="dockNote">' +
+      (askIdx > 0 ? '<button class="btn ghost" id="backBtn" style="padding:2px 0;border:0;font-size:13px">← назад</button>' : '') +
+      '</div>';
+
+  dock.innerHTML = html;
+
+  $$('[data-opt]', dock).forEach(b => b.addEventListener('click', () => {
+    accept(st, st.options[+b.dataset.opt].value);
+  }));
+  $$('[data-chip]', dock).forEach(b => b.addEventListener('click', () => {
+    const v = st.chips[+b.dataset.chip].value;
+    if(st.type === 'text'){ accept(st, v); }
+    else { $('#ansInput').value = v; submitInput(st); }
+  }));
+  const inp = $('#ansInput');
+  if(inp){
+    $('#sendBtn').addEventListener('click', () => submitInput(st));
+    inp.addEventListener('keydown', e => { if(e.key === 'Enter') submitInput(st); });
+    if(window.matchMedia('(pointer:fine)').matches) inp.focus();
+  }
+  syncDockPad();
+  const back = $('#backBtn');
+  if(back) back.addEventListener('click', () => {
+    editId = null;
+    const prev = queue[askIdx - 1];
+    delete answers[prev.id];
+    renderChat();
+  });
+}
+
+function submitInput(st){
+  const inp = $('#ansInput');
+  const note = $('#dockNote');
+  if(st.type === 'text'){
+    const v = inp.value.trim();
+    if(!v){ note.innerHTML = '<span class="err">Введите название</span>'; return; }
+    accept(st, v); return;
+  }
+  let v = parseNum(inp.value);
+  if(isNaN(v)){ note.innerHTML = '<span class="err">Нужно число</span>'; return; }
+  if(st.int) v = Math.round(v);
+  if(st.min != null && v < st.min){ note.innerHTML = '<span class="err">Не меньше ' + moneyAuto(st.min) + '</span>'; return; }
+  if(st.max != null && v > st.max){ note.innerHTML = '<span class="err">Не больше ' + moneyAuto(st.max) + '</span>'; return; }
+  accept(st, v);
+}
+
+function accept(st, value){
+  answers[st.id] = value;
+  editId = null;
+  renderChat();
+}
+
+function restart(){
+  answers = {}; editId = null; current = null;
+  renderChat(); showScreen('chat');
+}
+
+/* ============================================================
+   ЭТАП 2 — ТАБЛИЦА, ГРАФИКИ, СРАВНЕНИЕ
+   ============================================================ */
+let chartTab = 'debt';
+
+function renderResult(){
+  if(!current){ showScreen('chat'); return; }
+  const c = compute(current);
+  const S = c.S, P = c.P;
+
+  /* --- плитки --- */
+  let h = '<div class="tiles">' +
+    tile('Сумма кредита', moneyAuto(c.principal) + ' <small>₽</small>') +
+    tile('Ежемесячный платёж после трудоустройства', money(c.X[P - 1]) + ' <small>₽</small>') +
+    tile('Общая сумма выплат', moneyAuto(c.total) + ' <small>₽</small>', 'hero') +
+    tile('Переплата', moneyAuto(c.overpay) + ' <small>₽</small>', 'warn') +
+    tile('Процент переплаты', pctTxt(c.overpayPct), 'warn') +
+  '</div>';
+
+  /* --- таблица --- */
+  h += '<div class="card"><h2>' + esc(current.name) + '</h2>' +
+       '<p class="sub">' + S + ' ' + plural(S, 'семестр', 'семестра', 'семестров') +
+       ' · льготный период ' + c.graceMonths + ' ' + plural(c.graceMonths, 'месяц', 'месяца', 'месяцев') +
+       ' · выплата тела кредита ' + current.repayYears + ' ' + plural(current.repayYears, 'год', 'года', 'лет') + '</p>';
+  h += '<div class="tscroll"><table class="grid"><thead>';
+  h += '<tr class="groups"><th class="rowhead" colspan="2"></th>' +
+       '<th colspan="' + S + '">льготные периоды</th>' +
+       '<th>период выплаты тела кредита</th></tr>';
+  h += '<tr><th class="rowhead"></th><th class="sym"></th>' +
+       c.names.map(n => '<th>' + esc(n) + '</th>').join('') + '</tr></thead><tbody>';
+
+  h += row('Стоимость семестра, ₽', 'A<sub>k</sub>=',
+        idx(P, i => i < S
+          ? inputCell('cost', i, current.costs[i])
+          : '<span style="color:var(--muted)">—</span>'));
+
+  h += row('Сумма кредита на начало периода, ₽', 'S<sub>n</sub>=',
+        idx(P, i => '<span id="c-sn-' + i + '">' + moneyAuto(c.Sn[i]) + '</span>'));
+
+  h += row('Количество выплат за период', 'N<sub>n</sub>=',
+        idx(P, i => inputCell('count', i, current.counts[i])));
+
+  h += row('Годовая ставка на период, %', 'p<sub>n</sub>=',
+        idx(P, i => inputCell('rate', i, current.rates[i])));
+
+  h += row('Коэффициент для ежемесячных процентов', '&alpha;<sub>n</sub>=',
+        idx(P, i => '<span id="c-al-' + i + '">' + money(c.alpha[i], 6) + '</span>'));
+
+  h += row('Ежемесячный платёж, ₽', 'X<sub>n</sub>=',
+        idx(P, i => '<span id="c-x-' + i + '">' + money(c.X[i]) + '</span>'));
+
+  h += row('Сумма выплат за период, ₽', '',
+        idx(P, i => '<span id="c-sum-' + i + '">' + money(c.sum[i]) + '</span>'));
+
+  h += '</tbody></table></div>';
+  h += '<div style="margin-top:14px"><span class="legend-green"><i></i>зелёные поля можно менять — итоги пересчитаются сразу</span>' +
+       '<span class="legend-green no-print" style="margin-left:16px">таблица прокручивается вбок →</span></div>';
+
+  h += '<table class="cmp" style="margin-top:14px"><tbody>' +
+       '<tr><td>Общая сумма выплат</td><td id="t-total"><b>' + moneyAuto(c.total) + ' ₽</b></td></tr>' +
+       '<tr><td>Переплата</td><td id="t-over">' + moneyAuto(c.overpay) + ' ₽</td></tr>' +
+       '<tr><td>Процент переплаты</td><td id="t-pct">' + pctTxt(c.overpayPct) + '</td></tr>' +
+       '</tbody></table>';
+
+  h += '<div class="actions no-print" style="margin-top:16px">' +
+       '<button class="btn primary" id="btnSave">Сохранить расчёт</button>' +
+       '<button class="btn" id="btnPrint">Печать / PDF</button>' +
+       '<button class="btn" id="btnEdit">Изменить ответы</button>' +
+       '<button class="btn ghost" id="btnNew">Новый расчёт</button>' +
+       '</div></div>';
+
+  /* --- графики --- */
+  h += '<div class="card" id="charts"><h2>Графики</h2>' +
+       '<p class="sub no-print">Наведите или коснитесь столбца, чтобы увидеть точную сумму.</p>' +
+       '<div class="vtabs no-print">' +
+         vtab('debt',  'Рост долга') +
+         vtab('pay',   'Выплаты') +
+         vtab('total', 'Тело и переплата') +
+       '</div><div id="chartBox"></div></div>';
+
+  $('#screen-result').innerHTML = h;
+
+  $$('.cell-in').forEach(inp => {
+    inp.addEventListener('input', onCellInput);
+    inp.addEventListener('change', e => { refreshAll(); });
+  });
+  $('#btnSave').addEventListener('click', saveCurrent);
+  $('#btnPrint').addEventListener('click', () => window.print());
+  $('#btnEdit').addEventListener('click', () => showScreen('chat'));
+  $('#btnNew').addEventListener('click', restart);
+  $$('[data-vtab]').forEach(b => b.addEventListener('click', () => { chartTab = b.dataset.vtab; drawCharts(); }));
+  drawCharts();
+}
+
+function tile(k, v, cls){
+  return '<div class="tile ' + (cls || '') + '"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>';
+}
+function vtab(id, label){
+  return '<button class="vtab" data-vtab="' + id + '" aria-selected="' + (chartTab === id) + '">' + label + '</button>';
+}
+function idx(n, fn){ const a = []; for(let i = 0; i < n; i++) a.push(fn(i)); return a; }
+function row(label, sym, cells){
+  return '<tr><td class="rowhead">' + label + '</td><td class="sym">' + sym + '</td>' +
+         cells.map(c => '<td>' + c + '</td>').join('') + '</tr>';
+}
+function inputCell(kind, i, val){
+  const v = (kind === 'rate') ? String(Math.round((+val || 0) * 1e6) / 1e6).replace('.', ',') : moneyAuto(val);
+  return '<input class="cell-in" type="text" inputmode="decimal" data-kind="' + kind + '" data-i="' + i + '" value="' + esc(v) + '">';
+}
+
+function onCellInput(e){
+  const el = e.target, kind = el.dataset.kind, i = +el.dataset.i;
+  const v = parseNum(el.value);
+  if(isNaN(v)) return;
+  if(kind === 'cost')  current.costs[i]  = Math.max(0, v);
+  if(kind === 'count') current.counts[i] = Math.max(0, Math.round(v));
+  if(kind === 'rate')  current.rates[i]  = Math.max(0, v);
+  refreshComputed();
+}
+function refreshComputed(){
+  const c = compute(current);
+  for(let i = 0; i < c.P; i++){
+    setTxt('c-sn-'  + i, moneyAuto(c.Sn[i]));
+    setTxt('c-al-'  + i, money(c.alpha[i], 6));
+    setTxt('c-x-'   + i, money(c.X[i]));
+    setTxt('c-sum-' + i, money(c.sum[i]));
+  }
+  const tiles = $$('.tiles .v');
+  if(tiles.length === 5){
+    tiles[0].innerHTML = moneyAuto(c.principal) + ' <small>₽</small>';
+    tiles[1].innerHTML = money(c.X[c.P - 1]) + ' <small>₽</small>';
+    tiles[2].innerHTML = moneyAuto(c.total) + ' <small>₽</small>';
+    tiles[3].innerHTML = moneyAuto(c.overpay) + ' <small>₽</small>';
+    tiles[4].innerHTML = pctTxt(c.overpayPct);
+  }
+  setHtml('t-total', '<b>' + moneyAuto(c.total) + ' ₽</b>');
+  setTxt('t-over', moneyAuto(c.overpay) + ' ₽');
+  setTxt('t-pct',  pctTxt(c.overpayPct));
+  drawCharts();
+}
+function refreshAll(){ renderResult(); }
+function setTxt(id, t){ const e = document.getElementById(id); if(e) e.textContent = t; }
+function setHtml(id, t){ const e = document.getElementById(id); if(e) e.innerHTML = t; }
+
+/* ---------- графики ---------- */
+function niceMax(v){
+  if(!(v > 0)) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(v))), n = v / p;
+  const m = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10;
+  return m * p;
+}
+function barPath(x, y, w, h, r){
+  r = Math.max(0, Math.min(r, w / 2, h));
+  return 'M' + x + ',' + (y + h) + ' L' + x + ',' + (y + r) +
+         ' Q' + x + ',' + y + ' ' + (x + r) + ',' + y +
+         ' L' + (x + w - r) + ',' + y + ' Q' + (x + w) + ',' + y + ' ' + (x + w) + ',' + (y + r) +
+         ' L' + (x + w) + ',' + (y + h) + ' Z';
+}
+function barChart(values, labels, color, tips){
+  const W = 760, H = 250, ml = 66, mr = 14, mt = 14, mb = 44;
+  const iw = W - ml - mr, ih = H - mt - mb;
+  const max = niceMax(Math.max.apply(null, values.concat([0])));
+  let s = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" style="max-height:280px" role="img">';
+  for(let t = 0; t <= 4; t++){
+    const y = mt + ih - ih * t / 4;
+    s += '<line class="grid-line" x1="' + ml + '" y1="' + y + '" x2="' + (W - mr) + '" y2="' + y + '"/>';
+    s += '<text x="' + (ml - 8) + '" y="' + (y + 3.5) + '" text-anchor="end">' + short(max * t / 4) + '</text>';
+  }
+  const band = iw / values.length, bw = Math.min(band * 0.62, 58);
+  values.forEach((v, i) => {
+    const hgt = max > 0 ? Math.max(v > 0 ? 2 : 0, ih * v / max) : 0;
+    const x = ml + band * i + (band - bw) / 2, y = mt + ih - hgt;
+    s += '<path class="bar" d="' + barPath(x, y, bw, hgt, 4) + '" fill="' + color + '" data-tip="' + esc(tips[i]) + '"/>';
+    s += '<text x="' + (x + bw / 2) + '" y="' + (mt + ih + 17) + '" text-anchor="middle">' + esc(labels[i]) + '</text>';
+  });
+  s += '<line class="axis" x1="' + ml + '" y1="' + (mt + ih) + '" x2="' + (W - mr) + '" y2="' + (mt + ih) + '"/>';
+  s += '</svg>';
+  return s;
+}
+function stackedBar(parts){ // [{label, value, color}]
+  const W = 760, H = 108, ml = 4, mr = 4, y = 26, bh = 46;
+  const total = parts.reduce((a, p) => a + p.value, 0) || 1;
+  const iw = W - ml - mr;
+  let x = ml, s = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" style="max-height:130px" role="img">';
+  parts.forEach((p, i) => {
+    let w = iw * p.value / total;
+    const gap = i < parts.length - 1 ? 2 : 0;
+    w = Math.max(0, w - gap);
+    s += '<rect class="bar" x="' + x + '" y="' + y + '" width="' + w + '" height="' + bh + '" rx="4" fill="' + p.color + '" data-tip="' + esc(p.label + ': ' + moneyAuto(p.value) + ' ₽') + '"/>';
+    if(w > 92){
+      s += '<text class="val" x="' + (x + 12) + '" y="' + (y + 20) + '" style="fill:#fff;font-weight:600;font-size:13px">' + short(p.value) + ' ₽</text>';
+      s += '<text x="' + (x + 12) + '" y="' + (y + 37) + '" style="fill:rgba(255,255,255,.85);font-size:11.5px">' + esc(p.label) + ' · ' + money(p.value / total * 100, 1) + '%</text>';
+    }
+    x += w + gap;
+  });
+  s += '</svg>';
+  return s;
+}
+
+function drawCharts(){
+  const box = $('#chartBox'); if(!box || !current) return;
+  const c = compute(current), S = c.S, P = c.P;
+  const shortNames = c.names.map((n, i) => i < S ? String(i + 1) : 'После');
+  let h = '';
+
+  if(chartTab === 'debt'){
+    h += '<p class="chart-title">Сумма долга на начало периода</p>' +
+         '<p class="chart-sub">Пока идёт учёба, тело кредита растёт с каждым оплаченным семестром.</p>' +
+         barChart(c.Sn.slice(0, S), shortNames.slice(0, S), 'var(--series-1)',
+           c.names.slice(0, S).map((n, i) => n + '\nДолг: ' + moneyAuto(c.Sn[i]) + ' ₽'));
+    h += '<p class="chart-sub" style="margin-top:6px">По горизонтали — номер семестра.</p>';
+  }
+
+  if(chartTab === 'pay'){
+    h += '<p class="chart-title">Выплаты по периодам — весь срок</p>' +
+         '<p class="chart-sub">Почти всё выплачивается после трудоустройства: в льготный период платятся только проценты.</p>' +
+         barChart(c.sum, shortNames, 'var(--series-1)',
+           c.names.map((n, i) => n + '\nЗа период: ' + moneyAuto(c.sum[i]) + ' ₽\nПлатёж: ' + money(c.X[i]) + ' ₽ × ' + c.counts[i]));
+    h += '<p class="chart-title" style="margin-top:22px">Только льготный период</p>' +
+         '<p class="chart-sub">Тот же график без последнего периода — видно, как растёт ежемесячный платёж по процентам.</p>' +
+         barChart(c.sum.slice(0, S), shortNames.slice(0, S), 'var(--series-2)',
+           c.names.slice(0, S).map((n, i) => n + '\nЗа период: ' + moneyAuto(c.sum[i]) + ' ₽\nПлатёж: ' + money(c.X[i]) + ' ₽ × ' + c.counts[i]));
+  }
+
+  if(chartTab === 'total'){
+    h += '<p class="chart-title">Из чего складывается общая сумма выплат</p>' +
+         '<p class="chart-sub">Всего ' + moneyAuto(c.total) + ' ₽ за ' + (c.graceMonths + c.counts[P - 1]) + ' месяцев.</p>' +
+         stackedBar([
+           {label:'Тело кредита', value:c.principal, color:'var(--series-1)'},
+           {label:'Переплата',    value:c.overpay,   color:'var(--series-2)'}
+         ]) +
+         '<div class="legend">' +
+           '<span><i style="background:var(--series-1)"></i>Тело кредита — ' + moneyAuto(c.principal) + ' ₽</span>' +
+           '<span><i style="background:var(--series-2)"></i>Переплата — ' + moneyAuto(c.overpay) + ' ₽ (' + pctTxt(c.overpayPct) + ' от тела)</span>' +
+         '</div>';
+    h += '<p class="chart-title" style="margin-top:24px">Проценты по периодам</p>' +
+         '<p class="chart-sub">Сколько процентов начислено за каждый период.</p>' +
+         barChart(c.sum.map((v, i) => i < P - 1 ? v : v - c.principal), shortNames, 'var(--series-2)',
+           c.names.map((n, i) => n + '\nПроценты: ' + moneyAuto(i < P - 1 ? c.sum[i] : c.sum[i] - c.principal) + ' ₽'));
+  }
+
+  box.innerHTML = h;
+  $$('[data-vtab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.vtab === chartTab)));
+  attachTips(box);
+}
+
+/* ---------- подсказки ---------- */
+const tipEl = () => $('#tip');
+function attachTips(root){
+  root.addEventListener('pointerover', e => {
+    const t = e.target.closest && e.target.closest('[data-tip]');
+    if(!t) return;
+    const el = tipEl();
+    el.innerHTML = esc(t.getAttribute('data-tip')).replace(/\n/g, '<br>');
+    el.classList.add('on'); moveTip(e.clientX, e.clientY);
+  });
+  root.addEventListener('pointermove', e => {
+    const t = e.target.closest && e.target.closest('[data-tip]');
+    if(t) moveTip(e.clientX, e.clientY); else tipEl().classList.remove('on');
+  });
+  root.addEventListener('pointerleave', () => tipEl().classList.remove('on'));
+  root.addEventListener('pointerdown', e => {
+    const t = e.target.closest && e.target.closest('[data-tip]');
+    if(t){
+      const el = tipEl();
+      el.innerHTML = esc(t.getAttribute('data-tip')).replace(/\n/g, '<br>');
+      el.classList.add('on'); moveTip(e.clientX, e.clientY);
+      setTimeout(() => el.classList.remove('on'), 2600);
+    }
+  });
+}
+function moveTip(x, y){
+  const el = tipEl(), w = el.offsetWidth, h = el.offsetHeight;
+  let left = x + 14, top = y - h - 12;
+  if(left + w > window.innerWidth - 8) left = x - w - 14;
+  if(top < 8) top = y + 18;
+  el.style.left = Math.max(8, left) + 'px';
+  el.style.top = top + 'px';
+}
+
+/* ============================================================
+   СОХРАНЕНИЕ, СРАВНЕНИЕ, ЭКСПОРТ
+   ============================================================ */
+function saveCurrent(){
+  const list = loadAll();
+  const rec = JSON.parse(JSON.stringify(current));
+  rec.id = 'c' + Date.now() + Math.random().toString(36).slice(2, 6);
+  rec.savedAt = Date.now();
+  list.unshift(rec);
+  const ok = saveAll(list);
+  toast(ok ? 'Расчёт сохранён' : 'Сохранено только до закрытия — браузер не даёт хранить данные');
+}
+
+function renderSaved(){
+  const list = loadAll();
+  let h = '';
+  if(!lsOk) h += '<div class="notice">Этот браузер не сохраняет данные для файла, открытого напрямую. Расчёты живут до закрытия вкладки — выгрузите их в файл кнопкой «Экспорт».</div>';
+  h += '<div class="card"><h2>Сохранённые расчёты</h2><p class="sub">Хранятся на этом планшете, интернет не нужен.</p>';
+  if(!list.length){
+    h += '<div class="empty">Пока пусто. Откройте расчёт и нажмите «Сохранить расчёт».</div>';
+  }else{
+    h += list.map(r => {
+      const cc = compute(r);
+      return '<div class="saved-item"><div class="info">' +
+        '<div class="nm">' + esc(r.name) + '</div>' +
+        '<div class="meta">' + dateTxt(r.savedAt || r.createdAt) + ' · кредит ' + moneyAuto(cc.principal) +
+        ' ₽ · выплат ' + moneyAuto(cc.total) + ' ₽ · переплата ' + pctTxt(cc.overpayPct) + '</div></div>' +
+        '<button class="btn" data-load="' + r.id + '">Открыть</button>' +
+        '<button class="btn danger" data-del="' + r.id + '">Удалить</button></div>';
+    }).join('');
+  }
+  h += '<div class="actions" style="margin-top:16px">' +
+       (current ? '<button class="btn primary" id="sSave">Сохранить текущий</button>' : '') +
+       '<button class="btn" id="sExport">Экспорт в файл</button>' +
+       '<label class="btn" style="display:inline-flex;align-items:center">Импорт из файла' +
+       '<input type="file" id="sImport" accept="application/json,.json" hidden></label>' +
+       '</div></div>';
+  $('#screen-saved').innerHTML = h;
+
+  $$('[data-load]').forEach(b => b.addEventListener('click', () => {
+    const r = loadAll().find(x => x.id === b.dataset.load);
+    if(r){ current = JSON.parse(JSON.stringify(r)); showScreen('result'); }
+  }));
+  $$('[data-del]').forEach(b => b.addEventListener('click', () => {
+    saveAll(loadAll().filter(x => x.id !== b.dataset.del));
+    renderSaved(); toast('Удалено');
+  }));
+  const sv = $('#sSave'); if(sv) sv.addEventListener('click', () => { saveCurrent(); renderSaved(); });
+  $('#sExport').addEventListener('click', exportFile);
+  $('#sImport').addEventListener('change', importFile);
+}
+
+function exportFile(){
+  const data = JSON.stringify({app:'edu-credit', v:1, items:loadAll()}, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Расчёты образовательного кредита.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+function importFile(e){
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try{
+      const d = JSON.parse(rd.result);
+      const items = Array.isArray(d) ? d : (d.items || []);
+      const list = loadAll(), have = new Set(list.map(x => x.id));
+      let n = 0;
+      items.forEach(it => { if(it && !have.has(it.id)){ list.push(it); n++; } });
+      saveAll(list); renderSaved(); toast('Добавлено расчётов: ' + n);
+    }catch(err){ toast('Не удалось прочитать файл'); }
+  };
+  rd.readAsText(f);
+  e.target.value = '';
+}
+
+let cmpA = '__cur__', cmpB = '';
+function renderCompare(){
+  const list = loadAll();
+  const opts = (sel) => ['<option value="__cur__"' + (sel === '__cur__' ? ' selected' : '') + '>Текущий расчёт' + (current ? ' — ' + esc(current.name) : '') + '</option>']
+    .concat(list.map(r => '<option value="' + r.id + '"' + (sel === r.id ? ' selected' : '') + '>' + esc(r.name) + '</option>')).join('');
+
+  let h = '<div class="card"><h2>Сравнение вариантов</h2>' +
+    '<p class="sub">Выберите два расчёта — например, кредит с господдержкой и обычный.</p>' +
+    '<div class="pickers">' +
+      '<div class="picker"><label>Вариант А</label><select id="selA">' + opts(cmpA) + '</select></div>' +
+      '<div class="picker"><label>Вариант Б</label><select id="selB">' + opts(cmpB) + '</select></div>' +
+    '</div><div id="cmpBody"></div></div>';
+  $('#screen-compare').innerHTML = h;
+  $('#selA').addEventListener('change', e => { cmpA = e.target.value; drawCompare(); });
+  $('#selB').addEventListener('change', e => { cmpB = e.target.value; drawCompare(); });
+  if(!cmpB && list.length){
+    const other = list.find(r => !current || r.name !== current.name) || list[0];
+    cmpB = other.id; $('#selB').value = cmpB;
+  }
+  drawCompare();
+}
+function getCalc(key){
+  if(key === '__cur__') return current;
+  return loadAll().find(x => x.id === key) || null;
+}
+function drawCompare(){
+  const box = $('#cmpBody'); if(!box) return;
+  const A = getCalc(cmpA), B = getCalc(cmpB);
+  if(!A || !B){
+    box.innerHTML = '<div class="empty">Нужно два расчёта. Сохраните ещё один вариант на вкладке «Расчёт».</div>';
+    return;
+  }
+  const a = compute(A), b = compute(B);
+  const rows = [
+    ['Сумма кредита',                       a.principal,        b.principal,        'money'],
+    ['Общая сумма выплат',                  a.total,            b.total,            'money'],
+    ['Переплата',                           a.overpay,          b.overpay,          'money'],
+    ['Процент переплаты',                   a.overpayPct,       b.overpayPct,       'pct'],
+    ['Платёж в льготный период (последний)', a.X[a.P - 2],      b.X[b.P - 2],       'money'],
+    ['Платёж после трудоустройства',        a.X[a.P - 1],       b.X[b.P - 1],       'money'],
+    ['Месяцев выплат после выпуска',        A.counts[a.P - 1],  B.counts[b.P - 1],  'num']
+  ];
+  const f = (v, t) => t === 'pct' ? pctTxt(v) : t === 'num' ? money(v, 0) : moneyAuto(v) + ' ₽';
+
+  let h = '<table class="cmp"><thead><tr><th></th><th>' + esc(A.name) + '</th><th>' + esc(B.name) + '</th><th>Разница</th></tr></thead><tbody>';
+  rows.forEach(r => {
+    const d = r[2] - r[1];
+    const cls = Math.abs(d) < 1e-9 ? '' : (d > 0 ? 'up' : 'down');
+    const sign = d > 0 ? '+' : '';
+    h += '<tr><td>' + r[0] + '</td><td>' + f(r[1], r[3]) + '</td><td>' + f(r[2], r[3]) + '</td>' +
+         '<td class="diff ' + cls + '">' + (Math.abs(d) < 1e-9 ? '—' : sign + f(d, r[3])) + '</td></tr>';
+  });
+  h += '</tbody></table>';
+
+  const mx = Math.max(a.total, b.total) || 1;
+  h += '<div style="margin-top:20px">' +
+       '<p class="chart-title">Тело кредита и переплата</p>' +
+       cmpBar(A.name, a, mx) + cmpBar(B.name, b, mx) +
+       '<div class="legend"><span><i style="background:var(--series-1)"></i>Тело кредита</span>' +
+       '<span><i style="background:var(--series-2)"></i>Переплата</span></div></div>';
+  h += '<div class="actions no-print" style="margin-top:18px"><button class="btn" id="cmpPrint">Печать / PDF</button></div>';
+  box.innerHTML = h;
+  $('#cmpPrint').addEventListener('click', () => window.print());
+  attachTips(box);
+}
+function cmpBar(name, c, mx){
+  const W = 760, H = 62, bh = 30, y = 22;
+  const scale = (W - 8) / mx;
+  const w1 = Math.max(0, c.principal * scale - 2), w2 = Math.max(0, c.overpay * scale);
+  return '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" style="max-height:70px;margin-top:8px">' +
+    '<text x="0" y="12" style="font-size:12px;fill:var(--ink-2)">' + esc(name) + ' — ' + moneyAuto(c.total) + ' ₽</text>' +
+    '<rect class="bar" x="0" y="' + y + '" width="' + w1 + '" height="' + bh + '" rx="4" fill="var(--series-1)" data-tip="Тело кредита: ' + esc(moneyAuto(c.principal)) + ' ₽"/>' +
+    '<rect class="bar" x="' + (w1 + 2) + '" y="' + y + '" width="' + w2 + '" height="' + bh + '" rx="4" fill="var(--series-2)" data-tip="Переплата: ' + esc(moneyAuto(c.overpay)) + ' ₽"/>' +
+    '</svg>';
+}
+
+/* ---------- старт ---------- */
+loadAll();
+renderChat();
+showScreen('chat');
+
+</script>
+</body>
+</html>
