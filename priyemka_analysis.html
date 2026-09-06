@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анализ приемки: выполнение по предметам и заданиям</title>
+<style>
+:root {
+  --ink: #172033;
+  --muted: #667085;
+  --line: #e5e7eb;
+  --paper: #f6f8fb;
+  --card: #ffffff;
+  --navy: #183b56;
+  --teal: #11998e;
+  --orange: #ef9b42;
+  --red: #d95d5d;
+  --green: #4c9a61;
+}
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: var(--paper); font: 14px/1.45 Inter, Segoe UI, Arial, sans-serif; }
+.shell { max-width: 1480px; margin: 0 auto; padding: 28px 24px 44px; }
+.hero { color: white; background: linear-gradient(130deg, #183b56, #216e7b); border-radius: 24px; padding: 28px 30px; box-shadow: 0 16px 40px rgba(24,59,86,.16); }
+.eyebrow { margin: 0 0 6px; color: #aee7df; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+h1 { margin: 0; max-width: 860px; font-size: clamp(26px, 4vw, 46px); line-height: 1.08; letter-spacing: -.03em; }
+.hero p { max-width: 760px; margin: 12px 0 0; color: #d8eef0; font-size: 15px; }
+.tabs { display: flex; gap: 10px; margin: 22px 0; }
+.tab { cursor: pointer; border: 1px solid #cfd8e3; border-radius: 999px; padding: 10px 22px; color: var(--navy); background: white; font-weight: 750; }
+.tab.active { border-color: var(--navy); color: white; background: var(--navy); }
+.grade { display: none; }
+.grade.active { display: block; }
+.grade-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin: 10px 0 16px; }
+h2 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
+.hint { color: var(--muted); }
+.overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 22px; }
+.overview-card, .subject { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 6px 20px rgba(23,32,51,.05); }
+.overview-card { padding: 17px; }
+.overview-label { color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.overview-value { margin-top: 4px; font-size: 29px; font-weight: 800; }
+.subject { overflow: hidden; margin: 18px 0; }
+.subject-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 20px; border-bottom: 1px solid var(--line); background: linear-gradient(90deg, #fff, #f6fbfb); }
+.subject-name { margin: 0; font-size: 21px; }
+.subject-code { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.subject-metrics { display: grid; grid-template-columns: repeat(4, minmax(72px, 1fr)); gap: 10px; min-width: min(570px, 100%); }
+.metric { padding-left: 12px; border-left: 2px solid #d9eeeb; }
+.metric b { display: block; font-size: 18px; }
+.metric span { color: var(--muted); font-size: 11px; }
+.subject-body { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(360px, .75fr); gap: 22px; padding: 20px; }
+.panel-title { margin: 0 0 10px; font-size: 14px; }
+.chart { display: flex; align-items: end; gap: 6px; min-height: 230px; padding: 14px 8px 0; border-bottom: 1px solid var(--line); }
+.bar-wrap { display: flex; flex: 1 1 0; flex-direction: column; align-items: center; justify-content: end; min-width: 17px; height: 210px; }
+.bar-value { margin-bottom: 4px; color: var(--navy); font-size: 10px; font-weight: 800; transform: rotate(-50deg); transform-origin: bottom right; white-space: nowrap; }
+.bar { width: min(28px, 90%); min-height: 2px; border-radius: 7px 7px 0 0; background: linear-gradient(180deg, #1aa899, #65c7b7); }
+.bar-label { margin-top: 6px; color: var(--muted); font-size: 10px; }
+.legend { margin-top: 9px; color: var(--muted); font-size: 12px; }
+.legend-dot { display: inline-block; width: 9px; height: 9px; margin-right: 4px; border-radius: 50%; background: var(--teal); }
+.table-scroll { max-height: 280px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { position: sticky; top: 0; color: white; background: var(--navy); text-align: left; }
+th, td { padding: 8px 9px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td.num, th.num { text-align: right; }
+tr:last-child td { border-bottom: 0; }
+.low { color: var(--red); font-weight: 750; }
+.high { color: var(--green); font-weight: 750; }
+.footer { margin-top: 26px; color: var(--muted); font-size: 12px; }
+@media (max-width: 900px) {
+  .shell { padding: 15px 12px 30px; }
+  .hero { padding: 22px 20px; border-radius: 18px; }
+  .subject-header { align-items: start; flex-direction: column; }
+  .subject-metrics { width: 100%; min-width: 0; }
+  .subject-body { grid-template-columns: 1fr; padding: 15px; }
+}
+@media (max-width: 520px) {
+  .subject-metrics { grid-template-columns: repeat(2, 1fr); }
+  .chart { gap: 2px; }
+  .bar-value { display: none; }
+}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="hero">
+    <p class="eyebrow">Приемка · агрегированный анализ</p>
+    <h1>Выполнение по предметам и заданиям</h1>
+    <p>Сводные дашборды для 8-х и 10-х классов. Показаны только агрегированные показатели, без ID и имен участников.</p>
+  </header>
+  <nav class="tabs" aria-label="Параллель">
+    <button class="tab active" data-grade="8">8 класс</button>
+    <button class="tab" data-grade="10">10 класс</button>
+  </nav>
+  <section id="grade-8" class="grade active"></section>
+  <section id="grade-10" class="grade"></section>
+  <p class="footer">Методика: «получили баллы» означает долю участников с баллом больше 0; «успешность» нормирована на максимальный балл задания; знак «-» трактуется как отсутствие попытки.</p>
+</main>
+<script>
+const DATA = {"8":[{"code":"АЯ","name":"Английский язык","grade":"8","participants":215,"maxScore":30.0,"avgScore":18.2791,"avgRate":0.6093,"medianScore":18.0,"avgTime":25.8619,"medianTime":25.6167,"tasks":[{"number":"1","max":1.0,"positiveRate":0.4186,"successRate":0.4186,"fullRate":0.4206,"missingRate":0.0047,"avgPoints":0.4186},{"number":"2","max":1.0,"positiveRate":0.6279,"successRate":0.6279,"fullRate":0.6279,"missingRate":0.0,"avgPoints":0.6279},{"number":"3","max":1.0,"positiveRate":0.6837,"successRate":0.6837,"fullRate":0.6837,"missingRate":0.0,"avgPoints":0.6837},{"number":"4","max":1.0,"positiveRate":0.6279,"successRate":0.6279,"fullRate":0.6279,"missingRate":0.0,"avgPoints":0.6279},{"number":"5","max":1.0,"positiveRate":0.6558,"successRate":0.6558,"fullRate":0.6558,"missingRate":0.0,"avgPoints":0.6558},{"number":"6","max":1.0,"positiveRate":0.507,"successRate":0.507,"fullRate":0.507,"missingRate":0.0,"avgPoints":0.507},{"number":"7","max":1.0,"positiveRate":0.6186,"successRate":0.6186,"fullRate":0.6186,"missingRate":0.0,"avgPoints":0.6186},{"number":"8","max":1.0,"positiveRate":0.6605,"successRate":0.6605,"fullRate":0.6605,"missingRate":0.0,"avgPoints":0.6605},{"number":"9","max":1.0,"positiveRate":0.5488,"successRate":0.5488,"fullRate":0.5488,"missingRate":0.0,"avgPoints":0.5488},{"number":"10","max":1.0,"positiveRate":0.7023,"successRate":0.7023,"fullRate":0.7023,"missingRate":0.0,"avgPoints":0.7023},{"number":"11","max":1.0,"positiveRate":0.5814,"successRate":0.5814,"fullRate":0.5814,"missingRate":0.0,"avgPoints":0.5814},{"number":"12","max":1.0,"positiveRate":0.4512,"successRate":0.4512,"fullRate":0.4512,"missingRate":0.0,"avgPoints":0.4512},{"number":"13","max":1.0,"positiveRate":0.5163,"successRate":0.5163,"fullRate":0.5163,"missingRate":0.0,"avgPoints":0.5163},{"number":"14","max":1.0,"positiveRate":0.4977,"successRate":0.4977,"fullRate":0.4977,"missingRate":0.0,"avgPoints":0.4977},{"number":"15","max":1.0,"positiveRate":0.5256,"successRate":0.5256,"fullRate":0.5256,"missingRate":0.0,"avgPoints":0.5256},{"number":"16","max":1.0,"positiveRate":0.614,"successRate":0.614,"fullRate":0.614,"missingRate":0.0,"avgPoints":0.614},{"number":"17","max":1.0,"positiveRate":0.6,"successRate":0.6,"fullRate":0.6,"missingRate":0.0,"avgPoints":0.6},{"number":"18","max":1.0,"positiveRate":0.6186,"successRate":0.6186,"fullRate":0.6186,"missingRate":0.0,"avgPoints":0.6186},{"number":"19","max":1.0,"positiveRate":0.6,"successRate":0.6,"fullRate":0.6,"missingRate":0.0,"avgPoints":0.6},{"number":"20","max":1.0,"positiveRate":0.5581,"successRate":0.5581,"fullRate":0.5581,"missingRate":0.0,"avgPoints":0.5581},{"number":"21","max":1.0,"positiveRate":0.6744,"successRate":0.6744,"fullRate":0.6744,"missingRate":0.0,"avgPoints":0.6744},{"number":"22","max":1.0,"positiveRate":0.6326,"successRate":0.6326,"fullRate":0.6326,"missingRate":0.0,"avgPoints":0.6326},{"number":"23","max":1.0,"positiveRate":0.5721,"successRate":0.5721,"fullRate":0.5721,"missingRate":0.0,"avgPoints":0.5721},{"number":"24","max":1.0,"positiveRate":0.6279,"successRate":0.6279,"fullRate":0.6279,"missingRate":0.0,"avgPoints":0.6279},{"number":"25","max":1.0,"positiveRate":0.5767,"successRate":0.5767,"fullRate":0.5767,"missingRate":0.0,"avgPoints":0.5767},{"number":"26","max":1.0,"positiveRate":0.5581,"successRate":0.5581,"fullRate":0.5581,"missingRate":0.0,"avgPoints":0.5581},{"number":"27","max":4.0,"positiveRate":0.9767,"successRate":0.7558,"fullRate":0.4744,"missingRate":0.0,"avgPoints":3.0233}]},{"code":"МАТ","name":"Математика","grade":"8","participants":215,"maxScore":35.0,"avgScore":22.2326,"avgRate":0.6352,"medianScore":24.0,"avgTime":29.7271,"medianTime":30.6667,"tasks":[{"number":"1","max":4.0,"positiveRate":0.614,"successRate":0.614,"fullRate":0.6471,"missingRate":0.0512,"avgPoints":2.4558},{"number":"2","max":5.0,"positiveRate":0.4372,"successRate":0.4372,"fullRate":0.4896,"missingRate":0.107,"avgPoints":2.186},{"number":"3","max":5.0,"positiveRate":0.6698,"successRate":0.6698,"fullRate":0.6698,"missingRate":0.0,"avgPoints":3.3488},{"number":"4","max":6.0,"positiveRate":0.5349,"successRate":0.5349,"fullRate":0.5583,"missingRate":0.0419,"avgPoints":3.2093},{"number":"5","max":4.0,"positiveRate":0.8233,"successRate":0.8233,"fullRate":0.8233,"missingRate":0.0,"avgPoints":3.293},{"number":"6","max":4.0,"positiveRate":0.7953,"successRate":0.7953,"fullRate":0.7953,"missingRate":0.0,"avgPoints":3.1814},{"number":"7","max":7.0,"positiveRate":0.6512,"successRate":0.6512,"fullRate":0.6635,"missingRate":0.0186,"avgPoints":4.5581}]},{"code":"РЯ","name":"Русский язык","grade":"8","participants":215,"maxScore":35.0,"avgScore":20.7732,"avgRate":0.5935,"medianScore":20.5,"avgTime":22.6198,"medianTime":21.2833,"tasks":[{"number":"1","max":3.0,"positiveRate":0.5209,"successRate":0.4884,"fullRate":0.4465,"missingRate":0.0,"avgPoints":1.4651},{"number":"2","max":3.0,"positiveRate":0.586,"successRate":0.5581,"fullRate":0.507,"missingRate":0.0,"avgPoints":1.6744},{"number":"3","max":3.0,"positiveRate":0.5349,"successRate":0.5016,"fullRate":0.4419,"missingRate":0.0,"avgPoints":1.5047},{"number":"4","max":2.0,"positiveRate":0.6744,"successRate":0.6674,"fullRate":0.6605,"missingRate":0.0,"avgPoints":1.3349},{"number":"5","max":2.0,"positiveRate":0.6372,"successRate":0.6209,"fullRate":0.5981,"missingRate":0.0047,"avgPoints":1.2418},{"number":"6","max":4.0,"positiveRate":0.4698,"successRate":0.4698,"fullRate":0.472,"missingRate":0.0047,"avgPoints":1.8791},{"number":"7","max":4.0,"positiveRate":0.8372,"successRate":0.7893,"fullRate":0.7009,"missingRate":0.0047,"avgPoints":3.157},{"number":"8","max":4.0,"positiveRate":0.5395,"successRate":0.5349,"fullRate":0.5302,"missingRate":0.0,"avgPoints":2.1395},{"number":"9","max":4.0,"positiveRate":0.9674,"successRate":0.8337,"fullRate":0.6419,"missingRate":0.0,"avgPoints":3.3349},{"number":"10","max":2.0,"positiveRate":0.6,"successRate":0.6,"fullRate":0.6085,"missingRate":0.014,"avgPoints":1.2},{"number":"11","max":1.0,"positiveRate":0.6837,"successRate":0.6837,"fullRate":0.6869,"missingRate":0.0047,"avgPoints":0.6837},{"number":"12","max":3.0,"positiveRate":0.386,"successRate":0.386,"fullRate":0.386,"missingRate":0.0,"avgPoints":1.1581}]}],"10":[{"code":"АЯ","name":"Английский язык","grade":"10","participants":429,"maxScore":25.0,"avgScore":15.5746,"avgRate":0.623,"medianScore":16.2,"avgTime":29.0663,"medianTime":28.1333,"tasks":[{"number":"1","max":1.0,"positiveRate":0.7179,"successRate":0.7179,"fullRate":0.7179,"missingRate":0.0,"avgPoints":0.7179},{"number":"2","max":1.0,"positiveRate":0.6597,"successRate":0.6597,"fullRate":0.6597,"missingRate":0.0,"avgPoints":0.6597},{"number":"3","max":1.0,"positiveRate":0.7273,"successRate":0.7273,"fullRate":0.7273,"missingRate":0.0,"avgPoints":0.7273},{"number":"4","max":1.0,"positiveRate":0.5758,"successRate":0.5758,"fullRate":0.5758,"missingRate":0.0,"avgPoints":0.5758},{"number":"5","max":1.0,"positiveRate":0.6713,"successRate":0.6713,"fullRate":0.6713,"missingRate":0.0,"avgPoints":0.6713},{"number":"6","max":1.0,"positiveRate":0.627,"successRate":0.627,"fullRate":0.627,"missingRate":0.0,"avgPoints":0.627},{"number":"7","max":1.0,"positiveRate":0.5851,"successRate":0.5851,"fullRate":0.5851,"missingRate":0.0,"avgPoints":0.5851},{"number":"8","max":1.0,"positiveRate":0.6084,"successRate":0.6084,"fullRate":0.6084,"missingRate":0.0,"avgPoints":0.6084},{"number":"9","max":1.0,"positiveRate":0.5944,"successRate":0.5944,"fullRate":0.5944,"missingRate":0.0,"avgPoints":0.5944},{"number":"10","max":1.0,"positiveRate":0.5828,"successRate":0.5828,"fullRate":0.5828,"missingRate":0.0,"avgPoints":0.5828},{"number":"11","max":1.0,"positiveRate":0.4825,"successRate":0.4825,"fullRate":0.4836,"missingRate":0.0023,"avgPoints":0.4825},{"number":"12","max":1.0,"positiveRate":0.5175,"successRate":0.5175,"fullRate":0.5199,"missingRate":0.0047,"avgPoints":0.5175},{"number":"13","max":1.0,"positiveRate":0.4942,"successRate":0.4942,"fullRate":0.4988,"missingRate":0.0093,"avgPoints":0.4942},{"number":"14","max":1.0,"positiveRate":0.5128,"successRate":0.5128,"fullRate":0.5176,"missingRate":0.0093,"avgPoints":0.5128},{"number":"15","max":1.0,"positiveRate":0.4988,"successRate":0.4988,"fullRate":0.5,"missingRate":0.0023,"avgPoints":0.4988},{"number":"16","max":1.0,"positiveRate":0.4848,"successRate":0.4848,"fullRate":0.486,"missingRate":0.0023,"avgPoints":0.4848},{"number":"17","max":3.0,"positiveRate":0.9697,"successRate":0.8586,"fullRate":0.7273,"missingRate":0.0,"avgPoints":2.5758},{"number":"18","max":3.0,"positiveRate":0.9441,"successRate":0.6787,"fullRate":0.4336,"missingRate":0.0,"avgPoints":2.0361},{"number":"19","max":3.0,"positiveRate":0.9534,"successRate":0.5408,"fullRate":0.1119,"missingRate":0.0,"avgPoints":1.6224}]},{"code":"ИНФ","name":"Информатика","grade":"10","participants":54,"maxScore":25.0,"avgScore":8.9259,"avgRate":0.357,"medianScore":8.0,"avgTime":39.2611,"medianTime":42.475,"tasks":[{"number":"1","max":2.0,"positiveRate":0.2593,"successRate":0.2593,"fullRate":0.2642,"missingRate":0.0185,"avgPoints":0.5185},{"number":"2","max":2.0,"positiveRate":0.3148,"successRate":0.3148,"fullRate":0.3269,"missingRate":0.037,"avgPoints":0.6296},{"number":"3","max":2.0,"positiveRate":0.4815,"successRate":0.4815,"fullRate":0.4815,"missingRate":0.0,"avgPoints":0.963},{"number":"4","max":4.0,"positiveRate":0.3519,"successRate":0.3519,"fullRate":0.3519,"missingRate":0.0,"avgPoints":1.4074},{"number":"5","max":2.0,"positiveRate":0.1296,"successRate":0.1296,"fullRate":0.1522,"missingRate":0.1481,"avgPoints":0.2593},{"number":"6","max":4.0,"positiveRate":0.4074,"successRate":0.4074,"fullRate":0.4681,"missingRate":0.1296,"avgPoints":1.6296},{"number":"7","max":4.0,"positiveRate":0.2593,"successRate":0.2593,"fullRate":0.3111,"missingRate":0.1667,"avgPoints":1.037},{"number":"8","max":2.0,"positiveRate":0.4074,"successRate":0.4074,"fullRate":0.4151,"missingRate":0.0185,"avgPoints":0.8148},{"number":"9","max":3.0,"positiveRate":0.5556,"successRate":0.5556,"fullRate":0.5882,"missingRate":0.0556,"avgPoints":1.6667}]},{"code":"ИСТ","name":"История","grade":"10","participants":34,"maxScore":25.0,"avgScore":8.3529,"avgRate":0.3341,"medianScore":5.5,"avgTime":25.7456,"medianTime":24.2083,"tasks":[{"number":"1","max":1.0,"positiveRate":0.2647,"successRate":0.2647,"fullRate":0.2647,"missingRate":0.0,"avgPoints":0.2647},{"number":"2","max":1.0,"positiveRate":0.2059,"successRate":0.2059,"fullRate":0.2059,"missingRate":0.0,"avgPoints":0.2059},{"number":"3","max":1.0,"positiveRate":0.5588,"successRate":0.5588,"fullRate":0.5588,"missingRate":0.0,"avgPoints":0.5588},{"number":"4","max":2.0,"positiveRate":0.2941,"successRate":0.2941,"fullRate":0.2941,"missingRate":0.0,"avgPoints":0.5882},{"number":"5","max":1.0,"positiveRate":0.6471,"successRate":0.6471,"fullRate":0.6471,"missingRate":0.0,"avgPoints":0.6471},{"number":"6","max":2.0,"positiveRate":0.1471,"successRate":0.1471,"fullRate":0.1471,"missingRate":0.0,"avgPoints":0.2941},{"number":"7","max":1.0,"positiveRate":0.0588,"successRate":0.0588,"fullRate":0.0588,"missingRate":0.0,"avgPoints":0.0588},{"number":"8","max":1.0,"positiveRate":0.2941,"successRate":0.2941,"fullRate":0.2941,"missingRate":0.0,"avgPoints":0.2941},{"number":"9","max":1.0,"positiveRate":0.5588,"successRate":0.5588,"fullRate":0.5588,"missingRate":0.0,"avgPoints":0.5588},{"number":"10","max":2.0,"positiveRate":0.3529,"successRate":0.3529,"fullRate":0.3529,"missingRate":0.0,"avgPoints":0.7059},{"number":"11","max":1.0,"positiveRate":0.6765,"successRate":0.6765,"fullRate":0.6765,"missingRate":0.0,"avgPoints":0.6765},{"number":"12","max":2.0,"positiveRate":0.1765,"successRate":0.1765,"fullRate":0.1765,"missingRate":0.0,"avgPoints":0.3529},{"number":"13","max":1.0,"positiveRate":0.3235,"successRate":0.3235,"fullRate":0.3235,"missingRate":0.0,"avgPoints":0.3235},{"number":"14","max":1.0,"positiveRate":0.1765,"successRate":0.1765,"fullRate":0.1765,"missingRate":0.0,"avgPoints":0.1765},{"number":"15","max":1.0,"positiveRate":0.4706,"successRate":0.4706,"fullRate":0.4706,"missingRate":0.0,"avgPoints":0.4706},{"number":"16","max":2.0,"positiveRate":0.2353,"successRate":0.2353,"fullRate":0.2353,"missingRate":0.0,"avgPoints":0.4706},{"number":"17","max":1.0,"positiveRate":0.7353,"successRate":0.7353,"fullRate":0.7353,"missingRate":0.0,"avgPoints":0.7353},{"number":"18","max":2.0,"positiveRate":0.2059,"successRate":0.2059,"fullRate":0.2059,"missingRate":0.0,"avgPoints":0.4118},{"number":"19","max":1.0,"positiveRate":0.5588,"successRate":0.5588,"fullRate":0.5588,"missingRate":0.0,"avgPoints":0.5588}]},{"code":"МАТ","name":"Математика","grade":"10","participants":453,"maxScore":25.0,"avgScore":11.4834,"avgRate":0.4593,"medianScore":11.0,"avgTime":41.2384,"medianTime":43.8833,"tasks":[{"number":"1","max":2.0,"positiveRate":0.7506,"successRate":0.7506,"fullRate":0.7623,"missingRate":0.0155,"avgPoints":1.5011},{"number":"2","max":2.0,"positiveRate":0.8146,"successRate":0.8146,"fullRate":0.8311,"missingRate":0.0199,"avgPoints":1.6291},{"number":"3","max":2.0,"positiveRate":0.5497,"successRate":0.5497,"fullRate":0.5777,"missingRate":0.0486,"avgPoints":1.0993},{"number":"4","max":2.0,"positiveRate":0.5762,"successRate":0.5762,"fullRate":0.6098,"missingRate":0.0552,"avgPoints":1.1523},{"number":"5","max":2.0,"positiveRate":0.4967,"successRate":0.4967,"fullRate":0.4967,"missingRate":0.0,"avgPoints":0.9934},{"number":"6","max":2.0,"positiveRate":0.362,"successRate":0.362,"fullRate":0.4205,"missingRate":0.1391,"avgPoints":0.7241},{"number":"7","max":4.0,"positiveRate":0.4194,"successRate":0.4194,"fullRate":0.4429,"missingRate":0.053,"avgPoints":1.6777},{"number":"8","max":4.0,"positiveRate":0.1634,"successRate":0.1634,"fullRate":0.1963,"missingRate":0.1678,"avgPoints":0.6534},{"number":"9","max":5.0,"positiveRate":0.4106,"successRate":0.4106,"fullRate":0.4615,"missingRate":0.1104,"avgPoints":2.053}]},{"code":"ОБЩ","name":"Обществознание","grade":"10","participants":433,"maxScore":25.0,"avgScore":16.1362,"avgRate":0.6454,"medianScore":16.0,"avgTime":28.9411,"medianTime":27.9667,"tasks":[{"number":"1","max":1.0,"positiveRate":0.4734,"successRate":0.4723,"fullRate":0.4711,"missingRate":0.0,"avgPoints":0.4723},{"number":"2","max":2.0,"positiveRate":0.7921,"successRate":0.5115,"fullRate":0.2309,"missingRate":0.0,"avgPoints":1.0231},{"number":"3","max":2.0,"positiveRate":0.8684,"successRate":0.664,"fullRate":0.4596,"missingRate":0.0,"avgPoints":1.3279},{"number":"4","max":2.0,"positiveRate":0.8383,"successRate":0.5866,"fullRate":0.3349,"missingRate":0.0,"avgPoints":1.1732},{"number":"5","max":2.0,"positiveRate":0.9908,"successRate":0.8891,"fullRate":0.6813,"missingRate":0.0,"avgPoints":1.7783},{"number":"6","max":2.0,"positiveRate":0.9769,"successRate":0.7256,"fullRate":0.3819,"missingRate":0.0023,"avgPoints":1.4513},{"number":"7","max":2.0,"positiveRate":0.8984,"successRate":0.6801,"fullRate":0.4619,"missingRate":0.0,"avgPoints":1.3603},{"number":"8","max":2.0,"positiveRate":0.806,"successRate":0.5843,"fullRate":0.3626,"missingRate":0.0,"avgPoints":1.1686},{"number":"9","max":1.0,"positiveRate":0.4088,"successRate":0.3927,"fullRate":0.3649,"missingRate":0.0,"avgPoints":0.3927},{"number":"10","max":1.0,"positiveRate":0.485,"successRate":0.4815,"fullRate":0.4803,"missingRate":0.0046,"avgPoints":0.4815},{"number":"11","max":1.0,"positiveRate":0.8776,"successRate":0.827,"fullRate":0.7252,"missingRate":0.0,"avgPoints":0.827},{"number":"12","max":2.0,"positiveRate":0.9908,"successRate":0.8106,"fullRate":0.5219,"missingRate":0.0,"avgPoints":1.6212},{"number":"13","max":2.0,"positiveRate":0.836,"successRate":0.6051,"fullRate":0.3741,"missingRate":0.0,"avgPoints":1.2102},{"number":"14","max":2.0,"positiveRate":0.9099,"successRate":0.6871,"fullRate":0.4642,"missingRate":0.0,"avgPoints":1.3741},{"number":"15","max":1.0,"positiveRate":0.5058,"successRate":0.4745,"fullRate":0.4111,"missingRate":0.0,"avgPoints":0.4745}]},{"code":"РЯ","name":"Русский язык","grade":"10","participants":487,"maxScore":25.0,"avgScore":16.2361,"avgRate":0.6494,"medianScore":17.0,"avgTime":31.9171,"medianTime":31.55,"tasks":[{"number":"1","max":1.0,"positiveRate":0.6879,"successRate":0.6879,"fullRate":0.6893,"missingRate":0.0021,"avgPoints":0.6879},{"number":"2","max":1.0,"positiveRate":0.4949,"successRate":0.4949,"fullRate":0.4949,"missingRate":0.0,"avgPoints":0.4949},{"number":"3","max":1.0,"positiveRate":0.269,"successRate":0.269,"fullRate":0.2695,"missingRate":0.0021,"avgPoints":0.269},{"number":"4","max":2.0,"positiveRate":0.8131,"successRate":0.8131,"fullRate":0.8131,"missingRate":0.0,"avgPoints":1.6263},{"number":"5","max":1.0,"positiveRate":0.1786,"successRate":0.1786,"fullRate":0.1786,"missingRate":0.0,"avgPoints":0.1786},{"number":"6","max":1.0,"positiveRate":0.4867,"successRate":0.4867,"fullRate":0.4867,"missingRate":0.0,"avgPoints":0.4867},{"number":"7","max":2.0,"positiveRate":0.8111,"successRate":0.8111,"fullRate":0.8111,"missingRate":0.0,"avgPoints":1.6222},{"number":"8","max":1.0,"positiveRate":0.2834,"successRate":0.2834,"fullRate":0.2834,"missingRate":0.0,"avgPoints":0.2834},{"number":"9","max":2.0,"positiveRate":0.7906,"successRate":0.7906,"fullRate":0.7906,"missingRate":0.0,"avgPoints":1.5811},{"number":"10","max":2.0,"positiveRate":0.616,"successRate":0.616,"fullRate":0.616,"missingRate":0.0,"avgPoints":1.232},{"number":"11","max":2.0,"positiveRate":0.7598,"successRate":0.7598,"fullRate":0.7613,"missingRate":0.0021,"avgPoints":1.5195},{"number":"12","max":2.0,"positiveRate":0.6776,"successRate":0.6776,"fullRate":0.6776,"missingRate":0.0,"avgPoints":1.3552},{"number":"13","max":1.0,"positiveRate":0.6181,"successRate":0.6181,"fullRate":0.6181,"missingRate":0.0,"avgPoints":0.6181},{"number":"14","max":2.0,"positiveRate":0.6632,"successRate":0.6632,"fullRate":0.6632,"missingRate":0.0,"avgPoints":1.3265},{"number":"15","max":2.0,"positiveRate":0.6735,"successRate":0.6735,"fullRate":0.6749,"missingRate":0.0021,"avgPoints":1.347},{"number":"16","max":1.0,"positiveRate":0.7741,"successRate":0.7741,"fullRate":0.7741,"missingRate":0.0,"avgPoints":0.7741},{"number":"17","max":1.0,"positiveRate":0.8337,"successRate":0.8337,"fullRate":0.8337,"missingRate":0.0,"avgPoints":0.8337}]},{"code":"ФИЗ","name":"Физика","grade":"10","participants":54,"maxScore":25.0,"avgScore":8.8148,"avgRate":0.3526,"medianScore":8.0,"avgTime":29.1145,"medianTime":27.9167,"tasks":[{"number":"1","max":2.0,"positiveRate":0.4259,"successRate":0.4259,"fullRate":0.4259,"missingRate":0.0,"avgPoints":0.8519},{"number":"2","max":2.0,"positiveRate":0.4074,"successRate":0.4074,"fullRate":0.4074,"missingRate":0.0,"avgPoints":0.8148},{"number":"3","max":2.0,"positiveRate":0.5741,"successRate":0.5741,"fullRate":0.5741,"missingRate":0.0,"avgPoints":1.1481},{"number":"4","max":2.0,"positiveRate":0.463,"successRate":0.463,"fullRate":0.463,"missingRate":0.0,"avgPoints":0.9259},{"number":"5","max":2.0,"positiveRate":0.537,"successRate":0.537,"fullRate":0.5472,"missingRate":0.0185,"avgPoints":1.0741},{"number":"6","max":2.0,"positiveRate":0.3704,"successRate":0.3704,"fullRate":0.3704,"missingRate":0.0,"avgPoints":0.7407},{"number":"7","max":2.0,"positiveRate":0.537,"successRate":0.537,"fullRate":0.537,"missingRate":0.0,"avgPoints":1.0741},{"number":"8","max":3.0,"positiveRate":0.2593,"successRate":0.2593,"fullRate":0.2745,"missingRate":0.0556,"avgPoints":0.7778},{"number":"9","max":4.0,"positiveRate":0.1111,"successRate":0.1111,"fullRate":0.12,"missingRate":0.0741,"avgPoints":0.4444},{"number":"10","max":4.0,"positiveRate":0.2407,"successRate":0.2407,"fullRate":0.26,"missingRate":0.0741,"avgPoints":0.963}]}]};
+const fmt = (value, digits=1) => value == null ? '—' : Number(value).toFixed(digits).replace('.', ',');
+const pct = value => value == null ? '—' : Math.round(value * 100) + '%';
+const safe = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const metric = (label, value) => `<div class="metric"><b>${value}</b><span>${label}</span></div>`;
+
+function subjectHtml(subject) {
+  const bars = subject.tasks.map(task => `
+    <div class="bar-wrap" title="Задание ${safe(task.number)}: получили баллы ${pct(task.positiveRate)}; средняя успешность ${pct(task.successRate)}">
+      <span class="bar-value">${pct(task.positiveRate)}</span>
+      <div class="bar" style="height:${Math.max(2, Math.round((task.positiveRate || 0) * 190))}px"></div>
+      <span class="bar-label">${safe(task.number)}</span>
+    </div>`).join('');
+  const rows = subject.tasks.map(task => `
+    <tr>
+      <td>${safe(task.number)}</td>
+      <td class="num">${pct(task.positiveRate)}</td>
+      <td class="num">${pct(task.successRate)}</td>
+      <td class="num">${pct(task.fullRate)}</td>
+      <td class="num ${task.missingRate >= .1 ? 'low' : ''}">${pct(task.missingRate)}</td>
+    </tr>`).join('');
+  return `<article class="subject">
+    <header class="subject-header">
+      <div><h3 class="subject-name">${safe(subject.name)}</h3><div class="subject-code">${safe(subject.code)}</div></div>
+      <div class="subject-metrics">
+        ${metric('участников', subject.participants)}
+        ${metric('средний балл', `${fmt(subject.avgScore, 2)} / ${fmt(subject.maxScore, 0)}`)}
+        ${metric('средняя успешность', pct(subject.avgRate))}
+        ${metric('среднее время', `${fmt(subject.avgTime)} мин`)}
+      </div>
+    </header>
+    <div class="subject-body">
+       <div><h4 class="panel-title">Выполнение каждого номера</h4><div class="chart">${bars}</div><div class="legend"><span class="legend-dot"></span>доля участников, получивших хотя бы один балл</div></div>
+      <div><h4 class="panel-title">Детализация по заданиям</h4><div class="table-scroll"><table><thead><tr><th>№</th><th class="num">получили баллы</th><th class="num">успешность</th><th class="num">полностью</th><th class="num">пропуски</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+    </div>
+  </article>`;
+}
+
+function gradeHtml(grade, subjects) {
+  const n = subjects.reduce((sum, subject) => sum + subject.participants, 0);
+  const weightedRate = subjects.reduce((sum, subject) => sum + subject.avgRate * subject.participants, 0) / n;
+  const avgTime = subjects.reduce((sum, subject) => sum + subject.avgTime * subject.participants, 0) / n;
+  const overviewBars = subjects.map(subject => `<div class="bar-wrap" title="${safe(subject.name)}: ${pct(subject.avgRate)}"><span class="bar-value">${pct(subject.avgRate)}</span><div class="bar" style="height:${Math.max(2, Math.round(subject.avgRate * 190))}px;background:linear-gradient(180deg,#ef9b42,#f4c178)"></div><span class="bar-label">${safe(subject.code)}</span></div>`).join('');
+  return `<div class="grade-heading"><div><h2>${grade} класс</h2><div class="hint">Сравнение предметов и разбор выполнения номеров</div></div></div>
+    <div class="overview">
+      <div class="overview-card"><div class="overview-label">предметов</div><div class="overview-value">${subjects.length}</div></div>
+      <div class="overview-card"><div class="overview-label">средняя успешность</div><div class="overview-value">${pct(weightedRate)}</div></div>
+      <div class="overview-card"><div class="overview-label">среднее время</div><div class="overview-value">${fmt(avgTime)} мин</div></div>
+       <div class="overview-card"><div class="overview-label">количество работ в сводке</div><div class="overview-value">${n}</div></div>
+    </div>
+     <article class="subject"><div class="subject-body"><div><h4 class="panel-title">Средняя успешность по предметам</h4><div class="chart">${overviewBars}</div><div class="legend"><span class="legend-dot" style="background:var(--orange)"></span>средний балл, нормированный на максимальный балл предмета</div></div><div><h4 class="panel-title">Как читать показатели</h4><p class="hint">Для каждого предмета ниже приведен отдельный дашборд. Главный график показывает долю участников, получивших баллы за каждый номер задания. Таблица рядом показывает успешность, полное решение и пропуски.</p></div></div></article>
+    ${subjects.map(subjectHtml).join('')}`;
+}
+
+for (const grade of ['8','10']) {
+  document.getElementById('grade-' + grade).innerHTML = gradeHtml(grade, DATA[grade]);
+}
+document.querySelectorAll('.tab').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(item => item.classList.toggle('active', item === button));
+  document.querySelectorAll('.grade').forEach(item => item.classList.toggle('active', item.id === 'grade-' + button.dataset.grade));
+}));
+</script>
+</body>
+</html>
