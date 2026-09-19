@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#1f6368" name="theme-color"/>
+<title>Лицей Финансового университета · LFU</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap');
+:root{
+ --bg:#f4f7f7;--paper:#fff;--text:#183136;--muted:#61777b;--line:#dbe6e6;
+ --brand:#1f6368;--brand2:#0d9097;--blue:#3c66b0;--violet:#7751bb;--orange:#ce7845;
+ --green:#2d8d64;--soft:#edf6f5;--shadow:0 14px 38px rgba(23,70,73,.10);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Golos Text",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:17px;line-height:1.52}a{color:inherit;text-decoration:none}
+.wrap{width:min(1200px,calc(100% - 28px));margin:auto}
+.top{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topin{min-height:68px;display:flex;align-items:center;gap:18px}.brand{display:flex;align-items:center;gap:11px}.mark{width:40px;height:40px;border-radius:12px;background:var(--brand);position:relative;overflow:hidden}.mark:before,.mark:after{content:"";position:absolute;bottom:-4px;width:8px;height:25px;background:#fff;transform:skew(-12deg)}.mark:before{left:12px}.mark:after{left:23px}.brand b{display:block;font-size:14px}.brand small{display:block;color:var(--muted);font-size:11px}
+.nav{margin-left:auto;display:flex;gap:5px}.nav a{padding:9px 11px;border-radius:11px;font-size:13px;color:#4e676b}.nav a:hover{background:var(--soft)}
+.hero{padding:30px 0 10px}.heroCard{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:30px;background:linear-gradient(135deg,#eaf6f4,#fff 57%,#eaf4f8);box-shadow:var(--shadow);padding:38px;min-height:360px}.heroCopy{max-width:790px;position:relative;z-index:2}.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;color:var(--brand2)}h1{font-size:55px;line-height:1.02;letter-spacing:-.05em;margin:10px 0 14px}.lead{font-size:20px;color:#405b60;margin:0;max-width:790px}
+.heroMascot{position:absolute;right:-8px;bottom:-28px;width:320px;height:320px;object-fit:contain;z-index:1}.tagrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:19px}.tag{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-size:13px;color:#476166}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;max-width:810px}.stat{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:17px;padding:14px}.stat b{display:block;color:var(--brand);font-size:26px;line-height:1}.stat span{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+section{padding:35px 0}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:15px}.sectionHead h2{font-size:34px;letter-spacing:-.035em;margin:0}.sectionHead p{max-width:760px;color:var(--muted);margin:0}
+.primary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.primaryCard{min-height:310px;border-radius:27px;position:relative;overflow:hidden;padding:28px;display:flex;flex-direction:column;box-shadow:var(--shadow)}.primaryCard.guide{background:linear-gradient(135deg,#153f43,#246b6f);color:#fff}.primaryCard.about{background:linear-gradient(135deg,#e9effb,#fff);border:1px solid #d8e0ef}.primaryCard.aiTeacher{background:linear-gradient(135deg,#4a327d,#7751bb);color:#fff}.primaryCard h2{font-size:35px;margin:0 0 8px;letter-spacing:-.035em;position:relative;z-index:2}.primaryCard p{max-width:62%;margin:0;color:inherit;opacity:.86;position:relative;z-index:2}.primaryCard .go{margin-top:auto;align-self:flex-start;border-radius:14px;padding:11px 14px;font-weight:800;position:relative;z-index:2}.guide .go{background:#fff;color:var(--brand)}.about .go{background:var(--brand);color:#fff}.aiTeacher .go{background:#fff;color:#5a3d91}.primaryMascot{position:absolute;right:-8px;bottom:-14px;width:245px;height:245px;object-fit:contain}.guide .primaryMascot{width:225px}.about .primaryMascot{width:235px}.aiTeacher .primaryMascot{width:225px}
+.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quickCard{background:#fff;border:1px solid var(--line);border-radius:19px;padding:17px;min-height:150px;transition:.16s}.quickCard:hover,.project:hover,.official:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(23,70,73,.08);border-color:#acd2cf}.quickCard .ico{font-size:25px;margin-bottom:9px}.quickCard b{display:block;font-size:18px}.quickCard span{display:block;color:var(--muted);font-size:13px;margin-top:5px}
+.profileCard{background:linear-gradient(125deg,#fff,#eef5fb);border:1px solid var(--line);border-radius:27px;padding:27px;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 300px;gap:20px}.profileCard h3{font-size:31px;margin:0 0 8px}.profileCard p{color:#456064;margin:0 0 12px}.profileTracks{display:grid;grid-template-columns:1fr 1fr;gap:10px}.track{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px}.track b{display:block;color:var(--brand);font-size:17px}.track span{font-size:13px;color:var(--muted)}.profileMascot{width:270px;height:270px;object-fit:contain;align-self:end;justify-self:center}.buttonRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.button{display:inline-block;border-radius:12px;background:var(--brand);color:#fff;padding:10px 13px;font-weight:700;font-size:13px}.button.light{background:var(--soft);color:var(--brand)}
+.projectGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.project{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;min-height:175px;transition:.16s}.project .kind{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--brand2);font-weight:800}.project b{font-size:19px;margin:6px 0}.project p{font-size:13px;color:var(--muted);margin:0}.project .open{display:none}
+.digitalStrip{background:#143e42;color:#fff;border-radius:28px;padding:25px;display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:center}.digitalStrip img{width:145px;height:145px;object-fit:contain}.digitalStrip h3{font-size:29px;margin:0 0 6px}.digitalStrip p{margin:0;color:#d6e8e7}.serviceButtons{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.serviceButtons a{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:11px;padding:9px 11px;font-size:12px}
+.officialGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.official{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;transition:.16s}.official b{display:block;font-size:16px}.official span{display:block;font-size:12px;color:var(--muted);margin-top:4px}.official em{display:none}
+.note{background:#fff8e9;border:1px solid #f0deb7;border-radius:15px;padding:13px 15px;color:#684f25;font-size:13px;margin-top:12px}
+.footer{margin-top:25px;border-top:1px solid var(--line);padding:26px 0 42px;color:var(--muted);font-size:12px}.foot{display:flex;justify-content:space-between;gap:20px}
+@media(max-width:950px){.heroMascot{width:230px;height:230px;opacity:.5}.primary,.profileCard{grid-template-columns:1fr}.primaryCard p{max-width:70%}.quickGrid{grid-template-columns:repeat(2,1fr)}.projectGrid,.officialGrid{grid-template-columns:repeat(2,1fr)}.profileMascot{display:none}}
+@media(max-width:650px){body{font-size:16px}.wrap{width:min(100% - 18px,1200px)}.nav{display:none}.heroCard{padding:24px;min-height:420px}.heroCopy{position:relative;z-index:2}h1{font-size:38px}.lead{font-size:17px}.heroMascot{width:175px;height:175px;right:-10px;bottom:-5px;opacity:.42}.stats{grid-template-columns:1fr 1fr}.primary{grid-template-columns:1fr}.primaryCard{min-height:280px;padding:22px}.primaryCard h2{font-size:29px}.primaryCard p{max-width:66%;font-size:14px}.primaryMascot{width:190px!important;height:190px;right:-13px}.quickGrid,.projectGrid,.officialGrid{grid-template-columns:1fr}.profileTracks{grid-template-columns:1fr}.digitalStrip{grid-template-columns:85px 1fr;padding:18px}.digitalStrip img{width:82px;height:82px}.digitalStrip h3{font-size:22px}.sectionHead h2{font-size:29px}.foot{display:block}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap topin">
+<a class="brand" href="./index.html"><span class="mark"></span><span><b>ЛИЦЕЙ ФИНУНИВЕРСИТЕТА</b><small>LFU · учебные страницы и проекты</small></span></a>
+<nav class="nav"><a href="#main">Главное</a><a href="#quick">Быстро</a><a href="#profile">10Т</a><a href="#projects">Проекты</a><a href="#official">Официально</a></nav>
+<a href="./guides/AI_guide.html">Каталог ИИ</a><a href="./guides/ai_teacher_guide.html">Практика ИИ</a></div></header>
+<main>
+<section class="hero"><div class="wrap"><div class="heroCard">
+<div class="heroCopy">
+<div class="kicker">школьный уровень Финансового университета</div>
+<h1>Лицей Финансового университета</h1>
+<p class="lead">Этот раздел собирает рабочие страницы, инструкции и цифровые проекты Лицея в одном месте. Лицей — предуниверсарий: здесь школьная программа связана с профилями, преподавателями и инфраструктурой Финансового университета, а проекты учеников могут выходить в университетскую, индустриальную и международную среду.</p>
+<div class="tagrow"><span class="tag">Московский предуниверсарий</span><span class="tag">8–11 классы</span><span class="tag">3 профиля</span><span class="tag">технологическая среда</span><span class="tag">проекты и исследования</span></div>
+<div class="stats">
+<div class="stat"><b>2017</b><span>год создания Лицея</span></div>
+<div class="stat"><b>520</b><span>обучающихся на публичной карточке Лицея</span></div>
+<div class="stat"><b>3</b><span>профиля: социально-экономический, технологический, гуманитарный</span></div>
+<div class="stat"><b>№1</b><span>RAEX: экономика и управление — 2024 и 2025</span></div>
+</div>
+</div>
+<img alt="Маскот показывает направление" class="heroMascot" src="assets/mascots/arrow.png"/>
+</div></div></section>
+<section id="main"><div class="wrap">
+<div class="sectionHead"><div><h2>Два главных раздела</h2><p>Если вы педагог — начинайте с инструкции. Если хотите посмотреть, чем живёт и куда развивается Лицей — открывайте дайджест 2026/2027.</p></div></div>
+<div class="primary">
+<a class="primaryCard guide" href="./guides/guide.html">
+<div class="kicker" style="color:#8fd3d0">для ежедневной работы</div>
+<h2>Инструкция Лицея</h2>
+<p>FAQ для педагогов: ЭлЖур, Moodle, оценки, контрольные, расписание, кабинеты, техника, родители, пропуска, ВКС, ИИ, проекты и типовые рабочие ситуации.</p>
+<span class="go">Открыть инструкцию →</span>
+<img alt="Маскот с путеводителем" class="primaryMascot" src="assets/mascots/guide.png"/>
+</a>
+<a class="primaryCard about" href="./reports/summary_26_27.html">
+<div class="kicker">развитие и возможности</div>
+<h2>О Лицее · 2026/2027</h2>
+<p>Интерактивный дайджест: гибридная модель, 10Т, лаборатории ИИ и Т1, цифровая трансформация Университета, ВарФин, инфраструктура и новое здание.</p>
+<span class="go">Открыть дайджест →</span>
+ <img alt="Маскот-космонавт" class="primaryMascot" src="assets/mascots/astronaut.png"/>
+ </a>
+ <a class="primaryCard aiTeacher" href="./guides/ai_teacher_guide.html">
+ <div class="kicker" style="color:#e3d8ff">практика для урока</div>
+ <h2>ИИ для преподавателя</h2>
+ <p>Пошаговый сценарий: от темы и промпта до интерактивного урока, конспекта, теста и публикации в LMS.</p>
+ <span class="go">Открыть практический гайд →</span>
+ <img alt="Маскот с ноутбуком" class="primaryMascot" src="assets/mascots/laptop.png"/>
+ </a>
+</div>
+</div></section>
+<section id="quick"><div class="wrap">
+<div class="sectionHead"><div><h2>Быстрый доступ</h2><p>Страницы, которыми удобно пользоваться в течение учебного года.</p></div></div>
+<div class="quickGrid"><a class="quickCard" href="./guides/AI_guide.html"><div class="ico">🧠</div><b>ИИ для учителей</b><span>114 нейросетей, подбор по задачам, бесплатность и подписки, локальные модели, Ollama и Hugging Face.</span></a>
+<a class="quickCard" href="./schedule/lfu_2026-2027_shedule.html"><div class="ico">📅</div><b>Расписание 2026/27</b><span>Недельная модель, нагрузка классов, очные/онлайн/дистанционные форматы.</span></a>
+<a class="quickCard" href="./schedule/cabinets.html"><div class="ico">🚪</div><b>Кабинеты</b><span>Загрузка аудиторий и поиск свободных окон.</span></a>
+<a class="quickCard" href="./projects/distant.html"><div class="ico">↔</div><b>Гибридная модель</b><span>Разбор того, как очный, онлайн и LMS-форматы складываются в одну неделю.</span></a>
+<a class="quickCard" href="https://www.fa.ru/school/priyemka/" target="_blank"><div class="ico">🎓</div><b>Приёмная кампания</b><span>Официальные правила, даты, программы вступительных испытаний и документы.</span></a>
+</div>
+</div></section>
+<section id="profile"><div class="wrap">
+<div class="profileCard">
+<div>
+<div class="kicker">технологический профиль 2026/27</div>
+<h3>10Т: ИИ + инженерная мехатроника</h3>
+<p>Полноценный технологический класс с двумя траекториями. В ИТ-направлении — программирование, ИИ и агентная разработка; в инженерном — физика, Arduino, микроконтроллеры, 3D и прототипирование.</p>
+<div class="profileTracks">
+<div class="track"><b>10Т · ИИ</b><span>Информатика, код, модели ИИ, промптинг и собственные проекты.</span></div>
+<div class="track"><b>10Т · МЕХ</b><span>Физика, электроника, Arduino, 3D-печать, сборка и технопарк.</span></div>
+</div>
+<div class="buttonRow"><a class="button" href="./projects/MechAI.html">Описание MechAI →</a><a class="button light" href="./projects/MechAI_KTP.html">Программа / КТП →</a><a class="button light" href="https://www.fa.ru/school/priyemka/10-class/" target="_blank">Официальный профиль →</a></div>
+</div>
+<img alt="Маскот с ноутбуком" class="profileMascot" src="assets/mascots/laptop.png"/>
+</div>
+</div></section>
+<section id="projects"><div class="wrap">
+<div class="sectionHead"><div><h2>Проекты и разработки</h2><p>Часть этих страниц появилась из конкретных задач Лицея — расписания, приёмки, дистанта, проектной работы или медиасреды — и затем превратилась в самостоятельные инструменты.</p></div></div>
+<div class="projectGrid">
+<a class="project" href="./projects/online_lfu.html"><span class="kind">LFU</span><b>Цифровой маршрут педагога</b><p>Word → Moodle → МТС Линк → запись → конспект и дополнительные материалы.</p></a>
+<a class="project" href="https://altersam.github.io/demo_edu/online_lfu.html" target="_blank"><span class="kind">GitHub Pages</span><b>Demo цифрового маршрута</b><p>Отдельная демонстрационная версия цифрового сценария преподавателя.</p></a>
+<a class="project" href="https://altersam.tech/converter/" target="_blank"><span class="kind">web-tool</span><b>Word → Moodle converter</b><p>Появился при подготовке примерно 3500 вопросов для приёмной кампании и теперь полезен для обычных учебных тестов.</p></a>
+<a class="project" href="https://altersam.github.io/varfin-2026/" target="_blank"><span class="kind">GitHub Pages</span><b>ВарФин 2026 · аналитика</b><p>Дашборд по 149 конкурсным работам: структура, направления, баллы и результаты.</p></a>
+<a class="project" href="./reports/VarFin_instructions_jury.html"><span class="kind">LFU</span><b>ВарФин · инструкция жюри</b><p>Рабочая страница для экспертной оценки конкурсных проектов.</p></a>
+<a class="project" href="https://www.fa.ru/university/structure/education/cyber/konkurs/" target="_blank"><span class="kind">официально</span><b>ВарФин</b><p>Положение, направления, календарь и официальная страница конкурса Финансового университета.</p></a>
+<a class="project" href="https://socialenggame.digital-oblik.ru/" target="_blank"><span class="kind">VR / Digital Облик</span><b>Игра по социальной инженерии</b><p>Пример того, как школьная проектная задача может стать полноценным интерактивным продуктом.</p></a>
+<a class="project" href="https://altersam.github.io/Historical-Display-Generator/%D0%98%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D1%8F.html" target="_blank"><span class="kind">GitHub</span><b>Historical Display Generator</b><p>Проект для автоматического контента «Этот день в истории» на информационных дисплеях и медиа-столбах Лицея.</p></a>
+<a class="project" href="./reports/summary_26_27.html#spaces"><span class="kind">пространства</span><b>Цифровые информеры</b><p>Зеркальная панель и медиа-столбы первого этажа как часть повседневной информационной среды.</p></a>
+</div>
+<div class="digitalStrip" style="margin-top:14px">
+<img alt="Маскот с ноутбуком" src="assets/mascots/laptop.png"/>
+<div><h3>Основные цифровые сервисы</h3><p>Корпоративный и школьный контур, которым пользуются педагоги и учащиеся.</p>
+<div class="serviceButtons">
+<a href="https://lyceum-fa.eljur.ru/" target="_blank">ЭлЖур ↗</a>
+<a href="https://edu.fa.ru/" target="_blank">Moodle ↗</a>
+<a href="https://lk.fa.ru/" target="_blank">lk.fa.ru ↗</a>
+<a href="https://mts-link.ru/" target="_blank">МТС Линк ↗</a>
+<a href="https://max.ru/financial_university_bot" target="_blank">MAX-бот ↗</a>
+</div>
+</div>
+</div>
+</div></section>
+<section id="official"><div class="wrap">
+<div class="sectionHead"><div><h2>Официальные ресурсы</h2><p>Страницы Лицея и Финансового университета, которые полезно держать рядом с внутренними инструментами LFU.</p></div></div>
+<div class="officialGrid">
+<a class="official" href="https://www.fa.ru/school/" target="_blank"><b>Лицей Финансового университета</b><span>Главная официальная страница.</span></a>
+<a class="official" href="https://www.fa.ru/school/about/" target="_blank"><b>О Лицее</b><span>История, профили, предуниверсарий, рейтинги и образовательная модель.</span></a>
+<a class="official" href="https://www.fa.ru/school/docs/" target="_blank"><b>Нормативные документы</b><span>Образовательные программы и локальные акты.</span></a>
+<a class="official" href="https://www.fa.ru/school/teachers/" target="_blank"><b>Преподаватели</b><span>Официальная страница педагогического состава.</span></a>
+<a class="official" href="https://www.fa.ru/school/priyemka/" target="_blank"><b>Поступление в Лицей</b><span>Приёмная кампания, программы тестов и документы.</span></a>
+<a class="official" href="https://www.fa.ru/university/structure/university/dct/" target="_blank"><b>Дирекция цифровой трансформации</b><span>Цифровая экосистема и инфраструктура Университета.</span></a>
+<a class="official" href="https://www.fa.ru/university/structure/university/dct/mip/" target="_blank"><b>Цифровые продукты Университета</b><span>ЕЛК, BI, VR и другие университетские направления.</span></a>
+<a class="official" href="https://www.fa.ru/university/structure/dpo/ipk/corp/" target="_blank"><b>Корпоративное обучение</b><span>Программы развития и повышения квалификации сотрудников.</span></a>
+<a class="official" href="https://www.fa.ru/international-activity/included-education/exchange-program-partners.php" target="_blank"><b>Международные партнёры</b><span>Сеть партнёров Финансового университета.</span></a>
+<a class="official" href="https://www.fa.ru/university/press-center/puteshestvie-litseistov-v-knr" target="_blank"><b>Лицей × Китай</b><span>Очный обмен и совместные проекты со школой-партнёром в КНР.</span></a>
+<a class="official" href="https://www.fa.ru/employee/applying/guide/" target="_blank"><b>Новый сотрудник Университета</b><span>Официальный кадровый путеводитель.</span></a>
+<a class="official" href="https://www.fa.ru/university/structure/education/cyber/konkurs/VarFin_results_2026.php" target="_blank"><b>Итоги ВарФин 2026</b><span>Официальные результаты конкурса.</span></a>
+</div>
+<div class="note">LFU — рабочий слой поверх официальных ресурсов: здесь собраны внутренние гайды, аналитика и прототипы. Нормативные требования и официальные объявления всегда проверяются на fa.ru.</div>
+</div></section>
+</main>
+<footer class="footer"><div class="wrap foot"><div><b>LFU · Лицей Финансового университета</b><br/>Рабочий каталог страниц и цифровых проектов.</div><div><a href="https://altersam.github.io/LFU/" target="_blank">altersam.github.io/LFU/ ↗</a></div></div></footer>
+</body>
+</html>

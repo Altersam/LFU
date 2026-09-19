@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инструкция - Карточка участника ВарФин 2026</title>
+    <style>
+        :root {
+            --text-color: #233E76;
+            --highlight: #F3F3F6;
+            --accent: #4dc6c5;
+            --accent-dark: #275e9f;
+            --bitrix: #C8102E;
+            --warning: #FF9800;
+            --success: #4CAF50;
+            --white: #FFFFFF;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #4dc6c5 0%, #275e9f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .instruction-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .step-card {
+            background: var(--white);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .step-header {
+            background: var(--text-color);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .step-number {
+            background: var(--accent);
+            color: var(--text-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .step-title {
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        .step-content {
+            padding: 25px 30px;
+        }
+        .step-description {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .preview-area {
+            background: var(--highlight);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            border: 3px dashed var(--accent);
+        }
+        .preview-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .card-preview {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .element-highlight {
+            border: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .element-highlight:hover {
+            border-color: var(--bitrix);
+            box-shadow: 0 5px 20px rgba(200,16,46,0.2);
+            transform: scale(1.02);
+        }
+        .element-highlight::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 3px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .element-highlight:hover::before {
+            background: var(--bitrix);
+        }
+        .btn-preview {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+            transition: all 0.3s;
+            border: none;
+            color: white;
+        }
+        .btn-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .btn-tab {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .btn-tab.active {
+            background: white;
+            color: var(--text-color);
+        }
+        .btn-download {
+            background: var(--accent);
+            color: var(--text-color);
+        }
+        .btn-bitrix {
+            background: var(--bitrix);
+        }
+        .btn-extra {
+            background: var(--accent-dark);
+        }
+        .tabs-preview {
+            display: flex;
+            background: var(--text-color);
+            border-radius: 10px 10px 0 0;
+            padding: 5px;
+            gap: 5px;
+        }
+        .result-box {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .result-box::before {
+            content: '✓';
+            font-size: 1.5em;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, var(--warning) 0%, #e68a00 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .warning-box::before {
+            content: '⚠';
+            font-size: 1.5em;
+        }
+        .scroll-hint {
+            text-align: center;
+            color: white;
+            margin: 20px 0;
+            font-size: 1.1em;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .arrow-down {
+            text-align: center;
+            font-size: 2em;
+            color: white;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        .flow-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        .flow-step {
+            background: var(--text-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .flow-arrow {
+            font-size: 2em;
+            color: white;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .summary-card {
+            background: var(--highlight);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .summary-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        .summary-title {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        .summary-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            font-size: 1.1em;
+        }
+
+        /* Real card styles from card_final.html */
+        .real-card {
+            max-width: 100%;
+            margin: 20px auto;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            border: 4px solid var(--accent);
+        }
+        .real-header {
+            background: var(--white);
+            padding: 25px 40px;
+            border-bottom: 5px solid var(--accent);
+            max-height: none;
+            overflow: visible;
+        }
+        .real-header-logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .real-logo-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            padding: 10px;
+            height: 80px;
+            width: 130px;
+        }
+        .real-logo-box.dark-blue { background: var(--text-color); }
+        .real-logo-box.white { background: white; border: 2px solid var(--text-color); }
+        .real-logo-placeholder {
+            background: var(--text-color);
+            color: white;
+            width: 80px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+        .real-header-center { text-align: center; flex: 1; }
+        .real-header-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+        .real-header-subtitle {
+            font-size: 1em;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+        .real-h1 {
+            font-size: 1.3em;
+            line-height: 1.4;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            padding: 20px;
+            background: var(--highlight);
+            border-radius: 10px;
+            border-left: 5px solid var(--accent);
+        }
+        .real-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+        .real-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            background: var(--text-color);
+            color: white;
+        }
+        .real-content { 
+            padding: 30px 40px; 
+            color: var(--text-color);
+            max-height: none;
+            overflow: visible;
+        }
+        .real-section { margin-bottom: 25px; }
+        .real-section-title {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .real-section-title::after {
+            content: '';
+            display: block;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            margin-top: 5px;
+        }
+        .real-participants-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .real-participant-tag {
+            background: var(--highlight);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            color: var(--text-color);
+        }
+        .real-participant-tag:first-child {
+            background: var(--text-color);
+            color: white;
+        }
+        .real-mentor-name {
+            padding: 10px 15px;
+            background: var(--highlight);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            color: var(--text-color);
+            font-size: 0.9em;
+        }
+        .real-doc-viewer {
+            background: var(--white);
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .real-viewer-tabs {
+            display: flex;
+            background: var(--text-color);
+            padding: 5px;
+            gap: 5px;
+        }
+        .real-tab-btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 500;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            transition: all 0.3s;
+        }
+        .real-tab-btn.active { background: white; color: var(--text-color); }
+        .real-viewer-frame {
+            min-height: 300px;
+            background: var(--highlight);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            color: #999;
+            font-size: 1em;
+        }
+        .real-actions-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .real-big-btn {
+            flex: 1;
+            min-width: 180px;
+            padding: 18px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            text-align: center;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: white;
+        }
+        .real-big-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .real-big-btn.view { background: var(--accent-dark); }
+        .real-big-btn.download { background: var(--accent); color: var(--text-color); }
+        .real-big-btn.bitrix { background: var(--bitrix); }
+        .real-footer {
+            background: var(--text-color);
+            padding: 15px 30px;
+            text-align: center;
+            color: white;
+            font-size: 0.85em;
+        }
+        .criteria-box {
+            background: var(--highlight);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--accent);
+            overflow-x: auto;
+        }
+        .criteria-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85em;
+            color: var(--text-color);
+            min-width: 600px;
+        }
+        .criteria-table th {
+            background: var(--text-color);
+            color: white;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .criteria-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+        .criteria-table tr:nth-child(even) { background: rgba(255,255,255,0.5); }
+        .criteria-table .aspect { 
+            background: var(--accent); 
+            color: white; 
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .criteria-table .criterion { font-weight: 600; }
+        .criteria-table th:first-child { width: 100px; }
+        .criteria-table th:nth-child(2) { width: 150px; }
+
+        /* Interactive demo */
+        .demo-toggle {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .demo-toggle-btn {
+            background: linear-gradient(135deg, var(--bitrix) 0%, #a00d25 100%);
+            color: white;
+            border: none;
+            padding: 25px 50px;
+            border-radius: 50px;
+            font-size: 1.4em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(200,16,46,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .demo-toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 50px rgba(200,16,46,0.5);
+        }
+        .demo-toggle-btn .btn-subtitle {
+            font-size: 0.5em;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        .real-card { display: none; }
+        .real-card.show { 
+            display: block; 
+            width: 100%;
+            max-height: none !important;
+            overflow: visible !important;
+        }
+        .real-card.show .real-header,
+        .real-card.show .real-content,
+        .real-card.show .real-viewer-frame {
+            max-height: none !important;
+            overflow: visible !important;
+        }
+        .demo-hidden { display: none; }
+        .demo-hidden.show { display: block; }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        .tooltip::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #233E76 0%, #1a3260 100%);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            white-space: normal;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            max-width: 280px;
+            line-height: 1.4;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        .tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+            animation: bubbleBounce 0.3s ease-out;
+        }
+        @keyframes bubbleBounce {
+            0% { transform: translateX(-50%) translateY(5px); opacity: 0; }
+            100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="instruction-container">
+        <h1>📖 Инструкция по карточке участника</h1>
+        
+        <p class="scroll-hint">Нажмите на карточку ниже, чтобы увидеть реальный пример</p>
+        <div class="arrow-down">↓</div>
+
+        <!-- Интерактивный пример -->
+        <div class="step-card full-width">
+            <div class="step-header">
+                <div class="step-number">👁️</div>
+                <div class="step-title">Живой пример карточки (наведите на элементы для подсказок)</div>
+            </div>
+            <div class="step-content">
+                <div class="demo-toggle">
+                    <button class="demo-toggle-btn" onclick="toggleCard()">
+                        🔽 Показать реальную карточку участника
+                        <span class="btn-subtitle">(пример карточки из конкурса)</span>
+                    </button>
+                </div>
+                
+                <div id="realCardDemo" class="real-card">
+                    <div class="real-header">
+                        <div class="real-header-logos">
+                            <div class="real-logo-box white">
+                                <div class="real-logo-placeholder">VARWIN</div>
+                            </div>
+                            <div class="real-header-center">
+                                <div class="real-header-title">Конкурс ВаРФин</div>
+                                <div class="real-header-subtitle">Всероссийский конкурс исследовательских и проектных работ в виртуальной реальности</div>
+                            </div>
+                            <div class="real-logo-box dark-blue">
+                                <div class="real-logo-placeholder" style="background: white; color: var(--text-color);">FA.ru</div>
+                            </div>
+                        </div>
+                        <div class="real-h1">Название работы для конкурса</div>
+                        <div class="real-badges">
+                            <span class="real-badge tooltip" data-tooltip="Направление конкурса">📚 Естественные науки</span>
+                            <span class="real-badge tooltip" data-tooltip="Тип конкурсной работы">Проектная работа</span>
+                            <span class="real-badge tooltip" data-tooltip="Уровень образования участника">🎓 Среднее профессиональное образование</span>
+                        </div>
+                    </div>
+                    
+                    <div class="real-content">
+                        <div class="real-section">
+                            <div class="real-section-title">👥 Участники</div>
+                            <div class="real-participants-list">
+                                <span class="real-participant-tag tooltip" data-tooltip="Основной автор конкурсной работы">Иванов Иван Иванович</span>
+                            </div>
+                        </div>
+                        
+                        <div class="real-section">
+                            <div class="real-section-title">👨‍🏫 Научный руководитель</div>
+                            <div class="real-mentor-name tooltip" data-tooltip="Преподаватель, курирующий данную работу">Иванов Иван Иванович</div>
+                        </div>
+                        
+                        <div class="real-section">
+                            <div class="real-section-title">📄 Документы проекта</div>
+                            <div class="real-doc-viewer">
+                                <div class="real-viewer-tabs">
+                                    <button class="real-tab-btn active tooltip" id="demo-tab-zayavka" onclick="demoShowDoc('zayavka')" data-tooltip="Форма заявки на участие (PPTX)">📄 Заявка</button>
+                                    <button class="real-tab-btn tooltip" id="demo-tab-thesis" onclick="demoShowDoc('thesis')" data-tooltip="Тезисы конкурсной работы (DOCX)">📑 Тезисы</button>
+                                </div>
+                                <div class="real-viewer-frame">
+                                    <iframe id="demo-zayavka-frame" src="https://view.officeapps.live.com/op/embed.aspx?src=https://www.fa.ru/upload/constructor/ded/fdh2mku7tp0o5t00tur7ngoq8uyqd2l6/Forma-zayavki-VarFin.pptx" style="width:100%;height:600px;border:none;display:block;"></iframe>
+                                    <iframe id="demo-thesis-frame" src="https://view.officeapps.live.com/op/embed.aspx?src=https://www.fa.ru/upload/constructor/e8d/jf0s8iq8vlbrjgx0rqmwv47t0acuschu/SHablon-tezisov.docx" style="width:100%;height:600px;border:none;display:none;"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="real-section">
+                            <div class="real-section-title tooltip" data-tooltip="Критерии, по которым оценивается работа">⬇️ Скачать материалы</div>
+                            <div class="real-actions-row">
+                                <a href="https://www.fa.ru/upload/constructor/ded/fdh2mku7tp0o5t00tur7ngoq8uyqd2l6/Forma-zayavki-VarFin.pptx" class="real-big-btn download tooltip" target="_blank" download data-tooltip="Сохранит файл заявки (PPTX) на компьютер">📥 Скачать заявку</a>
+                                <a href="https://www.fa.ru/upload/constructor/e8d/jf0s8iq8vlbrjgx0rqmwv47t0acuschu/SHablon-tezisov.docx" class="real-big-btn download tooltip" target="_blank" download data-tooltip="Сохранит файл тезисов (DOCX) на компьютер">📥 Скачать тезисы</a>
+                                <a href="#" class="real-big-btn bitrix tooltip" onclick="demoBitrix(); return false;" data-tooltip="Откроет форму оценивания в Bitrix24">📝 Оценить работу</a>
+                            </div>
+                        </div>
+                        
+                        <div class="real-section">
+                            <div class="real-section-title tooltip" data-tooltip="Критерии, по которым будет оцениваться ваша работа">📊 Критерии оценивания (проектные работы)</div>
+                            <div class="criteria-box">
+                                <table class="criteria-table">
+                                    <tr><th>Аспект</th><th>Критерий</th><th>Описание</th></tr>
+                                    <tr><td class="aspect" rowspan="4">Стиль</td><td class="criterion">Язык</td><td>работа написана в соответствии с требованиями научного стиля и правилами орфографии и пунктуации.</td></tr>
+                                    <tr><td class="criterion">Цитирование</td><td>заимствованный текст оформлен единообразно по правилам цитирования.</td></tr>
+                                    <tr><td class="criterion">Композиция</td><td>работа представляет собой стандартную научную работу, основные части которой сбалансированы.</td></tr>
+                                    <tr><td class="criterion">Внешний вид</td><td>работа отвечает требованиям оформления научной работы.</td></tr>
+                                    <tr><td class="aspect" rowspan="4">Методология</td><td class="criterion">Актуальность</td><td>актуальность проекта доказана потребностью целевой аудитории.</td></tr>
+                                    <tr><td class="criterion">Логика</td><td>поставленные задачи логичны и последовательны.</td></tr>
+                                    <tr><td class="criterion">Продукт</td><td>продукт удовлетворяет целевую аудиторию.</td></tr>
+                                    <tr><td class="criterion">Эффективность</td><td>полученный продукт решает проблемы целевой аудитории.</td></tr>
+                                    <tr><td class="aspect" rowspan="4">Выступление</td><td class="criterion">Речь</td><td>грамотная; доклад не читается, а рассказывается.</td></tr>
+                                    <tr><td class="criterion">Логика</td><td>адекватное представление о разработанном продукте.</td></tr>
+                                    <tr><td class="criterion">Презентация</td><td>соответствует предъявляемым требованиям.</td></tr>
+                                    <tr><td class="criterion">Ответы</td><td>исчерпывающие и грамотные ответы на вопросы.</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="real-section demo-hidden" id="demoMessage">
+                            <div class="result-box" id="demoResult"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="real-footer">
+                        ВарФин 2026 | ID: 67 | 🎮 VR/AR конкурс Финансового университета
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Шаг 1 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Просмотр основной информации</div>
+            </div>
+            <div class="step-content">
+                <p class="step-description">
+                    При открытии карточки вы сразу видите всю ключевую информацию о работе. 
+                    Наведите курсор на элементы, чтобы увидеть подсказки.
+                </p>
+                <div class="preview-area">
+                    <div class="preview-label">Наведите на элементы</div>
+                    <div class="element-highlight" data-label="🎯 Кликабельно">
+                        <strong>Название работы:</strong> Название работы для конкурса
+                    </div>
+                    <div class="element-highlight" data-label="📌 Информация">
+                        <strong>Направление:</strong> 📚 Естественные науки | 
+                        <strong>Тип:</strong> 💼 Проектная работа | 
+                        <strong>Уровень:</strong> 🎓 Среднее профессиональное образование
+                    </div>
+                    <div class="element-highlight" data-label="👥 Основной участник">
+                        <strong>Участник:</strong> Иванов Иван Иванович
+                    </div>
+                    <div class="element-highlight" data-label="👨‍🏫 Курирует работу">
+                        <strong>Научный руководитель:</strong> Иванов Иван Иванович
+                    </div>
+                </div>
+                <div class="result-box">
+                    Вся информация видна сразу при открытии — ничего нажимать не нужно!
+                </div>
+            </div>
+        </div>
+
+        <!-- Шаг 2 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">Просмотр документов онлайн</div>
+            </div>
+            <div class="step-content">
+                <p class="step-description">
+                    Кликните на вкладку "Заявка" или "Тезисы", чтобы переключить документ. 
+                    Документы откроются во встроенном просмотрщике Office Online.
+                </p>
+                <div class="preview-area">
+                    <div class="preview-label">Кликните на вкладку</div>
+                    <div class="element-highlight" data-label="🔄 Переключает документы" style="cursor: pointer;" onclick="this.querySelector('.real-viewer-tabs .active').nextElementSibling?.click() || this.querySelector('.real-viewer-tabs button:first-child').click()">
+                        <div class="real-viewer-tabs">
+                            <button class="real-tab-btn active" onclick="demoShowDoc('zayavka'); event.stopPropagation();">📄 Заявка</button>
+                            <button class="real-tab-btn" onclick="demoShowDoc('thesis'); event.stopPropagation();">📑 Тезисы</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="warning-box">
+                    💡 Для просмотра требуется интернет-соединение
+                </div>
+            </div>
+        </div>
+
+        <!-- Шаг 3 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Скачивание материалов</div>
+            </div>
+            <div class="step-content">
+                <p class="step-description">
+                    Нажмите кнопку, чтобы скачать файл. Файл формата PPTX или DOCX 
+                    сохранится в папку загрузок браузера.
+                </p>
+                <div class="preview-area">
+                    <div class="preview-label">Нажмите кнопку</div>
+                    <div class="element-highlight" data-label="💾 Сохранит PPTX файл">
+                        <button class="btn-preview btn-download" onclick="demoDownload('заявка')">📥 Скачать заявку</button>
+                    </div>
+                    <div class="element-highlight" data-label="💾 Сохранит DOCX файл">
+                        <button class="btn-preview btn-download" onclick="demoDownload('тезисы')">📥 Скачать тезисы</button>
+                    </div>
+                </div>
+                <div class="result-box">
+                    Файл будет сохранён на ваш компьютер
+                </div>
+            </div>
+        </div>
+
+        <!-- Шаг 4 -->
+        <div class="step-card">
+            <div class="step-header" style="background: var(--bitrix);">
+                <div class="step-number">4</div>
+                <div class="step-title">Оценивание работы</div>
+            </div>
+            <div class="step-content">
+                <p class="step-description">
+                    Нажмите красную кнопку "Оценить работу" — откроется форма Bitrix24 
+                    для выставления баллов по критериям.
+                </p>
+                <div class="preview-area">
+                    <div class="preview-label">Важно!</div>
+                    <div class="element-highlight" data-label="📝 Откроет форму оценивания" style="border-color: var(--bitrix);">
+                        <button class="btn-preview btn-bitrix" style="font-size: 1.2em; padding: 18px 35px;" onclick="demoBitrix()">
+                            📝 Оценить работу
+                        </button>
+                    </div>
+                </div>
+                <div class="result-box">
+                    Откроется форма Bitrix24 для заполнения оценок
+                </div>
+            </div>
+        </div>
+
+        <!-- Шаг 5 -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <div class="step-title">Дополнительные ссылки</div>
+            </div>
+            <div class="step-content">
+                <p class="step-description">
+                    Ссылки на презентацию, облачное хранилище и email находятся внизу страницы.
+                </p>
+                <div class="preview-area">
+                    <div class="preview-label">Кликните ссылку</div>
+                    <div class="element-highlight" data-label="📊 PPTX файл">
+                        <button class="btn-preview btn-extra">📊 Презентация</button>
+                    </div>
+                    <div class="element-highlight" data-label="☁️ Яндекс.Диск / Google Drive">
+                        <button class="btn-preview btn-extra">☁️ Облачное хранилище</button>
+                    </div>
+                    <div class="element-highlight" data-label="✉️ Почта участника">
+                        <button class="btn-preview btn-extra">✉️ ivanov@fa.ru</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Критерии -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">📊</div>
+                <div class="step-title">Критерии оценивания</div>
+            </div>
+            <div class="step-content">
+                <p class="step-description">
+                    Таблица критериев поможет вам при оценивании. Используйте её как чек-лист.
+                </p>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="summary-icon">📝</div>
+                        <div class="summary-title">Стиль</div>
+                        <div class="summary-desc">Язык, цитирование, композиция, внешний вид</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">🔬</div>
+                        <div class="summary-title">Методология</div>
+                        <div class="summary-desc">Актуальность, логика, ресурсоемкость, эффективность</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">🎤</div>
+                        <div class="summary-title">Выступление</div>
+                        <div class="summary-desc">Речь, логика, презентация, ответы на вопросы</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🎮 ВарФин 2026 | Конкурс исследовательских и проектных работ в VR</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleCard() {
+            const card = document.getElementById('realCardDemo');
+            const btn = document.querySelector('.demo-toggle-btn');
+            card.classList.toggle('show');
+            if (card.classList.contains('show')) {
+                btn.textContent = '🔼 Скрыть карточку';
+            } else {
+                btn.textContent = '🔽 Показать реальную карточку участника';
+            }
+        }
+
+        function demoShowDoc(type) {
+            document.querySelectorAll('.real-tab-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            document.getElementById('demo-tab-' + type).classList.add('active');
+            
+            document.getElementById('demo-zayavka-frame').style.display = type === 'zayavka' ? 'block' : 'none';
+            document.getElementById('demo-thesis-frame').style.display = type === 'thesis' ? 'block' : 'none';
+        }
+
+        function demoDownload(type) {
+            showDemoResult('💾 Файл "' + type + '" будет сохранён в папку загрузок');
+        }
+
+        function demoBitrix() {
+            showDemoResult('📝 Открывается форма Bitrix24 для оценивания работы ID: 67');
+        }
+
+        function showDemoResult(message) {
+            const msgBox = document.getElementById('demoMessage');
+            const resultBox = document.getElementById('demoResult');
+            msgBox.classList.add('show');
+            resultBox.textContent = message;
+            
+            setTimeout(function() {
+                msgBox.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
