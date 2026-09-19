@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Электромагнитная индукция — профильный класс</title>
+<style>
+:root{
+  --bg:#07111f; --bg2:#0b1d31; --panel:#0d2238e8; --panel2:#102b46;
+  --text:#edf7ff; --muted:#9eb8cc; --cyan:#52e6e6; --blue:#69a7ff; --violet:#a486ff;
+  --green:#6ee7a8; --yellow:#ffd166; --red:#ff7b83; --line:#2a4a64; --shadow:0 20px 80px #0008;
+  --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:radial-gradient(circle at 80% 10%,#153858 0,#07111f 45%,#040b14 100%);color:var(--text);font-family:var(--sans)}
+button,input{font:inherit}
+a{color:var(--cyan)}
+#deck{height:100vh;width:100vw;position:relative}
+.slide{position:absolute;inset:0;padding:5.5vh 6vw 7vh;display:none;overflow:auto;background:
+  linear-gradient(120deg,transparent 0 72%,#52e6e607 72% 73%,transparent 73% 100%),
+  radial-gradient(circle at 96% 88%,#69a7ff12 0 18%,transparent 45%)}
+.slide.active{display:block;animation:enter .38s ease-out}
+@keyframes enter{from{opacity:.2;transform:translateX(18px)}to{opacity:1;transform:none}}
+.slide:before{content:"";position:absolute;left:0;top:0;height:4px;width:100%;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));opacity:.75}
+.kicker{display:flex;gap:.7rem;align-items:center;color:var(--cyan);font-size:clamp(12px,1.05vw,18px);text-transform:uppercase;letter-spacing:.12em;font-weight:750}
+.kicker .time{margin-left:auto;color:var(--muted);letter-spacing:.03em;text-transform:none}
+h1{font-size:clamp(38px,5.4vw,84px);line-height:1.02;margin:.5rem 0 1.2rem;max-width:14ch;letter-spacing:-.045em}
+h2{font-size:clamp(30px,3.4vw,56px);line-height:1.06;margin:.4rem 0 1.2rem;letter-spacing:-.035em}
+h3{font-size:clamp(20px,1.7vw,31px);margin:.25rem 0 .7rem}
+p,li{font-size:clamp(17px,1.45vw,26px);line-height:1.45}
+.small{font-size:clamp(13px,1vw,18px);color:var(--muted)}
+.lead{font-size:clamp(23px,2.15vw,38px);line-height:1.3;max-width:44ch;color:#dff6ff}
+.accent{color:var(--cyan)} .blue{color:var(--blue)} .violet{color:var(--violet)} .green{color:var(--green)} .yellow{color:var(--yellow)} .red{color:var(--red)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:2.3vw;align-items:stretch}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3vw}
+.card{background:linear-gradient(145deg,#102941dd,#0a1b2ddd);border:1px solid #2c526e;border-radius:22px;padding:1.2rem 1.35rem;box-shadow:0 12px 40px #0003}
+.card.soft{background:#0a1d2c99}.card strong{color:#fff}
+.callout{border-left:5px solid var(--cyan);padding:.8rem 1.2rem;background:#112a3db8;border-radius:0 16px 16px 0}
+.formula{font-family:var(--serif);font-size:clamp(28px,3.2vw,56px);text-align:center;padding:1.05rem 1.2rem;margin:.7rem 0;border-radius:20px;background:linear-gradient(130deg,#0d2942,#111f42);border:1px solid #2e587b;box-shadow:inset 0 0 60px #52e6e608}
+.formula .sub{font-size:.58em;vertical-align:sub}.formula .sup{font-size:.55em;vertical-align:super}.eqbox{display:inline-block;border:2px solid var(--cyan);border-radius:16px;padding:.35em .65em;box-shadow:0 0 28px #52e6e61c}
+.term{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start}.term .symbol{font-family:var(--serif);font-size:clamp(45px,5vw,82px);color:var(--cyan);min-width:1.5em;text-align:center}.term p{margin:.25rem 0}
+.step{display:flex;gap:1rem;align-items:flex-start;margin:.65rem 0}.step .num{min-width:2.3rem;height:2.3rem;border-radius:50%;display:grid;place-items:center;background:var(--cyan);color:#03202b;font-weight:900}.step p{margin:0}
+.badge{display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .75rem;border-radius:999px;border:1px solid #35647e;background:#10283a;color:#c9e9f5;font-size:clamp(12px,.95vw,17px)}
+.heroVisual{min-height:48vh;display:grid;place-items:center;position:relative}
+.heroVisual svg{max-width:100%;height:auto;filter:drop-shadow(0 18px 35px #0008)}
+.magnet{animation:magnetFloat 2.8s ease-in-out infinite alternate}@keyframes magnetFloat{to{transform:translateX(65px)}}
+.fluxLine{stroke-dasharray:8 8;animation:dash 1.1s linear infinite}@keyframes dash{to{stroke-dashoffset:-32}}
+.controls{display:grid;grid-template-columns:1fr auto;gap:.4rem .9rem;align-items:center}.controls label{color:#d8f0f8;font-size:clamp(14px,1.15vw,20px)}
+input[type=range]{width:100%;accent-color:#52e6e6}.value{min-width:6.5em;text-align:right;color:var(--cyan);font-variant-numeric:tabular-nums}
+button{border:1px solid #3b6f8e;background:#12324a;color:white;border-radius:12px;padding:.58rem .9rem;cursor:pointer;transition:.2s}button:hover{transform:translateY(-1px);border-color:var(--cyan)}button.primary{background:linear-gradient(135deg,#1698a8,#346cc5);border:none}.ghost{background:transparent}
+.solution{display:none;margin-top:.75rem}.solution.show{display:block;animation:fade .25s}@keyframes fade{from{opacity:0}to{opacity:1}}
+.task{font-size:clamp(18px,1.45vw,25px)}
+.task .given{font-family:var(--serif);padding:.7rem 1rem;background:#081827;border-radius:14px;border:1px solid #264966}
+.graphbox{background:#061523;border:1px solid #2d506b;border-radius:18px;padding:1rem}.graphbox svg{width:100%;height:auto}
+.choice{display:block;width:100%;text-align:left;margin:.5rem 0}.choice.correct{border-color:var(--green);background:#0e3a2a}.choice.wrong{border-color:var(--red);background:#3d1820}
+.feedback{min-height:1.6em;margin-top:.35rem;color:var(--muted)}
+#chrome{position:fixed;left:0;right:0;bottom:0;height:46px;background:#04101bdc;backdrop-filter:blur(12px);border-top:1px solid #16314a;display:flex;align-items:center;gap:.6rem;padding:0 1rem;z-index:100}
+#progress{position:absolute;left:0;top:-3px;height:3px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));transition:width .25s}
+#chrome button{padding:.32rem .64rem;border-radius:8px;background:#0e2639}.spacer{flex:1}#slideNo{color:var(--muted);font-size:14px;min-width:72px;text-align:center}
+#timer{font-variant-numeric:tabular-nums;color:var(--yellow);min-width:56px;text-align:center;font-size:14px}
+#notes{position:fixed;right:1rem;top:1rem;width:min(430px,40vw);max-height:72vh;overflow:auto;background:#06131ef2;border:1px solid #31566f;border-radius:18px;padding:1rem 1.1rem;z-index:120;display:none;box-shadow:var(--shadow)}#notes.show{display:block}#notes h4{margin:.15rem 0 .5rem;color:var(--cyan)}#notes p{font-size:15px;line-height:1.45;color:#d1e4ef}
+#overview{position:fixed;inset:0;background:#04101bf2;z-index:140;display:none;overflow:auto;padding:2rem}#overview.show{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;align-content:start}.thumb{background:#0c2032;border:1px solid #294d68;border-radius:14px;padding:1rem;cursor:pointer}.thumb:hover{border-color:var(--cyan)}.thumb b{display:block;color:var(--cyan);margin-bottom:.35rem}.thumb span{color:#d8e8ef}
+.quiz-summary{font-size:clamp(24px,2.1vw,36px);font-weight:850;color:var(--cyan)}
+.miniTable{width:100%;border-collapse:collapse;font-size:clamp(14px,1.05vw,19px)}.miniTable th,.miniTable td{border-bottom:1px solid #294b64;padding:.55rem .6rem;text-align:left}.miniTable th{color:var(--cyan)}
+.footerSource{position:absolute;right:6vw;bottom:6vh;color:#7293a8;font-size:12px;max-width:50vw;text-align:right}
+@media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}.slide{padding:4.5vh 5vw 8vh}.footerSource{position:static;margin-top:1rem;max-width:none;text-align:left}.heroVisual{min-height:30vh}}
+@media print{html,body{overflow:visible;background:white;color:black}.slide{position:relative;display:block!important;page-break-after:always;height:100vh;background:white;color:black}.card,.formula,.graphbox{background:white;color:black;border-color:#777;box-shadow:none}#chrome,#notes,#overview{display:none!important}.small{color:#444}}
+</style>
+</head>
+<body>
+<div id="deck">
+
+<section class="slide" data-title="Электромагнитная индукция" data-time="1 мин">
+  <div class="kicker">Физика • профильный уровень <span class="time">45 минут</span></div>
+  <div class="grid2" style="align-items:center;margin-top:2vh">
+    <div>
+      <h1>Электромагнитная <span class="accent">индукция</span></h1>
+      <p class="lead">Как изменение магнитного потока создаёт ЭДС — и почему направление тока подчиняется закону сохранения энергии.</p>
+      <div style="display:flex;gap:.55rem;flex-wrap:wrap;margin-top:1.3rem">
+        <span class="badge">Φ = BS cos α</span><span class="badge">ℰ = −N·dΦ/dt</span><span class="badge">правило Ленца</span><span class="badge">задачи ЕГЭ</span>
+      </div>
+    </div>
+    <div class="heroVisual">
+      <svg viewBox="0 0 760 420" aria-label="магнит движется к катушке">
+        <defs><linearGradient id="magG" x1="0" x2="1"><stop stop-color="#ff6b72"/><stop offset=".5" stop-color="#f55761"/><stop offset=".5" stop-color="#5a8dff"/><stop offset="1" stop-color="#3b6fda"/></linearGradient><marker id="arr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#52e6e6"/></marker></defs>
+        <g opacity=".8" stroke="#52e6e6" fill="none" stroke-width="3">
+          <path class="fluxLine" d="M355 105 C470 65 575 95 620 180"/><path class="fluxLine" d="M355 145 C470 120 550 135 595 195"/><path class="fluxLine" d="M355 275 C470 300 555 280 600 220"/><path class="fluxLine" d="M355 315 C470 355 575 320 620 235"/>
+        </g>
+        <g class="magnet"><rect x="110" y="145" rx="14" width="250" height="130" fill="url(#magG)"/><text x="175" y="226" fill="white" font-size="56" font-family="sans-serif" font-weight="800">N</text><text x="292" y="226" fill="white" font-size="56" font-family="sans-serif" font-weight="800">S</text></g>
+        <g transform="translate(540,210)"><ellipse rx="90" ry="142" fill="none" stroke="#ffd166" stroke-width="14"/><ellipse rx="72" ry="122" fill="none" stroke="#ffc845" stroke-width="7"/><ellipse rx="55" ry="103" fill="none" stroke="#ffb72b" stroke-width="5"/></g>
+        <path d="M390 210 H500" stroke="#52e6e6" stroke-width="5" marker-end="url(#arr)"/><text x="421" y="190" fill="#bff" font-size="25">v</text>
+        <path d="M632 210 H706 V328 H616" stroke="#88a7bc" fill="none" stroke-width="4"/><circle cx="612" cy="328" r="46" fill="#0b1e30" stroke="#52e6e6" stroke-width="4"/><path d="M612 328 L635 305" stroke="#ffd166" stroke-width="5" stroke-linecap="round"/><text x="586" y="391" fill="#b7cfde" font-size="20">гальванометр</text>
+      </svg>
+    </div>
+  </div>
+  <div class="speaker" hidden><p>Начать без определения. Спросить: «Будет ли ток в катушке, если рядом просто лежит магнит?» Затем: «Что должно изменяться?» Цель — сразу вывести класс на идею изменения магнитного потока.</p></div>
+</section>
+
+<section class="slide" data-title="Главный вопрос" data-time="2 мин">
+  <div class="kicker">Проблемная постановка <span class="time">≈ 2 мин</span></div>
+  <h2>Магнитное поле есть. <span class="red">Почему тока может не быть?</span></h2>
+  <div class="grid2" style="margin-top:2vh">
+    <div class="card">
+      <h3>Ситуация A</h3>
+      <p>Постоянный магнит неподвижен внутри катушки.</p>
+      <div class="formula">B ≠ 0, но Φ = const</div>
+      <p class="green"><strong>Индукционного тока нет.</strong></p>
+    </div>
+    <div class="card">
+      <h3>Ситуация B</h3>
+      <p>Тот же магнит движется относительно катушки.</p>
+      <div class="formula">B меняется во времени → Φ меняется</div>
+      <p class="yellow"><strong>Возникает ЭДС индукции.</strong></p>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:1.3rem"><p style="margin:.1rem 0"><strong>Ключевая идея урока:</strong> электромагнитная индукция связана не с самим магнитным полем, а с <span class="accent">изменением магнитного потока через контур</span>.</p></div>
+  <div class="speaker" hidden><p>Попросить учеников предсказать, будет ли отклоняться стрелка при остановке магнита. Подчеркнуть: B может быть большим, но если поток через контур постоянен, ЭДС индукции равна нулю.</p></div>
+</section>
+
+<section class="slide" data-title="Наблюдение Фарадея" data-time="3 мин">
+  <div class="kicker">Наблюдение → закономерность <span class="time">≈ 3 мин</span></div>
+  <h2>Что показывает опыт Фарадея?</h2>
+  <div class="grid3">
+    <div class="card"><h3>1. Магнит неподвижен</h3><p>Стрелка гальванометра возвращается к нулю.</p><p class="small">Поток перестал меняться.</p></div>
+    <div class="card"><h3>2. Движем быстрее</h3><p>Отклонение стрелки становится больше.</p><p class="small">Больше скорость изменения потока.</p></div>
+    <div class="card"><h3>3. Меняем направление</h3><p>Стрелка отклоняется в противоположную сторону.</p><p class="small">Меняется знак dΦ/dt.</p></div>
+  </div>
+  <div class="formula" style="margin-top:1.5rem">|ℰ| ∝ <span class="eqbox">скорости изменения магнитного потока</span></div>
+  <p class="small">Это не лабораторная работа: на уроке достаточно демонстрации или интерактивной визуализации.</p>
+  <div class="speaker" hidden><p>Формулировать осторожно: опыт показывает зависимость ЭДС от скорости изменения потока. Закон Фарадея является количественным обобщением экспериментов.</p></div>
+</section>
+
+<section class="slide" data-title="Магнитный поток" data-time="4 мин">
+  <div class="kicker">Новый термин <span class="time">≈ 4 мин</span></div>
+  <h2>Магнитный поток <span class="accent">Φ</span></h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="term"><div class="symbol">Φ</div><div><h3>Физический смысл</h3><p>Характеризует, насколько сильно магнитное поле «пронизывает» выбранную поверхность.</p></div></div>
+      <div class="formula"><span class="eqbox">Φ = B S cos α</span></div>
+      <p class="small">для однородного поля и плоской поверхности</p>
+    </div>
+    <div class="card">
+      <h3>Что такое α?</h3>
+      <svg viewBox="0 0 520 300">
+        <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L0 6L7 3z" fill="#52e6e6"/></marker></defs>
+        <ellipse cx="260" cy="190" rx="155" ry="58" fill="#16304a" stroke="#69a7ff" stroke-width="4" transform="rotate(-20 260 190)"/>
+        <line x1="260" y1="190" x2="330" y2="40" stroke="#ffd166" stroke-width="5" marker-end="url(#a2)"/><text x="336" y="49" fill="#ffd166" font-size="25">n</text>
+        <line x1="260" y1="190" x2="430" y2="105" stroke="#52e6e6" stroke-width="5" marker-end="url(#a2)"/><text x="438" y="108" fill="#52e6e6" font-size="25">B</text>
+        <path d="M304 98 A103 103 0 0 1 351 145" fill="none" stroke="#a486ff" stroke-width="4"/><text x="348" y="118" fill="#c8b9ff" font-size="26">α</text>
+      </svg>
+      <p><strong>α — угол между вектором B и нормалью n к поверхности.</strong></p>
+    </div>
+  </div>
+  <div class="speaker" hidden><p>Частая ошибка: считать α углом между B и самой плоскостью рамки. Покажите нормаль. Для B перпендикулярного плоскости α=0°, поток максимален; для B вдоль плоскости α=90°, поток ноль.</p></div>
+</section>
+
+<section class="slide" data-title="Интерактив: магнитный поток" data-time="4 мин">
+  <div class="kicker">Интерактивная модель <span class="time">≈ 4 мин</span></div>
+  <h2>Изменяйте параметры и следите за <span class="accent">Φ</span></h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="controls">
+        <label for="fluxB">Магнитная индукция B</label><span class="value" id="fluxBVal"></span><input id="fluxB" type="range" min="0" max="1.2" value="0.6" step="0.05"><span></span>
+        <label for="fluxS">Площадь S</label><span class="value" id="fluxSVal"></span><input id="fluxS" type="range" min="0.01" max="0.20" value="0.08" step="0.005"><span></span>
+        <label for="fluxA">Угол α к нормали</label><span class="value" id="fluxAVal"></span><input id="fluxA" type="range" min="0" max="90" value="30" step="1"><span></span>
+      </div>
+      <div class="formula" id="fluxFormula">Φ = …</div>
+      <div class="callout"><p style="margin:.1rem 0">Единица магнитного потока: <strong>1 Вб = 1 Тл·м²</strong>.</p></div>
+    </div>
+    <div class="card">
+      <svg id="fluxSvg" viewBox="0 0 560 370">
+        <defs><marker id="fluxArrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L0 6L7 3z" fill="#52e6e6"/></marker></defs>
+        <g id="fieldLines" stroke="#52e6e6" stroke-width="3" opacity=".72"></g>
+        <g id="planeGroup" transform="translate(280 210)"><ellipse id="planeEllipse" rx="155" ry="70" fill="#173954aa" stroke="#69a7ff" stroke-width="5"/><line id="normalLine" x1="0" y1="0" x2="0" y2="-155" stroke="#ffd166" stroke-width="5" marker-end="url(#fluxArrow)"/><text x="10" y="-150" fill="#ffd166" font-size="24">n</text></g>
+        <text x="22" y="34" fill="#9eb8cc" font-size="18">Толщина линий условно отражает B</text>
+      </svg>
+      <p id="fluxInsight" class="lead" style="font-size:clamp(18px,1.5vw,27px);margin:.3rem 0"></p>
+    </div>
+  </div>
+  <div class="speaker" hidden><p>Дайте классу три быстрых вопроса: 1) как сделать Φ=0 при B≠0? 2) как удвоить Φ, не меняя площадь? 3) что произойдёт с Φ при α→90°?</p></div>
+</section>
+
+<section class="slide" data-title="Как изменить поток" data-time="2 мин">
+  <div class="kicker">Три физических механизма <span class="time">≈ 2 мин</span></div>
+  <h2>Индукция возможна даже без движения магнита</h2>
+  <div class="grid3">
+    <div class="card"><h3><span class="accent">B</span> меняется</h3><p>Меняется величина магнитного поля.</p><p class="small">Например, ток в электромагните изменяется.</p></div>
+    <div class="card"><h3><span class="blue">S</span> меняется</h3><p>Меняется площадь контура, находящаяся в поле.</p><p class="small">Например, рамка входит в область поля.</p></div>
+    <div class="card"><h3><span class="violet">α</span> меняется</h3><p>Рамка поворачивается относительно поля.</p><p class="small">Основа работы генератора переменного тока.</p></div>
+  </div>
+  <div class="formula">Φ(t) = B(t) · S(t) · cos α(t)</div>
+  <p class="lead">Важно не <strong>что</strong> меняется, а то, что <span class="yellow">меняется магнитный поток</span>.</p>
+</section>
+
+<section class="slide" data-title="Закон Фарадея" data-time="4 мин">
+  <div class="kicker">Количественный закон <span class="time">≈ 4 мин</span></div>
+  <h2>От наблюдения к закону Фарадея</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="step"><div class="num">1</div><p>Эксперимент: чем быстрее меняется Φ, тем больше |ℰ|.</p></div>
+      <div class="step"><div class="num">2</div><p>Средняя скорость изменения потока: <strong>ΔΦ/Δt</strong>.</p></div>
+      <div class="step"><div class="num">3</div><p>В пределе Δt → 0 получаем производную <strong>dΦ/dt</strong>.</p></div>
+      <div class="step"><div class="num">4</div><p>Знак «−» задаёт правило Ленца.</p></div>
+    </div>
+    <div>
+      <div class="formula">ℰ<sub>ср</sub> = − N · <span class="frac">ΔΦ / Δt</span></div>
+      <div class="formula"><span class="eqbox">ℰ = − N · dΦ/dt</span></div>
+      <div class="callout"><p style="margin:.15rem 0"><strong>N</strong> — число витков; Φ — поток через <strong>один</strong> виток.</p></div>
+    </div>
+  </div>
+  <div class="speaker" hidden><p>Это не «вывод из другой формулы», а математическая запись экспериментального закона. Сильному классу подчеркнуть: производная означает мгновенную скорость изменения потока.</p></div>
+</section>
+
+<section class="slide" data-title="Размерность и смысл" data-time="2 мин">
+  <div class="kicker">Проверка формулы <span class="time">≈ 2 мин</span></div>
+  <h2>Почему Вб/с — это вольт?</h2>
+  <div class="grid2">
+    <div class="card">
+      <div class="formula">[ℰ] = [Φ]/[t] = Вб/с</div>
+      <p>По определению СИ:</p><div class="formula">1 Вб/с = 1 В</div>
+    </div>
+    <div class="card">
+      <h3>Смысл</h3>
+      <p>Если поток через один виток изменился на <strong>1 Вб за 1 с</strong>, модуль средней ЭДС в одном витке равен <strong>1 В</strong>.</p>
+      <p class="yellow"><strong>ЭДС зависит от темпа изменения потока, а не от его абсолютного значения.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="Правило Ленца" data-time="4 мин">
+  <div class="kicker">Направление индукционного тока <span class="time">≈ 4 мин</span></div>
+  <h2>Знак «−» — это <span class="accent">правило Ленца</span></h2>
+  <div class="grid2">
+    <div class="card">
+      <svg id="lenzSvg" viewBox="0 0 620 350">
+        <defs><marker id="lenzArr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L0 6L7 3z" fill="#52e6e6"/></marker></defs>
+        <g id="lenzMag"><rect x="70" y="120" width="210" height="100" rx="12" fill="#ef5e67"/><rect x="175" y="120" width="105" height="100" rx="0" fill="#4c76dc"/><text x="116" y="184" fill="white" font-size="42" font-weight="800">N</text><text x="217" y="184" fill="white" font-size="42" font-weight="800">S</text></g>
+        <g transform="translate(455 170)"><ellipse rx="85" ry="125" fill="none" stroke="#ffd166" stroke-width="10"/><ellipse rx="65" ry="105" fill="none" stroke="#ffc845" stroke-width="5"/></g>
+        <path id="lenzMotion" d="M300 170 H360" stroke="#52e6e6" stroke-width="5" marker-end="url(#lenzArr)"/>
+        <text id="lenzPole" x="370" y="80" fill="#c8e9f5" font-size="25"></text>
+        <path id="lenzCurrent" d="M455 70 C520 90 525 250 455 270 C390 250 390 90 455 70" fill="none" stroke="#a486ff" stroke-width="5" marker-end="url(#lenzArr)"/>
+      </svg>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap"><button id="lenzApproach" class="primary">Магнит приближается</button><button id="lenzAway">Удаляется</button><button id="lenzFlip">Сменить полюс</button></div>
+    </div>
+    <div class="card">
+      <p class="lead" id="lenzText"></p>
+      <div class="callout"><p style="margin:.1rem 0">Индукционный ток создаёт магнитное поле, которое <strong>противодействует изменению магнитного потока</strong>, вызвавшему этот ток.</p></div>
+      <p class="small">Противодействует именно <em>изменению</em>, а не «всегда внешнему полю».</p>
+    </div>
+  </div>
+  <div class="speaker" hidden><p>Связать с законом сохранения энергии: если бы возникающий ток усиливал движение магнита, система сама разгоняла бы магнит и одновременно производила электрическую энергию.</p></div>
+</section>
+
+<section class="slide" data-title="Алгоритм Ленца" data-time="3 мин">
+  <div class="kicker">Алгоритм для задач <span class="time">≈ 3 мин</span></div>
+  <h2>Как определить направление тока за 4 шага</h2>
+  <div class="card" style="max-width:1050px">
+    <div class="step"><div class="num">1</div><p>Определите направление внешнего <strong>B</strong> через контур.</p></div>
+    <div class="step"><div class="num">2</div><p>Решите: магнитный поток <strong>увеличивается или уменьшается</strong>?</p></div>
+    <div class="step"><div class="num">3</div><p>По Ленцу выберите направление собственного поля <strong>B<sub>инд</sub></strong>, которое мешает этому изменению.</p></div>
+    <div class="step"><div class="num">4</div><p>По правилу правой руки найдите направление <strong>индукционного тока</strong>.</p></div>
+  </div>
+  <div class="callout" style="margin-top:1rem"><p style="margin:.1rem 0"><strong>Не начинайте сразу с направления тока.</strong> Сначала поток → затем B<sub>инд</sub> → только потом ток.</p></div>
+</section>
+
+<section class="slide" data-title="Профильное расширение" data-time="3 мин">
+  <div class="kicker">Связь с генератором <span class="time">≈ 3 мин</span></div>
+  <h2>Вращающаяся рамка → синусоидальная ЭДС</h2>
+  <div class="grid2">
+    <div class="card">
+      <p>Пусть рамка вращается с постоянной угловой скоростью ω:</p>
+      <div class="formula">α = ωt</div>
+      <div class="formula">Φ = B S cos(ωt)</div>
+      <p>Тогда по закону Фарадея:</p>
+      <div class="formula">ℰ = −N dΦ/dt = <span class="eqbox">NBSω sin(ωt)</span></div>
+    </div>
+    <div class="card">
+      <svg id="sineSvg" viewBox="0 0 620 330"><line x1="60" y1="160" x2="590" y2="160" stroke="#59758b"/><line x1="60" y1="35" x2="60" y2="290" stroke="#59758b"/><path id="sinePath" fill="none" stroke="#52e6e6" stroke-width="5"/><circle id="sineDot" r="8" fill="#ffd166"/><text x="18" y="44" fill="#9eb8cc" font-size="18">ℰ</text><text x="575" y="187" fill="#9eb8cc" font-size="18">t</text></svg>
+      <button id="sinePlay" class="primary">▶ Запустить генератор</button>
+      <p class="small">Эта модель — мост к теме переменного тока.</p>
+    </div>
+  </div>
+  <div class="speaker" hidden><p>Если времени мало, этот слайд можно пропустить. Для сильного класса это хороший «вывод формулы» на базе правила производной.</p></div>
+</section>
+
+<section class="slide" data-title="Типовая задача 1" data-time="3 мин">
+  <div class="kicker">Типовая расчётная задача <span class="time">≈ 3 мин</span></div>
+  <h2>Изменяется магнитный поток</h2>
+  <div class="grid2 task">
+    <div class="card">
+      <p><strong>Условие.</strong> Магнитный поток через один виток катушки изменился от 8 мВб до 2 мВб за 0,020 с. Катушка содержит 50 витков. Найдите модуль средней ЭДС индукции.</p>
+      <div class="given">Φ₁ = 8·10⁻³ Вб<br>Φ₂ = 2·10⁻³ Вб<br>Δt = 2,0·10⁻² с<br>N = 50</div>
+      <button class="primary" onclick="toggleSol('sol1')">Показать решение</button>
+    </div>
+    <div class="card solution" id="sol1">
+      <p>1. Изменение потока:</p><div class="formula">|ΔΦ| = |2−8|·10⁻³ = 6·10⁻³ Вб</div>
+      <p>2. Закон Фарадея:</p><div class="formula">|ℰ| = N·|ΔΦ|/Δt</div>
+      <div class="formula"><span class="eqbox">|ℰ| = 50·6·10⁻³ / 0,020 = 15 В</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="Типовая задача 2" data-time="3 мин">
+  <div class="kicker">Типовая задача на Φ <span class="time">≈ 3 мин</span></div>
+  <h2>Поле меняется, рамка неподвижна</h2>
+  <div class="grid2 task">
+    <div class="card">
+      <p>Катушка из 200 витков имеет площадь каждого витка 50 см². Вектор B перпендикулярен плоскости витка. Индукция равномерно увеличивается от 0,20 Тл до 0,80 Тл за 0,050 с. Найдите модуль ЭДС.</p>
+      <button class="primary" onclick="toggleSol('sol2')">Решить пошагово</button>
+    </div>
+    <div class="card solution" id="sol2">
+      <p><strong>Перевод площади:</strong> 50 см² = 5,0·10⁻³ м².</p>
+      <p>α=0°, поэтому cosα=1.</p>
+      <div class="formula">|ΔΦ| = S·|ΔB| = 5·10⁻³·0,60 = 3·10⁻³ Вб</div>
+      <div class="formula">|ℰ| = 200·3·10⁻³ / 0,050 = <span class="eqbox">12 В</span></div>
+      <p class="small">Типичная ошибка: забыть перевести см² в м².</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="ЕГЭ: график потока" data-time="3 мин">
+  <div class="kicker">Авторская задача в формате ЕГЭ <span class="time">≈ 3 мин</span></div>
+  <h2>График Φ(t): где ЭДС максимальна?</h2>
+  <div class="grid2">
+    <div class="graphbox">
+      <svg viewBox="0 0 640 360">
+        <line x1="65" y1="300" x2="610" y2="300" stroke="#6d8598" stroke-width="2"/><line x1="65" y1="35" x2="65" y2="300" stroke="#6d8598" stroke-width="2"/>
+        <text x="18" y="42" fill="#a9c0cf" font-size="20">Φ, мВб</text><text x="590" y="330" fill="#a9c0cf" font-size="20">t, c</text>
+        <polyline points="65,255 205,95 330,95 430,210 610,160" fill="none" stroke="#52e6e6" stroke-width="6"/>
+        <g fill="#ffd166" font-size="18"><text x="55" y="325">0</text><text x="195" y="325">1</text><text x="320" y="325">2</text><text x="420" y="325">3</text><text x="600" y="325">4</text></g>
+        <g fill="#9eb8cc" font-size="17"><text x="28" y="260">2</text><text x="28" y="215">4</text><text x="28" y="170">6</text><text x="28" y="125">8</text><text x="20" y="100">10</text></g>
+      </svg>
+    </div>
+    <div class="card">
+      <p><strong>Вопрос.</strong> На каком интервале времени модуль ЭДС индукции в одном витке наибольший?</p>
+      <button class="choice" onclick="gradeChoice(this,false,'g1')">1–2 с</button>
+      <button class="choice" onclick="gradeChoice(this,true,'g1')">0–1 с</button>
+      <button class="choice" onclick="gradeChoice(this,false,'g1')">2–3 с</button>
+      <button class="choice" onclick="gradeChoice(this,false,'g1')">3–4 с</button>
+      <div class="feedback" id="g1"></div>
+      <p class="small">Идея: |ℰ| = |dΦ/dt| — это модуль наклона графика Φ(t).</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="ЕГЭ: качественная задача" data-time="2 мин">
+  <div class="kicker">Авторская задача в формате ЕГЭ <span class="time">≈ 2 мин</span></div>
+  <h2>Может ли ЭДС быть нулевой при Φ ≠ 0?</h2>
+  <div class="card" style="max-width:1100px">
+    <p class="lead">Замкнутая рамка неподвижна в однородном постоянном магнитном поле. Магнитный поток через рамку равен 0,030 Вб и не меняется. Чему равна ЭДС индукции?</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem">
+      <button class="choice" onclick="gradeChoice(this,true,'g2')">0 В</button><button class="choice" onclick="gradeChoice(this,false,'g2')">0,03 В</button><button class="choice" onclick="gradeChoice(this,false,'g2')">30 В</button><button class="choice" onclick="gradeChoice(this,false,'g2')">Недостаточно данных</button>
+    </div>
+    <div class="feedback" id="g2"></div>
+  </div>
+  <div class="callout" style="margin-top:1rem"><p style="margin:.1rem 0">Это одна из главных концептуальных ловушек: <strong>Φ ≠ 0 не означает ℰ ≠ 0.</strong> Нужна величина dΦ/dt.</p></div>
+</section>
+
+<section class="slide" data-title="Ошибки" data-time="2 мин">
+  <div class="kicker">Антиошибки <span class="time">≈ 2 мин</span></div>
+  <h2>Пять ловушек, которые встречаются в задачах</h2>
+  <div class="grid2">
+    <div class="card">
+      <p>❌ α — угол с плоскостью рамки.</p><p class="green">✓ α — угол с <strong>нормалью</strong>.</p>
+      <p>❌ Есть B → обязательно есть ЭДС.</p><p class="green">✓ Нужен <strong>dΦ/dt ≠ 0</strong>.</p>
+      <p>❌ Для катушки забываем N.</p><p class="green">✓ ℰ = −N dΦ/dt.</p>
+    </div>
+    <div class="card">
+      <p>❌ см² переводим как 10⁻² м².</p><p class="green">✓ 1 см² = 10⁻⁴ м².</p>
+      <p>❌ Ленц «всегда против B».</p><p class="green">✓ Он против <strong>изменения потока</strong>.</p>
+      <p>❌ Знак «−» используют как «ЭДС отрицательна».</p><p class="green">✓ Знак фиксирует направление в выбранной ориентации контура.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="Карта формул" data-time="2 мин">
+  <div class="kicker">Собираем тему в одну схему <span class="time">≈ 2 мин</span></div>
+  <h2>Причинная цепочка</h2>
+  <div style="display:flex;align-items:center;justify-content:center;gap:1vw;flex-wrap:wrap;margin:4vh 0">
+    <div class="card" style="min-width:210px;text-align:center"><h3>1. Поток</h3><div class="formula" style="font-size:30px">Φ = BS cosα</div></div>
+    <div style="font-size:42px;color:var(--cyan)">→</div>
+    <div class="card" style="min-width:230px;text-align:center"><h3>2. Изменение</h3><div class="formula" style="font-size:30px">dΦ/dt</div></div>
+    <div style="font-size:42px;color:var(--cyan)">→</div>
+    <div class="card" style="min-width:250px;text-align:center"><h3>3. ЭДС</h3><div class="formula" style="font-size:30px">ℰ = −N dΦ/dt</div></div>
+    <div style="font-size:42px;color:var(--cyan)">→</div>
+    <div class="card" style="min-width:230px;text-align:center"><h3>4. Ток</h3><div class="formula" style="font-size:30px">I = ℰ/R</div></div>
+  </div>
+  <div class="callout"><p class="lead" style="margin:.1rem 0"><strong>Физический смысл:</strong> изменяющийся магнитный поток создаёт вихревое электрическое поле; в проводящем замкнутом контуре оно приводит к индукционному току.</p></div>
+</section>
+
+<section class="slide" data-title="Рефлексия: тест" data-time="5 мин">
+  <div class="kicker">Рефлексия • 6 вопросов <span class="time">≈ 5 мин</span></div>
+  <h2>Проверьте, что осталось после урока</h2>
+  <div class="grid2">
+    <div class="card" id="quizBox">
+      <div id="quizQuestion" class="lead" style="font-size:clamp(18px,1.55vw,28px)"></div>
+      <div id="quizChoices"></div>
+      <div id="quizFeedback" class="feedback"></div>
+      <div style="display:flex;gap:.5rem;margin-top:.8rem"><button id="quizNext" class="primary" disabled>Следующий вопрос</button><button id="quizReset" class="ghost">Начать заново</button></div>
+    </div>
+    <div class="card">
+      <h3>Результат</h3>
+      <div class="quiz-summary" id="quizScore">0 / 6</div>
+      <p id="quizComment" class="lead" style="font-size:clamp(17px,1.35vw,24px)">Ответьте на вопросы. Результат обновляется автоматически.</p>
+      <hr style="border:none;border-top:1px solid #2c4e65;margin:1rem 0">
+      <p class="small">Рефлексия проверяет четыре опорных идеи: поток, изменение потока, закон Фарадея, правило Ленца.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="Итог" data-time="1 мин">
+  <div class="kicker">Итог урока <span class="time">≈ 1 мин</span></div>
+  <h2>Три фразы, которые нужно унести с урока</h2>
+  <div class="grid3" style="margin-top:3vh">
+    <div class="card"><h3 class="accent">01</h3><p>Магнитный поток — <strong>Φ = BS cosα</strong>.</p></div>
+    <div class="card"><h3 class="blue">02</h3><p>ЭДС возникает, когда поток <strong>изменяется</strong>: ℰ = −N dΦ/dt.</p></div>
+    <div class="card"><h3 class="violet">03</h3><p>Направление индукционного тока определяется <strong>правилом Ленца</strong>.</p></div>
+  </div>
+  <div class="formula" style="margin-top:2rem"><span class="eqbox">изменение Φ → ℰ → индукционный ток</span></div>
+  <p class="lead">Следующий естественный шаг: самоиндукция, индуктивность и энергия магнитного поля.</p>
+</section>
+
+<section class="slide" data-title="Резерв: проводник движется" data-time="резерв">
+  <div class="kicker">Резерв • ЕГЭ <span class="time">не входит в 45 мин</span></div>
+  <h2>ЭДС в движущемся проводнике</h2>
+  <div class="grid2">
+    <div class="card"><p>Прямой проводник длины l движется со скоростью v в однородном поле B.</p><div class="formula">|ℰ| = B l v sinβ</div><p class="small">β — угол между B и v; в стандартной конфигурации β=90°.</p></div>
+    <div class="card"><p><strong>Задача.</strong> l=0,40 м, B=0,50 Тл, v=6,0 м/с, B ⟂ v. Найдите ЭДС.</p><button class="primary" onclick="toggleSol('solRod')">Показать</button><div class="solution" id="solRod"><div class="formula">ℰ = 0,50·0,40·6,0 = <span class="eqbox">1,2 В</span></div></div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="Резерв: задача повышенного уровня" data-time="резерв">
+  <div class="kicker">Резерв • профиль / ЕГЭ <span class="time">не входит в 45 мин</span></div>
+  <h2>Рамка вращается в магнитном поле</h2>
+  <div class="card task">
+    <p>Рамка из N=100 витков площадью S=40 см² равномерно вращается в поле B=0,25 Тл с частотой 50 Гц. Определите амплитуду ЭДС.</p>
+    <button class="primary" onclick="toggleSol('solRot')">Показать решение</button>
+    <div class="solution" id="solRot">
+      <p>ω = 2πf = 100π рад/с; S=4,0·10⁻³ м².</p>
+      <div class="formula">ℰ<sub>max</sub> = NBSω</div>
+      <div class="formula">ℰ<sub>max</sub> = 100·0,25·4·10⁻³·100π ≈ <span class="eqbox">31,4 В</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-title="Источники и соответствие" data-time="служебный">
+  <div class="kicker">Учителю <span class="time">справочный слайд</span></div>
+  <h2>На что опирается содержание</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Федеральная рабочая программа</h3>
+      <p>Физика, 10–11 классы, углублённый уровень: магнитный поток, ЭДС индукции, закон Фарадея, правило Ленца, решение расчётных и качественных задач.</p>
+      <p class="small">В действующей федеральной программе блок «Электромагнитная индукция» размещён в 11 классе; презентация может использоваться в профильном 10 классе при соответствующей последовательности локальной рабочей программы.</p>
+      <a href="https://edsoo.ru/wp-content/uploads/2025/07/2025_soo_frp_fizika_10_11_ugl.pdf" target="_blank" rel="noreferrer">Официальная ФРП на ЕДСОО</a>
+    </div>
+    <div class="card">
+      <h3>ЕГЭ</h3>
+      <p>Задания в этой презентации авторские, но построены по проверяемым элементам содержания ФИПИ: магнитный поток, явление электромагнитной индукции, закон Фарадея и правило Ленца.</p>
+      <a href="https://fipi.ru/ege/demoversii-specifikacii-kodifikatory" target="_blank" rel="noreferrer">Проекты КИМ ЕГЭ 2027</a><br><br>
+      <a href="https://fipi.ru/navigator-podgotovki/navigator-ege" target="_blank" rel="noreferrer">Навигатор подготовки ФИПИ</a>
+    </div>
+  </div>
+  <p class="small" style="margin-top:1rem">Управление: ←/→ или PageUp/PageDown — слайды; F — полноэкранный режим; N — заметки учителя; O — обзор; T — таймер.</p>
+</section>
+
+</div>
+
+<div id="notes"><h4>Заметки учителя</h4><div id="notesText"></div></div>
+<div id="overview"></div>
+<div id="chrome"><div id="progress"></div><button id="prev">←</button><button id="next">→</button><button id="ovBtn">Обзор</button><button id="noteBtn">Заметки</button><button id="fullBtn">⛶</button><div class="spacer"></div><div id="timer">00:00</div><button id="timerBtn">Таймер</button><div id="slideNo"></div></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')]; let index=0;
+const slideNo=document.getElementById('slideNo'), progress=document.getElementById('progress'), notes=document.getElementById('notes'), notesText=document.getElementById('notesText');
+function show(i){index=(i+slides.length)%slides.length; slides.forEach((s,j)=>s.classList.toggle('active',j===index)); slideNo.textContent=`${index+1} / ${slides.length}`; progress.style.width=`${((index+1)/slides.length)*100}%`; const sp=slides[index].querySelector('.speaker'); notesText.innerHTML=sp?sp.innerHTML:'<p>Для этого слайда специальных заметок нет.</p>'; location.hash=`s${index+1}`;}
+function next(){show(index+1)} function prev(){show(index-1)}
+document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return; if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next()} if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev()} if(e.key.toLowerCase()==='f') toggleFull(); if(e.key.toLowerCase()==='n') notes.classList.toggle('show'); if(e.key.toLowerCase()==='o') toggleOverview(); if(e.key.toLowerCase()==='t') toggleTimer();});
+function toggleFull(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+document.getElementById('fullBtn').onclick=toggleFull;document.getElementById('noteBtn').onclick=()=>notes.classList.toggle('show');
+const overview=document.getElementById('overview');
+function buildOverview(){overview.innerHTML='';slides.forEach((s,i)=>{const d=document.createElement('div');d.className='thumb';d.innerHTML=`<b>${i+1}</b><span>${s.dataset.title||'Слайд'}</span><div class="small" style="margin-top:.4rem">${s.dataset.time||''}</div>`;d.onclick=()=>{show(i);toggleOverview(false)};overview.appendChild(d)})}
+function toggleOverview(force){overview.classList.toggle('show',force===undefined?!overview.classList.contains('show'):force)}
+document.getElementById('ovBtn').onclick=()=>toggleOverview();buildOverview();
+let timerStart=null,timerRun=false,timerInt=null;const timerEl=document.getElementById('timer');function renderTimer(){if(!timerStart)return;const t=Math.floor((Date.now()-timerStart)/1000),m=Math.floor(t/60),s=t%60;timerEl.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
+function toggleTimer(){if(!timerRun){timerStart=Date.now();timerInt=setInterval(renderTimer,500);timerRun=true}else{clearInterval(timerInt);timerRun=false}}
+document.getElementById('timerBtn').onclick=toggleTimer;
+
+function toggleSol(id){document.getElementById(id).classList.toggle('show')}
+window.toggleSol=toggleSol;
+function gradeChoice(btn,correct,feedbackId){const root=btn.parentElement;root.querySelectorAll('.choice').forEach(x=>x.classList.remove('correct','wrong'));btn.classList.add(correct?'correct':'wrong');document.getElementById(feedbackId).innerHTML=correct?'<span class="green">Верно.</span>':'<span class="red">Не совсем.</span> Смотрите на физическую величину, от которой непосредственно зависит ЭДС.'}
+window.gradeChoice=gradeChoice;
+
+// Flux interactive
+const fluxB=document.getElementById('fluxB'),fluxS=document.getElementById('fluxS'),fluxA=document.getElementById('fluxA');
+function drawFlux(){const B=+fluxB.value,S=+fluxS.value,A=+fluxA.value,phi=B*S*Math.cos(A*Math.PI/180);document.getElementById('fluxBVal').textContent=`${B.toFixed(2)} Тл`;document.getElementById('fluxSVal').textContent=`${S.toFixed(3)} м²`;document.getElementById('fluxAVal').textContent=`${A}°`;document.getElementById('fluxFormula').innerHTML=`Φ = ${B.toFixed(2)} · ${S.toFixed(3)} · cos ${A}° = <span class="eqbox">${phi.toFixed(4)} Вб</span>`;const pg=document.getElementById('planeGroup');pg.setAttribute('transform',`translate(280 210) rotate(${A}) scale(${.72+S*2.0})`);const lines=document.getElementById('fieldLines');lines.innerHTML='';const n=Math.max(2,Math.round(3+B*7));for(let i=0;i<n;i++){const x=80+i*(400/(n-1));lines.innerHTML+=`<line x1="${x}" y1="55" x2="${x}" y2="330" opacity="${.4+B*.45}"/>`;}let insight=A>80?'Поток почти нулевой: поле почти параллельно плоскости рамки.':A<10?'Поток близок к максимальному для выбранных B и S.':'Поток определяется проекцией площади на плоскость, перпендикулярную B.';document.getElementById('fluxInsight').textContent=insight;}
+[fluxB,fluxS,fluxA].forEach(x=>x.addEventListener('input',drawFlux));drawFlux();
+
+// Lenz interactive
+let lenzApproach=true,lenzNearPole='S';
+function renderLenz(){const motion=document.getElementById('lenzMotion'),txt=document.getElementById('lenzText'),pole=document.getElementById('lenzPole'),mag=document.getElementById('lenzMag'); if(lenzApproach){motion.setAttribute('d','M300 170 H360')}else{motion.setAttribute('d','M360 170 H300')};
+  // Right end of magnet is the near pole. base SVG: S at right. flip with scale(-1,1) around center.
+  mag.setAttribute('transform',lenzNearPole==='S'?'':'translate(350 0) scale(-1 1)');
+  const inducedNear = lenzApproach ? lenzNearPole : (lenzNearPole==='N'?'S':'N');
+  pole.textContent=`Ближняя сторона катушки становится полюсом ${inducedNear}`;
+  txt.innerHTML=lenzApproach?`Поток, создаваемый полюсом <strong>${lenzNearPole}</strong>, возрастает. Катушка создаёт поле, которое мешает этому увеличению.`:`Поток, создаваемый полюсом <strong>${lenzNearPole}</strong>, уменьшается. Катушка стремится «поддержать» прежний поток.`;
+  document.getElementById('lenzCurrent').style.stroke=inducedNear==='N'?'#52e6e6':'#a486ff';
+}
+document.getElementById('lenzApproach').onclick=()=>{lenzApproach=true;renderLenz()};document.getElementById('lenzAway').onclick=()=>{lenzApproach=false;renderLenz()};document.getElementById('lenzFlip').onclick=()=>{lenzNearPole=lenzNearPole==='S'?'N':'S';renderLenz()};renderLenz();
+
+// Sine generator
+const path=document.getElementById('sinePath'),dot=document.getElementById('sineDot');let d='';for(let x=60;x<=590;x++){const t=(x-60)/530*Math.PI*4,y=160-105*Math.sin(t);d+=(x===60?'M':'L')+`${x.toFixed(1)} ${y.toFixed(1)} `}path.setAttribute('d',d);let sineRun=false,sineStart=0;function sineAnim(ts){if(!sineRun)return;if(!sineStart)sineStart=ts;const phase=((ts-sineStart)/2400)*(Math.PI*4);const x=60+((phase%(Math.PI*4))/(Math.PI*4))*530,y=160-105*Math.sin(phase);dot.setAttribute('cx',x);dot.setAttribute('cy',y);requestAnimationFrame(sineAnim)}document.getElementById('sinePlay').onclick=()=>{sineRun=!sineRun;if(sineRun){sineStart=0;requestAnimationFrame(sineAnim)}};
+
+// Quiz
+const quiz=[
+ {q:'1. Что непосредственно должно изменяться, чтобы возникла ЭДС индукции?',a:['Модуль магнитного поля обязательно','Магнитный поток через контур','Сопротивление контура','Площадь рамки обязательно'],c:1,e:'ЭДС определяется скоростью изменения магнитного потока.'},
+ {q:'2. В формуле Φ = BS cosα угол α измеряется между…',a:['B и плоскостью рамки','B и нормалью к поверхности','B и направлением тока','нормалью и плоскостью рамки'],c:1,e:'По определению α — угол между B и нормалью.'},
+ {q:'3. Магнитный поток постоянен и равен 0,05 Вб. Чему равна ЭДС индукции?',a:['0 В','0,05 В','20 В','Зависит от B'],c:0,e:'dΦ/dt=0, поэтому ЭДС равна нулю.'},
+ {q:'4. Поток через один виток изменился на 0,020 Вб за 0,10 с. N=1. Модуль средней ЭДС…',a:['0,002 В','0,20 В','2,0 В','20 В'],c:1,e:'|ℰ|=|ΔΦ|/Δt=0,020/0,10=0,20 В.'},
+ {q:'5. Что определяет правило Ленца?',a:['Модуль B','Направление индукционного тока','Сопротивление катушки','Число витков'],c:1,e:'Ленц задаёт направление индукционного эффекта.'},
+ {q:'6. B перпендикулярен плоскости рамки. Какое значение α использовать в Φ=BS cosα?',a:['0°','45°','90°','180°'],c:0,e:'B совпадает с нормалью, значит α=0°.'}
+];
+let qi=0,score=0,answered=false;const qQ=document.getElementById('quizQuestion'),qC=document.getElementById('quizChoices'),qF=document.getElementById('quizFeedback'),qN=document.getElementById('quizNext'),qS=document.getElementById('quizScore'),qCom=document.getElementById('quizComment');
+function renderQuiz(){answered=false;qN.disabled=true;const item=quiz[qi];qQ.innerHTML=`<strong>${item.q}</strong>`;qC.innerHTML='';qF.textContent='';item.a.forEach((t,i)=>{const b=document.createElement('button');b.className='choice';b.textContent=t;b.onclick=()=>answerQuiz(b,i);qC.appendChild(b)});qN.textContent=qi===quiz.length-1?'Показать итог':'Следующий вопрос'}
+function answerQuiz(btn,ans){if(answered)return;answered=true;const item=quiz[qi],ok=ans===item.c;if(ok)score++;[...qC.children].forEach((b,i)=>b.classList.add(i===item.c?'correct':(b===btn?'wrong':'')));qF.innerHTML=(ok?'<span class="green">Верно.</span> ':'<span class="red">Ошибка.</span> ')+item.e;qS.textContent=`${score} / ${quiz.length}`;qN.disabled=false}
+qN.onclick=()=>{if(qi<quiz.length-1){qi++;renderQuiz()}else{qQ.innerHTML='<strong>Тест завершён.</strong>';qC.innerHTML='';qF.innerHTML='';qN.disabled=true;let c=score>=5?'Отлично: опорные идеи усвоены.':score>=3?'Основная логика есть; стоит ещё раз проверить поток и знак закона Фарадея.':'Вернитесь к цепочке Φ → dΦ/dt → ℰ и алгоритму Ленца.';qCom.textContent=c}};document.getElementById('quizReset').onclick=()=>{qi=0;score=0;qS.textContent='0 / 6';qCom.textContent='Ответьте на вопросы. Результат обновляется автоматически.';renderQuiz()};renderQuiz();
+
+const hash=location.hash.match(/s(\d+)/);show(hash?Math.min(slides.length,Math.max(1,+hash[1]))-1:0);
+</script>
+</body>
+</html>

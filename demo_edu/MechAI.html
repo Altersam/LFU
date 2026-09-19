@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сравнительный анализ курсов внеурочной деятельности | Лицей Финуниверситета</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        /* Header */
+        .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 48px 32px; border-radius: 16px; margin-bottom: 32px; position: relative; overflow: hidden; }
+        .header::after { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(83,144,217,0.15) 0%, transparent 70%); border-radius: 50%; }
+        .header h1 { font-size: 2.2em; margin-bottom: 8px; position: relative; z-index: 1; }
+        .header .subtitle { font-size: 1.1em; opacity: 0.85; margin-bottom: 12px; position: relative; z-index: 1; }
+        .header .meta { font-size: 0.9em; opacity: 0.7; position: relative; z-index: 1; }
+
+        /* Navigation */
+        .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; background: white; padding: 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .nav a { padding: 8px 16px; background: #f0f2f5; border-radius: 8px; color: #1a1a2e; text-decoration: none; font-size: 0.9em; transition: all 0.2s; }
+        .nav a:hover { background: #0f3460; color: white; }
+
+        /* Cards & Sections */
+        .card { background: white; border-radius: 12px; padding: 28px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .card h2 { font-size: 1.5em; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 3px solid #0f3460; display: flex; align-items: center; gap: 10px; }
+        .card h3 { font-size: 1.15em; margin: 20px 0 12px; color: #0f3460; }
+        .card h4 { font-size: 1em; margin: 16px 0 8px; color: #16213e; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.93em; }
+        th { background: #0f3460; color: white; padding: 12px 16px; text-align: left; font-weight: 600; }
+        td { padding: 10px 16px; border-bottom: 1px solid #e8eaed; }
+        tr:hover td { background: #f8f9ff; }
+        .table-wrap { overflow-x: auto; }
+
+        /* Skill bars */
+        .skill-group { margin: 16px 0; }
+        .skill-item { margin: 8px 0; }
+        .skill-label { display: flex; justify-content: space-between; font-size: 0.88em; margin-bottom: 4px; }
+        .skill-bar { height: 10px; background: #e8eaed; border-radius: 8px; overflow: hidden; }
+        .skill-fill { height: 100%; border-radius: 8px; transition: width 1s ease; }
+        .skill-fill.beginner { background: #ff6b6b; width: 25%; }
+        .skill-fill.elementary { background: #ffa502; width: 40%; }
+        .skill-fill.intermediate { background: #2ed573; width: 60%; }
+        .skill-fill.advanced { background: #1e90ff; width: 80%; }
+        .skill-fill.expert { background: #0f3460; width: 95%; }
+
+        /* Tag badges */
+        .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.78em; font-weight: 600; margin: 2px; }
+        .tag-green { background: #d4edda; color: #155724; }
+        .tag-yellow { background: #fff3cd; color: #856404; }
+        .tag-red { background: #f8d7da; color: #721c24; }
+        .tag-blue { background: #d1ecf1; color: #0c5460; }
+        .tag-purple { background: #e8d5f5; color: #5a2d82; }
+        .tag-gray { background: #e2e3e5; color: #383d41; }
+
+        /* Pro/Con columns */
+        .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .pro-box { background: #e8f5e9; border-left: 4px solid #2ed573; padding: 16px; border-radius: 8px; }
+        .con-box { background: #fbe9e7; border-left: 4px solid #ff6b6b; padding: 16px; border-radius: 8px; }
+        .pro-box ul, .con-box ul { margin: 8px 0 0 18px; }
+        .pro-box li, .con-box li { margin: 4px 0; font-size: 0.92em; }
+
+        /* Risk matrix */
+        .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .risk-item { padding: 16px; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .risk-item.high { border-left: 4px solid #ff6b6b; background: #fff5f5; }
+        .risk-item.medium { border-left: 4px solid #ffa502; background: #fffaf0; }
+        .risk-item.low { border-left: 4px solid #2ed573; background: #f0fff4; }
+
+        /* SWOT */
+        .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .swot-box { padding: 20px; border-radius: 12px; min-height: 160px; }
+        .swot-box h3 { margin-bottom: 10px; font-size: 1.1em; }
+        .swot-box ul { margin-left: 18px; }
+        .swot-box li { margin: 4px 0; font-size: 0.9em; }
+        .swot-s { background: #e8f5e9; border: 2px solid #2ed573; }
+        .swot-w { background: #fbe9e7; border: 2px solid #ff6b6b; }
+        .swot-o { background: #e3f2fd; border: 2px solid #1e90ff; }
+        .swot-t { background: #fff3e0; border: 2px solid #ffa502; }
+
+        /* Progress circle */
+        .progress-circle { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: #0f3460; color: white; font-weight: 700; font-size: 1em; }
+
+        /* Comparison markers */
+        .overlap-bar { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 12px 16px; margin: 8px 0; font-size: 0.9em; }
+
+        /* Responsive */
+        @media (max-width: 768px) { .pc-grid, .swot-grid, .risk-grid { grid-template-columns: 1fr; } .header h1 { font-size: 1.6em; } }
+
+        /* Color legend */
+        .legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; font-size: 0.85em; }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+
+        /* Comparison table extra */
+        .check-yes { color: #2ed573; font-weight: bold; }
+        .check-no { color: #ff6b6b; }
+        .check-partial { color: #ffa502; }
+
+        .small-text { font-size: 0.85em; color: #666; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<!-- ==================== HEADER ==================== -->
+<div class="header">
+    <h1>Сравнительный анализ курсов внеурочной деятельности</h1>
+    <div class="subtitle">Лицей Финансового университета при Правительстве РФ — Лаборатория ИИ (МехИИ)</div>
+    <div class="meta">6 курсов · 5 для 10–11 классов + 1 для 8–9 классов · 2026 год · Москва</div>
+</div>
+
+<!-- ==================== NAV ==================== -->
+<nav class="nav">
+    <a href="#overview">Обзор</a>
+    <a href="#comparison">Сравнение курсов</a>
+    <a href="#gap">8–9 vs 10–11</a>
+    <a href="#tech">Технические требования</a>
+    <a href="#skills">Навыки</a>
+    <a href="#swot">SWOT-анализ</a>
+    <a href="#risks">Риски</a>
+    <a href="#changes">Рекомендации</a>
+    <a href="#benchmark">Бенчмарк</a>
+    <a href="#conclusion">Выводы</a>
+    <a href="#ktp">КТП всех курсов</a>
+</nav>
+
+<!-- ==================== 1. OVERVIEW ==================== -->
+<section id="overview" class="card">
+    <h2>1. Обзор исследуемых курсов</h2>
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Курс</th>
+                <th>Классы</th>
+                <th>Часы</th>
+                <th>Ч/нед</th>
+                <th>Тип</th>
+                <th>Основной фокус</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td><strong>Программирование</strong></td><td>10–11</td><td>136</td><td>2</td><td><span class="tag tag-blue">Классика</span></td><td>Python, алгоритмы, ООП, структуры данных</td></tr>
+            <tr><td>2</td><td><strong>Усиленный промптинг</strong></td><td>10–11</td><td>136</td><td>2</td><td><span class="tag tag-purple">ИИ</span></td><td>Промпт-инжиниринг, БЯМ, верификация</td></tr>
+            <tr><td>3</td><td><strong>Вайбкодинг и разработка ИИ-агентов</strong></td><td>10–11</td><td>136</td><td>2</td><td><span class="tag tag-purple">ИИ</span></td><td>API, агенты, LangChain, мультиагенты</td></tr>
+            <tr><td>4</td><td><strong>Проектный практикум в сфере ИИ</strong></td><td>10–11</td><td>68</td><td>1</td><td><span class="tag tag-purple">ИИ</span></td><td>ML, данные, sklearn, проектный цикл</td></tr>
+            <tr><td>5</td><td><strong>Введение в ИИ-грамотность</strong></td><td>10</td><td>34</td><td>1</td><td><span class="tag tag-green">Базовый</span></td><td>Основы ИИ, ML, этика, сервисы</td></tr>
+            <tr><td style="opacity:0.6">6</td><td style="opacity:0.6"><strong>Кружок для 8–9 классов</strong></td><td style="opacity:0.6">8–9</td><td style="opacity:0.6">136</td><td style="opacity:0.6">2</td><td style="opacity:0.6"><span class="tag tag-yellow">Пропедевтика</span></td><td style="opacity:0.6">Промптинг, боты, вайбкодинг, игры</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div class="legend">
+        <span class="legend-item"><span class="tag tag-blue">Классика</span> Фундаментальные навыки</span>
+        <span class="legend-item"><span class="tag tag-purple">ИИ</span> Искусственный интеллект</span>
+        <span class="legend-item"><span class="tag tag-green">Базовый</span> Общеобразовательный</span>
+        <span class="legend-item"><span class="tag tag-yellow">Пропедевтика</span> Подготовительный</span>
+    </div>
+
+    <p style="margin-top:16px"><strong>Ключевое наблюдение:</strong> 4 из 5 курсов для 10–11 классов имеют прямое отношение к ИИ. Только «Программирование» — классический курс. При этом «Усиленный промптинг» и «Вайбкодинг» пересекаются по темам промптинга на <strong>30–40%</strong>.</p>
+</section>
+
+<!-- ==================== 2. DEEP COMPARISON ==================== -->
+<section id="comparison" class="card">
+    <h2>2. Детальное сравнение курсов для 10–11 классов</h2>
+
+    <h3>2.1. Содержательное пересечение («тепловая карта дублирования»)</h3>
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Тема</th>
+                <th>Программи-<br>рование</th>
+                <th>Усиленный<br>промптинг</th>
+                <th>Вайбкодинг<br>и агенты</th>
+                <th>Проектный<br>практикум</th>
+                <th>ИИ-<br>грамотность</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Основы Python (синтаксис, функции)</td><td class="check-yes">+++</td><td class="check-no">—</td><td class="check-partial">+(база)</td><td class="check-partial">+(база)</td><td class="check-no">—</td></tr>
+            <tr><td>Промпт-инжиниринг (CoT, few-shot, роли)</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-yes">+++</td><td class="check-no">—</td><td class="check-partial">+(1 тема)</td></tr>
+            <tr><td>API БЯМ (HTTP, JSON, requests)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-partial">+(обзор)</td><td class="check-no">—</td></tr>
+            <tr><td>Разработка ИИ-агентов (память, инструменты)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+            <tr><td>Многоагентные системы</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+            <tr><td>ML (sklearn, регрессия, классификация)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-partial">+(теория)</td></tr>
+            <tr><td>Pandas, NumPy, визуализация</td><td class="check-partial">+(файлы/API)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-no">—</td></tr>
+            <tr><td>Этика ИИ и академическая честность</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-yes">++</td><td class="check-partial">+(1 модуль)</td><td class="check-yes">+++</td></tr>
+            <tr><td>ООП в Python</td><td class="check-yes">+++</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+            <tr><td>SQL / Excel (формулы, запросы)</td><td class="check-no">—</td><td class="check-partial">+(SQL в промптах)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+            <tr><td>Git, командная разработка</td><td class="check-partial">+(проект 11 кл)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+            <tr><td>Telegram-боты / веб-интерфейсы</td><td class="check-partial">+(Streamlit)</td><td class="check-no">—</td><td class="check-yes">+++</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div class="overlap-bar">Вывод: максимальное дублирование — между «Усиленным промптингом» и «Вайбкодингом» (промптинг, этика). Среднее дублирование — между «Программированием» и «Проектным практикумом» (Python, pandas).</div>
+
+    <h3>2.2. Сравнение по ключевым параметрам</h3>
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Параметр</th>
+                <th>Программирование</th>
+                <th>Усил. промптинг</th>
+                <th>Вайбкодинг</th>
+                <th>Проектный практикум</th>
+                <th>ИИ-грамотность</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Нагрузка</td><td>2 ч/нед · 136 ч</td><td>2 ч/нед · 136 ч</td><td>2 ч/нед · 136 ч</td><td>1 ч/нед · 68 ч</td><td>1 ч/нед · 34 ч</td></tr>
+            <tr><td>Практики, %</td><td>~70%</td><td>~60%</td><td>~65%</td><td>~75%</td><td>~40%</td></tr>
+            <tr><td>Проект в 10 кл</td><td>Мини-проект</td><td>Портфолио промптов</td><td>Простой агент</td><td>Эскиз проекта</td><td>Мини-исследование</td></tr>
+            <tr><td>Проект в 11 кл</td><td>Групповой проект</td><td>Исследование</td><td>Групповой агент</td><td>Защита проекта</td><td>—</td></tr>
+            <tr><td>Сложность для ученика</td><td><span class="tag tag-red">Высокая</span></td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-red">Очень высокая</span></td><td><span class="tag tag-yellow">Высокая</span></td><td><span class="tag tag-green">Низкая</span></td></tr>
+            <tr><td>Сложность для учителя</td><td><span class="tag tag-red">Высокая</span></td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-red">Экстремальная</span></td><td><span class="tag tag-red">Высокая</span></td><td><span class="tag tag-green">Низкая</span></td></tr>
+            <tr><td>Зависимость от инфраструктуры</td><td>Низкая (ПК + Python)</td><td>Средняя (доступ к БЯМ)</td><td>Высокая (API, хостинг, ключи)</td><td>Средняя (Google Colab)</td><td>Низкая (браузер)</td></tr>
+            <tr><td>Актуальность через 3 года</td><td><span class="tag tag-green">Высокая</span></td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-green">Высокая</span></td><td><span class="tag tag-green">Высокая</span></td></tr>
+            <tr><td>Уникальность (нет дублей)</td><td><span class="tag tag-green">Высокая</span></td><td><span class="tag tag-red">Низкая</span></td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-yellow">Средняя</span></td><td><span class="tag tag-green">Высокая</span></td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ==================== 3. GAP 8-9 vs 10-11 ==================== -->
+<section id="gap" class="card">
+    <h2>3. Сравнение: 8–9 классы vs 10–11 классы</h2>
+
+    <h3>3.1. Вертикальная преемственность</h3>
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr><th>Измерение</th><th>Кружок 8–9 (136 ч)</th><th>Курсы 10–11</th><th>Комментарий</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Промптинг</td><td>5 уровней: прямой → контекстный → ролевой → цепочечный → мета-промпт</td><td>CoT, ToT, few-shot, zero-shot, самоконсистентность</td><td>8–9 даёт базу, 10–11 углубляет. Хорошая связка!</td></tr>
+            <tr><td>Язык программирования</td><td>Python/JS (базовый)</td><td>Python (продвинутый) + JS (опционально)</td><td>Не хватает явного указания на пререквизит по Python для 10 класса</td></tr>
+            <tr><td>ИИ-агенты</td><td>Coze-фреймворк, простые боты</td><td>LangChain, RAG, мультиагенты, function calling</td><td>Хороший скачок сложности. Возможен разрыв</td></tr>
+            <tr><td>Вайбкодинг</td><td>Есть (игры, спрайты, уровни)</td><td>Есть (код, агенты, отладка)</td><td>Дублируется! По смыслу то же самое, но глубже</td></tr>
+            <tr><td>Этика и безопасность</td><td>Базовые понятия (галлюцинации, предвзятость)</td><td>Юридические аспекты, 152-ФЗ, Нацстратегия, дебаты</td><td>Хорошая преемственность</td></tr>
+            <tr><td>Проектная работа</td><td>Бот/агент/игра</td><td>ML-проект, исследование промптов, агент</td><td>Разные форматы. Нет единой линии</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>3.2. Анализ разрыва (gap analysis)</h3>
+
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4 style="margin:0 0 8px;color:#155724">Преемственность (что хорошо)</h4>
+            <ul>
+                <li>Промптинг выстроен от 5 уровней (8–9) к продвинутым техникам (10–11)</li>
+                <li>Этика ИИ присутствует на всех уровнях</li>
+                <li>Проектная деятельность — сквозная линия</li>
+                <li>Вайбкодинг закрепляется в обоих звеньях</li>
+                <li>Агентный подход вводится с 8 класса (Coze) → 11 класс (LangChain)</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4 style="margin:0 0 8px;color:#721c24">Разрывы (что отсутствует)</h4>
+            <ul>
+                <li><strong>Нет явного пререквизита:</strong> ученик 8–9 класса не обязан брать кружок, но курсы 10–11 на него опираются</li>
+                <li><strong>Математический разрыв:</strong> для ML в 10–11 классе нужна математика (линал, матстат), которой нет нигде</li>
+                <li><strong>Языковой:</strong> «Усиленный промптинг» использует только англоязычную литературу</li>
+                <li><strong>Инструментальный:</strong> фреймворки Coze и LangChain — совершенно разные по сложности</li>
+                <li><strong>Проектный:</strong> в 8–9 классе проект — бот/игра, в 10–11 — ML/исследование. Нет единой методологии</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 4. TECH REQUIREMENTS ==================== -->
+<section id="tech" class="card">
+    <h2>4. Технические требования для реализации</h2>
+
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Компонент</th>
+                <th>Программи-<br>рование</th>
+                <th>Усил.<br>промптинг</th>
+                <th>Вайбкодинг<br>и агенты</th>
+                <th>Проектный<br>практикум</th>
+                <th>ИИ-<br>грамотность</th>
+                <th>Кружок<br>8–9</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>ПК / ноутбук (на ученика)</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td></tr>
+            <tr><td>Доступ в интернет</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-yes">+</td></tr>
+            <tr><td>Python 3.10+</td><td class="check-yes">+</td><td class="check-no">опционально</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-no">—</td><td class="check-yes">+</td></tr>
+            <tr><td>IDE (VS Code / PyCharm)</td><td class="check-yes">+</td><td class="check-no">браузер хватит</td><td class="check-yes">+</td><td class="check-yes">+</td><td class="check-no">—</td><td class="check-yes">+</td></tr>
+            <tr><td>Jupyter / Google Colab</td><td class="check-partial">опц.</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+</td><td class="check-partial">+</td><td class="check-no">—</td></tr>
+            <tr><td>API-ключи БЯМ (платные)</td><td class="check-no">—</td><td class="check-partial">беспл. хватит</td><td class="check-yes">+ (нужны)</td><td class="check-no">—</td><td class="check-partial">беспл. хватит</td><td class="check-partial">беспл.</td></tr>
+            <tr><td>Хостинг / сервер (Telegram)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+ (Render, и др.)</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">+</td></tr>
+            <tr><td>Git + GitHub</td><td class="check-yes">+</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-partial">база</td></tr>
+            <tr><td>Библиотеки Python (pandas, sklearn)</td><td class="check-partial">pandas</td><td class="check-no">—</td><td class="check-yes">+ (requests, langchain)</td><td class="check-yes">+ (pandas, sklearn, seaborn)</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>4.1. Оценка затрат на инфраструктуру</h3>
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr><th>Статья расходов</th><th>Мин. бюджет</th><th>Оптим. бюджет</th><th>Примечание</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Парк ПК (20 мест)</td><td>1.2–1.6 млн ₽</td><td>2.0–2.5 млн ₽</td><td>Ноутбуки или моноблоки</td></tr>
+            <tr><td>API БЯМ (YandexGPT, OpenAI)</td><td>0 ₽ (беспл. лимиты)</td><td>30–50 тыс. ₽/год</td><td>На группу 20 чел. при 2 ч/нед</td></tr>
+            <tr><td>Хостинг (Render / PythonAnywhere)</td><td>0 ₽ (free tier)</td><td>10–20 тыс. ₽/год</td><td>Для деплоя агентов и ботов</td></tr>
+            <tr><td>ПО (VS Code, Python)</td><td>0 ₽</td><td>0 ₽</td><td>Open source</td></tr>
+            <tr><td>Интернет (20 Мбит/с на место)</td><td>—</td><td>включено</td><td>Требуется стабильный доступ</td></tr>
+            <tr><td><strong>Итого на инфраструктуру</strong></td><td><strong>~1.2–1.6 млн ₽</strong></td><td><strong>~2.1–2.6 млн ₽</strong></td><td>ПК + ~50–70 тыс. ₽/год сервисы</td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ==================== 5. SKILLS ==================== -->
+<section id="skills" class="card">
+    <h2>5. Требуемые навыки: ученик и учитель</h2>
+
+    <h3>5.1. Навыки ученика (входной уровень)</h3>
+    <div class="skill-group">
+        <div class="skill-item">
+            <div class="skill-label"><span>Программирование (10 кл)</span><span>Средний</span></div>
+            <div class="skill-bar"><div class="skill-fill intermediate"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Программирование (11 кл)</span><span>Продвинутый</span></div>
+            <div class="skill-bar"><div class="skill-fill advanced"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Усиленный промптинг</span><span>Элементарный</span></div>
+            <div class="skill-bar"><div class="skill-fill elementary"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Вайбкодинг и агенты</span><span>Продвинутый</span></div>
+            <div class="skill-bar"><div class="skill-fill advanced"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Проектный практикум</span><span>Средний</span></div>
+            <div class="skill-bar"><div class="skill-fill intermediate"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Введение в ИИ-грамотность</span><span>Начальный</span></div>
+            <div class="skill-bar"><div class="skill-fill beginner"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Кружок 8–9</span><span>Начальный</span></div>
+            <div class="skill-bar"><div class="skill-fill beginner"></div></div>
+        </div>
+    </div>
+
+    <p class="small-text">Шкала: Начальный (0) → Элементарный (25%) → Средний (50%) → Продвинутый (75%) → Экспертный (100%)</p>
+
+    <h3>5.2. Навыки учителя (необходимая квалификация)</h3>
+    <div class="skill-group">
+        <div class="skill-item">
+            <div class="skill-label"><span>Python (продвинутый: ООП, алгоритмы)</span><span>Экспертный</span></div>
+            <div class="skill-bar"><div class="skill-fill expert"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Промпт-инжиниринг (CoT, ToT, few-shot)</span><span>Продвинутый</span></div>
+            <div class="skill-bar"><div class="skill-fill advanced"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>API БЯМ (REST, JSON, функция вызова)</span><span>Продвинутый</span></div>
+            <div class="skill-bar"><div class="skill-fill advanced"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Фреймворки агентов (LangChain, Coze)</span><span>Продвинутый</span></div>
+            <div class="skill-bar"><div class="skill-fill advanced"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>ML (scikit-learn, pandas, метрики)</span><span>Продвинутый</span></div>
+            <div class="skill-bar"><div class="skill-fill advanced"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Telegram Bot API / веб-интерфейсы</span><span>Средний</span></div>
+            <div class="skill-bar"><div class="skill-fill intermediate"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Git, CI/CD, хостинг</span><span>Средний</span></div>
+            <div class="skill-bar"><div class="skill-fill intermediate"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Этика ИИ, право, 152-ФЗ</span><span>Средний</span></div>
+            <div class="skill-bar"><div class="skill-fill intermediate"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-label"><span>Проектное управление (Agile, декомпозиция)</span><span>Средний</span></div>
+            <div class="skill-bar"><div class="skill-fill intermediate"></div></div>
+        </div>
+    </div>
+
+    <h3>5.3. Оценка кадровой потребности</h3>
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr><th>Сценарий</th><th>Преподавателей</th><th>Квалификация</th><th>Комментарий</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Минимальный</strong> (2–3 курса)</td><td>1–2</td><td>учитель информатики + самоподготовка</td><td>Реально для большинства школ</td></tr>
+            <tr><td><strong>Оптимальный</strong> (все курсы)</td><td>3–4</td><td>2 учителя информатики + 1 математик + 1 практик из индустрии</td><td>Покрывает все направления</td></tr>
+            <tr><td><strong>Идеальный</strong> (+ олимпиады)</td><td>4–5</td><td>специалисты по ИИ, ML, Python, промптингу</td><td>Нанять выпускников профильных вузов или ИТ-компаний</td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ==================== 6. BENCHMARK ==================== -->
+<section id="benchmark" class="card">
+    <h2>6. Сравнение с аналогичными программами в школах РФ и мира</h2>
+
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr><th>Организация</th><th>Программа</th><th>Классы</th><th>Объём</th><th>Сходство</th><th>Отличие</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Школа «Летово»</strong></td>
+                <td>AI & Data Science</td>
+                <td>9–11</td>
+                <td>—</td>
+                <td><span class="tag tag-green">Высокое</span></td>
+                <td>Сильный упор на математику. Меньше промптинга</td>
+            </tr>
+            <tr>
+                <td><strong>Лицей НИУ ВШЭ</strong></td>
+                <td>Анализ данных (Python)</td>
+                <td>10–11</td>
+                <td>—</td>
+                <td><span class="tag tag-yellow">Среднее</span></td>
+                <td>Фокус на статистику и эконометрику. Нет агентов</td>
+            </tr>
+            <tr>
+                <td><strong>Школа «Интеллектуал»</strong></td>
+                <td>Машинное обучение</td>
+                <td>10–11</td>
+                <td>—</td>
+                <td><span class="tag tag-yellow">Среднее</span></td>
+                <td>Глубже математика, слабее инженерия</td>
+            </tr>
+            <tr>
+                <td><strong>СУНЦ МГУ (ФМШ)</strong></td>
+                <td>Программирование (олимп.)</td>
+                <td>9–11</td>
+                <td>—</td>
+                <td><span class="tag tag-green">Высокое</span> (Python)</td>
+                <td>Только олимпиадное программирование. Нет ИИ</td>
+            </tr>
+            <tr>
+                <td><strong>Назарбаев Интеллект. школы (КZ)</strong></td>
+                <td>AI Fundamentals</td>
+                <td>10–11</td>
+                <td>68 ч</td>
+                <td><span class="tag tag-yellow">Среднее</span></td>
+                <td>Меньше промптинга, больше этики</td>
+            </tr>
+            <tr>
+                <td><strong>ISTE / AI4K12 (USA)</strong></td>
+                <td>AI for K-12</td>
+                <td>9–12</td>
+                <td>—</td>
+                <td><span class="tag tag-yellow">Среднее</span></td>
+                <td>5 big ideas. Меньше практики, больше концепций</td>
+            </tr>
+            <tr>
+                <td><strong>Code.org / AI Lab</strong></td>
+                <td>AI & ML</td>
+                <td>9–12</td>
+                <td>—</td>
+                <td><span class="tag tag-green">Высокое</span></td>
+                <td>Игровой подход, меньше продвинутого промптинга</td>
+            </tr>
+            <tr>
+                <td><strong>DeepLearning.AI (Andrew Ng)</strong></td>
+                <td>ChatGPT Prompt Engineering</td>
+                <td>студенты/шк.</td>
+                <td>~8 ч</td>
+                <td><span class="tag tag-green">Высокое</span> (промптинг)</td>
+                <td>Только промптинг. Без привязки к школьной программе</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>6.1. Конкурентные преимущества Лицея Финуниверситета</h3>
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4 style="margin:0 0 8px;color:#155724">Сильные стороны</h4>
+            <ul>
+                <li><strong>Уникальный набор курсов</strong> — аналогов полного цикла «промптинг → агенты → ML» нет ни в одной школе РФ</li>
+                <li><strong>Финансовый контекст</strong> — все кейсы привязаны к финансам, экономике, что уникально для Финуниверситета</li>
+                <li><strong>Продвинутая агентная тематика</strong> — LangChain, RAG, мультиагенты — это уровень Junior в ИТ-компаниях</li>
+                <li><strong>Объём часов</strong> — 136 ч на продвинутые курсы даёт глубину, недоступную в стандартных школах</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4 style="margin:0 0 8px;color:#721c24">Отставание от лидеров</h4>
+            <ul>
+                <li><strong>Математическая база</strong> — ни один курс не включает линейную алгебру, матстат, теорию вероятностей (есть в «Летово», СУНЦ)</li>
+                <li><strong>Английский язык</strong> — «Усиленный промптинг» использует только англоязычные источники, но уровень языка учеников не указан</li>
+                <li><strong>Соревновательная компонента</strong> — нет подготовки к олимпиадам по ИИ (есть в Kaggle-клубах США)</li>
+                <li><strong>Лабораторное оборудование</strong> — нет работы с дронами / роботами, где ИИ применяется в реальном времени</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 7. SWOT ==================== -->
+<section id="swot" class="card">
+    <h2>7. SWOT-анализ системы курсов (в целом)</h2>
+
+    <div class="swot-grid">
+        <div class="swot-box swot-s">
+            <h3>Strengths (Сильные стороны)</h3>
+            <ul>
+                <li>Актуальная и востребованная тематика (ИИ, промптинг)</li>
+                <li>Широкий охват: от ИИ-грамотности до мультиагентных систем</li>
+                <li>Практико-ориентированность (60–75% практики)</li>
+                <li>Финансово-экономический контекст кейсов</li>
+                <li>Качественная нормативная база (РПД + ФОС под каждый курс)</li>
+                <li>Модульная структура, гибкость в последовательности тем</li>
+                <li>Продуманная система мотивации сильных учеников</li>
+            </ul>
+        </div>
+        <div class="swot-box swot-w">
+            <h3>Weaknesses (Слабые стороны)</h3>
+            <ul>
+                <li>Критическое дублирование между «Усиленным промптингом» и «Вайбкодингом»</li>
+                <li>Отсутствие чётких пререквизитов между курсами</li>
+                <li>Нет курса по анализу данных / SQL / Excel (ядро для Финуниверситета)</li>
+                <li>Нет математической подготовки для ИИ (линал, матстат)</li>
+                <li>Перегрузка: 5 курсов × 1–2 ч/нед = 7–8 ч/нед максимум</li>
+                <li>Размытая граница: где заканчивается один курс и начинается другой</li>
+                <li>«Кружок 8–9» — слишком размытое название (не отражает содержание)</li>
+            </ul>
+        </div>
+        <div class="swot-box swot-o">
+            <h3>Opportunities (Возможности)</h3>
+            <ul>
+                <li>Создать трековую систему с пререквизитами (см. раздел 9)</li>
+                <li>Добавить курс «Анализ данных и SQL» — уникальное УТП для Лицея</li>
+                <li>Интегрировать олимпиадную подготовку по ИИ (AI Junior Cup, ВОШ по ИИ)</li>
+                <li>Запустить совместные проекты с факультетами Финуниверситета</li>
+                <li>Привлечь индустриальных партнёров (Яндекс, Сбер, Т-Банк) для кейсов</li>
+                <li>Создать англоязычную версию промпт-курса для международного бакалавриата</li>
+                <li>Разработать онлайн-версии для дистанционного обучения</li>
+            </ul>
+        </div>
+        <div class="swot-box swot-t">
+            <h3>Threats (Угрозы)</h3>
+            <ul>
+                <li>Технологии ИИ меняются ежегодно — курсы устаревают быстрее, чем обновляются</li>
+                <li>Ужесточение регулирования ИИ в РФ (маркировка, запреты) может ограничить практику</li>
+                <li>Зависимость от зарубежных API (OpenAI) — санкционные риски</li>
+                <li>Дефицит учителей нужной квалификации на рынке труда</li>
+                <li>Перегрузка учеников: если обязательные предметы + все курсы → выгорание</li>
+                <li>Плагиат и несамостоятельность при использовании ИИ в учебных проектах</li>
+                <li>Снижение интереса к ИИ через 1–2 года из-за эффекта «хайпа»</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 8. PROS CONS DETAILED ==================== -->
+<section id="proscons" class="card">
+    <h2>8. Детальные «За» и «Против» по каждому курсу</h2>
+
+    <h3>8.1. Программирование (Python, 136 ч)</h3>
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4>За</h4>
+            <ul>
+                <li>Фундаментальная база, не зависящая от хайпа вокруг ИИ</li>
+                <li>Подготовка к ЕГЭ по информатике и олимпиадам</li>
+                <li>Качественная учебная литература (Поляков, Чернышев)</li>
+                <li>ООП и алгоритмы — основа для всех ИИ-курсов</li>
+                <li>Минимальная зависимость от интернета и API</li>
+                <li>Актуальность через 5 лет — 100%</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4>Против</h4>
+            <ul>
+                <li>Может дублировать урочную информатику (нужно сверять)</li>
+                <li>Нет прямой привязки к ИИ — ученики могут счесть «скучным»</li>
+                <li>136 часов на Python — много, если у ученика уже есть база</li>
+                <li>Требуется высокая квалификация учителя (олимпиадные задачи)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>8.2. Усиленный промптинг (136 ч)</h3>
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4>За</h4>
+            <ul>
+                <li>Ультраактуальная тема — промпт-инжиниринг как цифровая грамотность</li>
+                <li>Хорошая структура: от базовых промптов до CoT и ToT</li>
+                <li>Охват этики, безопасности, авторского права</li>
+                <li>Финансовые кейсы (инфляция, проценты, спрос-предложение)</li>
+                <li>Доступность: нужен только браузер + бесплатный доступ к БЯМ</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4>Против</h4>
+            <ul>
+                <li><strong>30–40% пересекается с «Вайбкодингом»</strong> (модули 1–3)</li>
+                <li>136 часов на промптинг — чрезмерно (оптимум: 68 ч)</li>
+                <li>Быстрое устаревание техник (через год появится новая парадигма)</li>
+                <li>Зависимость от доступа к БЯМ (GigaChat, YandexGPT, ChatGPT)</li>
+                <li>Вся литература англоязычная — снижает доступность</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>8.3. Вайбкодинг и разработка ИИ-агентов (136 ч)</h3>
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4>За</h4>
+            <ul>
+                <li>Самый инновационный курс — максимальный интерес учеников</li>
+                <li>Реальный продуктовый результат (боты, агенты, веб-интерфейс)</li>
+                <li>Полный стек: промптинг → API → LangChain → мультиагенты</li>
+                <li>Профориентация в FinTech и AI-инженерию</li>
+                <li>Уровень сложности как в Junior-позициях</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4>Против</h4>
+            <ul>
+                <li><strong>Экстремальная сложность для учителя:</strong> LangChain, RAG, ReAct, API — редкая экспертиза в школах</li>
+                <li>Зависимость от платных API-ключей и хостинга</li>
+                <li>Частичное дублирование с «Усиленным промптингом»</li>
+                <li>136 ч может не хватить на все темы (особенно мультиагенты)</li>
+                <li>LangChain меняется каждые полгода — документация устаревает</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>8.4. Проектный практикум в сфере ИИ (68 ч)</h3>
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4>За</h4>
+            <ul>
+                <li>Полный цикл ИИ-проекта — от постановки до защиты</li>
+                <li>Реальные библиотеки (pandas, sklearn, matplotlib)</li>
+                <li>Умеренная нагрузка (1 ч/нед) — легко вписать в расписание</li>
+                <li>Формирует проектное мышление и портфолио</li>
+                <li>Готовит к НПК и конкурсам проектов</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4>Против</h4>
+            <ul>
+                <li><strong>68 ч — катастрофически мало</strong> для полного ML-проекта</li>
+                <li>Пересекается с «Программированием» (pandas, Python)</li>
+                <li>Предполагает знание Python, но не указан входной порог</li>
+                <li>Нет покрытия нейросетей (только sklearn) — может разочаровать учеников</li>
+                <li>Поздно начинается проект (в 11 классе защита)</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>8.5. Введение в ИИ-грамотность (34 ч)</h3>
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4>За</h4>
+            <ul>
+                <li>Актуальный обзор для всех учеников вне зависимости от профиля</li>
+                <li>Минимальные входные требования</li>
+                <li>Важный этико-правовой блок (152-ФЗ, Национальная стратегия)</li>
+                <li>Знакомство с российскими ИИ-сервисами</li>
+                <li>Нет зависимости от программирования</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4>Против</h4>
+            <ul>
+                <li>34 ч — поверхностно, «галопом по европам»</li>
+                <li>Нет практического программирования (только 1 мини-проект)</li>
+                <li>Сложные темы (GAN, рекомендательные системы) — без математики непонятны</li>
+                <li>Только 10 класс — нет продолжения</li>
+                <li>Для мотивированных учеников может быть слишком легко</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>8.6. Кружок для 8–9 классов (136 ч)</h3>
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4>За</h4>
+            <ul>
+                <li>Ранняя профориентация — ученики пробуют ИИ до 10 класса</li>
+                <li>Хорошая пропедевтика промптинга (5 уровней)</li>
+                <li>Практико-ориентированный: боты, игры, агенты</li>
+                <li>Развитие soft-skills (парное программирование, взаимооценка, хакатоны)</li>
+                <li>Плавный вход в агентную тематику через Coze</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4>Против</h4>
+            <ul>
+                <li><strong>Название «Кружок для 8–9 классов»</strong> — не отражает содержание (нужно: «Практический ИИ: от промпта до агента»)</li>
+                <li>Начинается с промптинга, а не с основ ИИ — нарушение дидактики</li>
+                <li>Нет входных требований — разный уровень учеников</li>
+                <li>Вайбкодинг дублируется в 10–11 классах</li>
+                <li>Зависимость от внешних сервисов (Coze, Telegram, API)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== 9. RISKS ==================== -->
+<section id="risks" class="card">
+    <h2>9. Риски и нюансы внедрения</h2>
+
+    <h3>9.1. Матрица рисков</h3>
+    <div class="risk-grid">
+        <div class="risk-item high">
+            <h4>Дефицит квалифицированных педагогов</h4>
+            <p class="small-text">Вероятность: <strong>высокая</strong> · Влияние: <strong>критическое</strong></p>
+            <p>Нужны учителя, владеющие Python, LangChain, API, ML — такой комбинации почти нет на рынке. Без найма практиков из индустрии курсы «Вайбкодинг» и «Проектный практикум» нереализуемы.</p>
+        </div>
+        <div class="risk-item high">
+            <h4>Зависимость от зарубежных API и сервисов</h4>
+            <p class="small-text">Вероятность: <strong>средняя</strong> · Влияние: <strong>высокое</strong></p>
+            <p>OpenAI, Coze, Render и др. могут быть заблокированы или введены платные тарифы. Нужна стратегия импортозамещения: YandexGPT, GigaChat, RuHosting.</p>
+        </div>
+        <div class="risk-item high">
+            <h4>Быстрое устаревание содержания</h4>
+            <p class="small-text">Вероятность: <strong>высокая</strong> · Влияние: <strong>высокое</strong></p>
+            <p>Промпт-инжиниринг и фреймворки агентов меняются ежемесячно. РПД на 2 года может устареть к моменту утверждения. Нужен механизм ежегодного обновления.</p>
+        </div>
+        <div class="risk-item medium">
+            <h4>Академическая нечестность с использованием ИИ</h4>
+            <p class="small-text">Вероятность: <strong>высокая</strong> · Влияние: <strong>среднее</strong></p>
+            <p>Ученики могут использовать ИИ для выполнения заданий по другим курсам. Нужны чёткие правила, как в ФОС (честность прописана, но контроль слабый).</p>
+        </div>
+        <div class="risk-item medium">
+            <h4>Низкий набор на узкоспециализированные курсы</h4>
+            <p class="small-text">Вероятность: <strong>средняя</strong> · Влияние: <strong>среднее</strong></p>
+            <p>«Вайбкодинг» — для сильных, «ИИ-грамотность» — для всех. Может не набраться группа на агентов (нужно 15+ чел.). Гибкое расписание и объединение потоков.</p>
+        </div>
+        <div class="risk-item low">
+            <h4>Технические сбои на занятиях</h4>
+            <p class="small-text">Вероятность: <strong>средняя</strong> · Влияние: <strong>низкое</strong></p>
+            <p>Падение интернета, недоступность API, перегрузка серверов. Для каждого занятия нужен «план Б» (офлайн-активности, локальные модели через Ollama).</p>
+        </div>
+    </div>
+
+    <h3>9.2. Нюансы (неочевидные проблемы)</h3>
+    <ul>
+        <li><strong>Разный уровень учеников:</strong> в одной группе могут быть «айтишники» и новички. Нужна входная диагностика (есть только в «Кружке 8–9» и «Промптинге»)</li>
+        <li><strong>Санитарные нормы:</strong> 2 ч/нед за компьютером — допустимо, но в «Вайбкодинге» возможны сдвоенные уроки (1.5 ч непрерывно)</li>
+        <li><strong>Родительское сопротивление:</strong> некоторые родители считают ИИ «бесполезной игрушкой» — нужна информационная кампания</li>
+        <li><strong>Интеграция с урочной деятельностью:</strong> учителя-предметники могут не одобрить использование ИИ учениками — нужна синхронизация позиции</li>
+        <li><strong>Сертификация:</strong> ФОС предлагает 5-балльную шкалу, но внеурочная деятельность обычно безоценочная. Конфликт форматов.</li>
+        <li><strong>Правовой статус ИИ-проектов:</strong> кому принадлежит код, написанный учеником с помощью ИИ-ассистента? Нет регулирования.</li>
+    </ul>
+</section>
+
+<!-- ==================== 10. RECOMMENDATIONS ==================== -->
+<section id="changes" class="card">
+    <h2>10. Рекомендации по изменению программ</h2>
+
+    <h3>10.1. Оптимальная архитектура «Трековая система»</h3>
+    <div class="overlap-bar">
+        <strong>Суть:</strong> единое ядро «Введение в ИИ-грамотность» (34 ч, 10 класс, 1 ч/нед) + 3 трека на выбор (по 136 ч за 2 года, 2 ч/нед).
+        Ученик выбирает <strong>один</strong> трек. Дублирование исключено.
+    </div>
+
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>Трек</th>
+                <th>Класс</th>
+                <th>Курс</th>
+                <th>Часы</th>
+                <th>Ч/нед</th>
+                <th>Пререквизит</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2"><strong>А. Программист-исследователь</strong></td>
+                <td>10</td><td>Программирование на Python</td>
+                <td>68</td><td>2</td><td rowspan="2">ИИ-грамотность + входной тест</td>
+            </tr>
+            <tr><td>11</td><td>Проектный практикум в сфере ИИ</td><td>68</td><td>2</td></tr>
+            <tr>
+                <td rowspan="2"><strong>Б. ИИ-инженер</strong></td>
+                <td>10</td><td>Промпт-инжиниринг (усечённый)</td>
+                <td>68</td><td>2</td><td rowspan="2">ИИ-грамотность</td>
+            </tr>
+            <tr><td>11</td><td>Вайбкодинг и разработка ИИ-агентов</td><td>68</td><td>2</td></tr>
+            <tr>
+                <td rowspan="2"><strong>В. Аналитик данных</strong></td>
+                <td>10</td><td>Анализ данных и SQL (НОВЫЙ)</td>
+                <td>68</td><td>2</td><td rowspan="2">ИИ-грамотность</td>
+            </tr>
+            <tr><td>11</td><td>Промпт-инжиниринг (усечённый)</td><td>68</td><td>2</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <p><strong>Новый курс: «Анализ данных и SQL» (68 ч, 10 класс)</strong> — закрывает пробой для Финуниверситета. Содержание: Excel (продвинутый) → SQL (SELECT, JOIN, GROUP BY) → pandas → визуализация (Tableau / DataLens).</p>
+
+    <h3>10.2. Конкретные изменения в существующих РПД</h3>
+
+    <div class="pc-grid">
+        <div class="pro-box">
+            <h4 style="margin:0 0 8px;color:#155724">Что сократить / объединить</h4>
+            <ul>
+                <li><strong>«Усиленный промптинг» → 68 ч</strong> (вместо 136): оставить CoT, ToT, few-shot, этику. Убрать дубли с «Вайбкодингом» (модули 4–6).</li>
+                <li><strong>«Вайбкодинг» → 68 ч</strong> (вместо 136): только как продолжение промптинга в 11 классе. Убрать основы промптинга, оставить API, агентов, LangChain, мультиагенты.</li>
+                <li><strong>«Программирование» → 68 ч</strong> (вместо 136): базовый курс. Продвинутые темы (асинхронность, сложные алгоритмы) — вынести в факультатив.</li>
+                <li><strong>«Проектный практикум»</strong> — увеличить до 68 ч в год (сейчас 68 на 2 года). При трековой системе — 68 ч в 11 классе.</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4 style="margin:0 0 8px;color:#721c24">Что добавить / изменить</h4>
+            <ul>
+                <li><strong>Добавить «Анализ данных и SQL»</strong> (68 ч, 10 класс) — для трека «Аналитик».</li>
+                <li><strong>Добавить факультатив «Математика для ИИ»</strong> (34 ч, 11 класс) — линал, матстат, ТВист.</li>
+                <li><strong>Название «Кружок для 8–9» → «Практический ИИ: от промпта до агента»</strong></li>
+                <li><strong>Ввести чёткие пререквизиты:</strong> ИИ-грамотность → любой трек. Промптинг → Вайбкодинг. Программирование → Проектный практикум.</li>
+                <li><strong>Добавить русскоязычную литературу</strong> в «Усиленный промптинг» (Душкин Р.В. «Метакогнитивная промпт-инженерия» уже есть в 8–9 кружке).</li>
+                <li><strong>Олимпиадный модуль</strong> в «Программирование» (Codeforces, ВОШ, AI Cup).</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>10.3. Приоритетность изменений (дорожная карта)</h3>
+    <div class="table-wrap">
+    <table>
+        <thead>
+            <tr><th>Срок</th><th>Что сделать</th><th>Эффект</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Немедленно</strong> (до старта)</td><td>Создать трековую систему + определить пререквизиты</td><td>Устранит дублирование, снизит нагрузку</td></tr>
+            <tr><td><strong>1-й семестр</strong></td><td>Урезать «Усиленный промптинг» до 68 ч, убрав дубли</td><td>Снижение нагрузки на 2 ч/нед</td></tr>
+            <tr><td><strong>2-й семестр</strong></td><td>Разработать РПД «Анализ данных и SQL» (68 ч)</td><td>Закрытие пробоя для финансистов</td></tr>
+            <tr><td><strong>Лето</strong></td><td>Повышение квалификации учителей (Python + LangChain + ML)</td><td>Кадровая готовность</td></tr>
+            <tr><td><strong>Следующий год</strong></td><td>Запустить факультатив «Математика для ИИ» (34 ч)</td><td>Усиление матподготовки</td></tr>
+            <tr><td><strong>Перспектива</strong></td><td>Онлайн-версии курсов, партнёрства с вузами</td><td>Масштабирование</td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ==================== 11. CONCLUSION ==================== -->
+<section id="conclusion" class="card">
+    <h2>11. Итоговый вывод</h2>
+
+    <div style="background: linear-gradient(135deg, #1a1a2e, #0f3460); color: white; padding: 24px; border-radius: 12px; margin: 16px 0;">
+        <p style="font-size: 1.1em; margin-bottom: 12px;">
+            <strong>Система курсов внеурочной деятельности Лицея Финуниверситета — одна из самых передовых в РФ по охвату ИИ-тематики.</strong>
+            По глубине промпт-инжиниринга и агентной разработки она превосходит все известные школьные программы (Летово, СУНЦ, НИУ ВШЭ).
+        </p>
+        <p style="opacity: 0.9;">
+            <strong>Главные проблемы:</strong> дублирование «Усиленного промптинга» и «Вайбкодинга» (30–40%), отсутствие пререквизитов,
+            перегрузка при выборе нескольких курсов, нет курса по анализу данных и SQL (критично для Финуниверситета).
+        </p>
+        <p style="opacity: 0.9; margin-top: 8px;">
+            <strong>Трековая система</strong> с ядром (ИИ-грамотность) и тремя треками (Программист-исследователь, ИИ-инженер, Аналитик данных)
+            устраняет дублирование, снижает нагрузку до 2–3 ч/нед и даёт чёткую траекторию каждому ученику.
+        </p>
+    </div>
+
+    <div class="pc-grid" style="margin-top: 16px;">
+        <div class="pro-box">
+            <h4 style="margin:0 0 8px;color:#155724">Ключевые «За» текущей системы</h4>
+            <ul>
+                <li>Своевременность и актуальность</li>
+                <li>Финансово-экономический контекст</li>
+                <li>Практическая направленность</li>
+                <li>Качественная документация (РПД + ФОС)</li>
+                <li>Продвинутые темы (агенты, мультиагенты)</li>
+                <li>Гибкость и модульность</li>
+            </ul>
+        </div>
+        <div class="con-box">
+            <h4 style="margin:0 0 8px;color:#721c24">Ключевые «Против»</h4>
+            <ul>
+                <li>Дублирование содержания между курсами</li>
+                <li>Отсутствие пререквизитов и треков</li>
+                <li>Нет аналитики данных (SQL, Excel)</li>
+                <li>Нет математической базы</li>
+                <li>Экстремальные требования к учителям</li>
+                <li>Риск быстрого устаревания</li>
+            </ul>
+        </div>
+    </div>
+
+    <p style="margin-top: 16px; font-size: 0.9em; color: #666; text-align: center;">
+        Анализ выполнен на основе РПД и ФОС от 2026 года. Рекомендуется ежегодная актуализация с учётом изменений в технологиях ИИ и регулировании РФ.
+    </p>
+</section>
+
+<!-- ==================== 12. KTP ==================== -->
+<section id="ktp" class="card">
+    <h2>12. Календарно-тематическое планирование (КТП) всех курсов</h2>
+    <p class="small-text">Таблицы извлечены из РПД. КТП для 10–11 классов приведены по модулям; для 8–9 классов — по темам.</p>
+
+    <h3>12.1. Программирование (10–11 классы)</h3>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>№</th><th>Тема</th><th>Форма деятельности</th><th>Часы</th></tr></thead>
+        <tbody>
+        <tr><td colspan="4"><strong>Модуль 1. Основы программирования на Python (10 класс)</strong></td></tr>
+        <tr><td></td><td>Входная диагностика: написание простейшей программы</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Переменные, типы данных, ввод/вывод (input, print)</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Условный оператор if-elif-else, логические операторы</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Цикл for, функция range(), итерация по коллекциям</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Цикл while, операторы break, continue</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Строки: индексация, срезы, методы (split, join, upper, lower)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Функции: определение, параметры, возврат значений</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Области видимости переменных (global, local)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Модули random, math, datetime</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Обработка ошибок (try-except)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Базовые алгоритмы: линейный поиск, поиск максимума/минимума</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Сортировка пузырьком и сортировка выбором</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Бинарный поиск (итеративная версия)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Рубежный тест (модуль 1)</td><td>тестирование</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 2. Структуры данных и рекурсия (10 класс)</strong></td></tr>
+        <tr><td></td><td>Списки: создание, индексация, методы (append, insert, remove)</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Срезы списков, копирование списков</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Генераторы списков (list comprehension)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Кортежи и множества (set, frozenset)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Словари: создание, методы keys(), values(), items()</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Генераторы словарей</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Рекурсия: базовый случай, рекурсивный шаг</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Рекурсивные алгоритмы: факториал, числа Фибоначчи</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Рекурсивный бинарный поиск</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Быстрая сортировка (quicksort)</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Понятие сложности алгоритмов (O-большое) — вводное</td><td>лекция + обсуждение</td><td>2</td></tr>
+        <tr><td></td><td>Рубежный тест (модуль 2)</td><td>тестирование</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 3. Объектно-ориентированное программирование (10–11 классы)</strong></td></tr>
+        <tr><td></td><td>Понятие класса и объекта. Конструктор __init__</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Атрибуты экземпляра и методы класса</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Наследование: создание дочерних классов, переопределение методов</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Инкапсуляция: приватные атрибуты, property</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Полиморфизм: единый интерфейс для разных классов</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Магические методы (__str__, __repr__, __eq__)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Магические методы (__add__, __len__)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Статические методы и методы класса (@staticmethod, @classmethod)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Пример: класс «Банковский счёт»</td><td>мини-проект</td><td>2</td></tr>
+        <tr><td></td><td>Пример: класс «Геометрическая фигура» (наследование)</td><td>работа в парах</td><td>2</td></tr>
+        <tr><td></td><td>Классы-исключения: создание собственных исключений</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Композиция и агрегация классов</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Рубежный тест (ООП)</td><td>тестирование</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 4. Работа с файлами и внешними библиотеками (11 класс)</strong></td></tr>
+        <tr><td></td><td>Чтение и запись текстовых файлов (режимы r, w, a)</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Работа с форматом CSV (модуль csv)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Формат JSON: сериализация и десериализация (json)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Отправка HTTP-запросов (библиотека requests)</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Получение данных с публичных API (курсы валют, погода)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Обработка и сохранение полученных данных из API</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Визуализация данных с matplotlib: построение графиков</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Визуализация: гистограммы, диаграммы рассеяния</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Основы pandas: загрузка DataFrame, первичный анализ</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>pandas: описательные статистики, фильтрация, группировка</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Проектная задача: анализ данных с визуализацией</td><td>работа в парах</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 5. Системы контроля версий и командная разработка (11 класс)</strong></td></tr>
+        <tr><td></td><td>Введение в Git: установка, инициализация репозитория (git init)</td><td>лекция + демонстрация</td><td>2</td></tr>
+        <tr><td></td><td>Основные команды: add, commit, log, status</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Ветвление: создание и переключение веток (branch, checkout)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Слияние веток (merge), разрешение конфликтов</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Работа с удалённым репозиторием GitHub: clone, push, pull</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Понятие pull request и код-ревью</td><td>лекция + демонстрация</td><td>2</td></tr>
+        <tr><td></td><td>Файл .gitignore, работа с чужими репозиториями (fork)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 6. Итоговая проектная деятельность (11 класс)</strong></td></tr>
+        <tr><td></td><td>Выбор темы проекта, постановка задачи, обоснование</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Проектирование архитектуры, выбор библиотек</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Разработка проекта: написание кода, создание репозитория</td><td>проектная деятельность</td><td>4</td></tr>
+        <tr><td></td><td>Тестирование, отладка, документирование кода</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Подготовка презентации и демонстрации</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Защита проектов (публичная демонстрация, вопросы)</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Итоговая рефлексия курса, самооценка</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Резервные часы (66–68)</td><td>резерв</td><td>6</td></tr>
+        <tr><td colspan="3"><strong>Итого</strong></td><td><strong>136</strong></td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>12.2. Усиленный промптинг (10–11 классы)</h3>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>№</th><th>Тема</th><th>Форма деятельности</th><th>Часы</th></tr></thead>
+        <tbody>
+        <tr><td colspan="4"><strong>Модуль 1. Введение в промптинг и основы работы с БЯМ (10 класс)</strong></td></tr>
+        <tr><td></td><td>Входная диагностика: составление простого промпта</td><td>диагностическая работа</td><td>2</td></tr>
+        <tr><td></td><td>Что такое БЯМ и как работает промпт (токенизация, контекстное окно)</td><td>лекция</td><td>2</td></tr>
+        <tr><td></td><td>Типы промптов: инструктивный, вопрос, сценарий</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Этические ограничения и политики безопасности БЯМ</td><td>дискуссия</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 2. Базовые техники и шаблоны промптов (10 класс)</strong></td></tr>
+        <tr><td></td><td>Формула качественного промпта: роль + контекст + задача + формат + ограничения</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Ролевой промптинг: «Ты — репетитор», «Ты — эксперт»</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Создание промптов для точных наук (математика, физика)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Создание промптов для гуманитарных предметов (история, литература)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Создание промптов для финансовой грамотности и экономики (кейсы)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Разбор типичных ошибок в формулировках («что не так с промптом»)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 3. Продвинутые стратегии промпт-инжиниринга (10–11 классы)</strong></td></tr>
+        <tr><td></td><td>Chain-of-Thought (CoT) — техника цепочки рассуждений</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Few-shot и zero-shot промпты: сравнение эффективности</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Создание собственных примеров (few-shot) для разных задач</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Дерево мыслей (Tree-of-Thoughts, ToT) — введение</td><td>лекция</td><td>2</td></tr>
+        <tr><td></td><td>Итеративное уточнение промпта (подход «спроси меня»)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Метакогнитивные промпты для самооценки и самокоррекции</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Самоконсистентность: повторные запросы и выбор лучшего ответа</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Сравнительный анализ техник (CoT vs ToT vs few-shot) — рубежный контроль</td><td>тестирование</td><td>2</td></tr>
+        <tr><td></td><td>Комплексное применение продвинутых техник к междисциплинарным кейсам</td><td>работа в группах</td><td>2</td></tr>
+        <tr><td></td><td>Оптимизация промптов под ограниченный контекст (длинные диалоги)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 4. Промптинг для программирования и анализа данных (11 класс)</strong></td></tr>
+        <tr><td></td><td>Генерация кода на Python: простые алгоритмы и функции</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Отладка кода с помощью БЯМ: поиск ошибок и исправление</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Составление промптов для SQL-запросов и формул Excel</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Промпты для анализа табличных данных (CSV, Google Sheets)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Безопасность при генерации кода: что нельзя доверять БЯМ</td><td>лекция + обсуждение</td><td>2</td></tr>
+        <tr><td></td><td>Интеграция БЯМ в учебные проекты (API, песочницы) — обзор</td><td>лекция + демонстрация</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 5. Критический анализ и верификация ответов ИИ (11 класс)</strong></td></tr>
+        <tr><td></td><td>Признаки и методы обнаружения галлюцинаций</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Проверка фактов через запрос источников и перекрёстную верификацию</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Использование БЯМ для критики собственных ответов (двойной промпт)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Разработка чек-листа оценки качества ответа (полнота, точность, стиль)</td><td>групповая работа</td><td>2</td></tr>
+        <tr><td></td><td>Этика использования сгенерированного контента: цитирование, плагиат, авторство</td><td>дебаты</td><td>2</td></tr>
+        <tr><td></td><td>Итоговый рубежный тест по критическому анализу</td><td>тестирование</td><td>2</td></tr>
+        <tr><td colspan="4"><strong>Модуль 6. Проектная деятельность и исследовательские кейсы (11 класс)</strong></td></tr>
+        <tr><td></td><td>Выбор темы и постановка проектной задачи</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Сбор и анализ промптов по выбранной теме</td><td>проектная деятельность</td><td>4</td></tr>
+        <tr><td></td><td>Проведение мини-исследования (например, влияние температуры на креативность)</td><td>проектная деятельность</td><td>4</td></tr>
+        <tr><td></td><td>Оформление проекта: руководство по промптингу, чек-лист или набор промптов</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Подготовка презентации и защита проекта</td><td>проектная деятельность</td><td>2</td></tr>
+        <tr><td></td><td>Итоговая рефлексия курса</td><td>круглый стол</td><td>2</td></tr>
+        <tr><td></td><td>Резервные часы (39–68)</td><td>резерв</td><td>30</td></tr>
+        <tr><td colspan="3"><strong>Итого</strong></td><td><strong>136</strong></td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>12.3. Вайбкодинг и разработка ИИ-агентов (10–11 классы)</h3>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>№</th><th>Тема</th><th>Форма деятельности</th><th>Часы</th></tr></thead>
+        <tbody>
+        <tr><td colspan="4"><strong>10 класс (68 ч): Промпт-инжиниринг, API, простые агенты</strong></td></tr>
+        <tr><td></td><td>Понятие вайбкодинга. Роль человека в цикле. Принципы работы БЯМ</td><td>лекция</td><td>2</td></tr>
+        <tr><td></td><td>Промпт как форма постановки задачи. Zero-shot, one-shot, few-shot</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Chain-of-Thought, ролевые промпты, итеративное уточнение</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Инструменты вайбкодинга: ChatGPT, DeepSeek, GitHub Copilot, Cursor</td><td>лабораторная работа</td><td>2</td></tr>
+        <tr><td></td><td>Правила безопасности и этические аспекты</td><td>дискуссия</td><td>2</td></tr>
+        <tr><td></td><td>Основы HTTP и REST API. Структура запроса и ответа</td><td>лекция + практикум</td><td>4</td></tr>
+        <tr><td></td><td>Отправка POST-запросов к БЯМ на Python (requests)</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Формирование тела запроса: model, messages, temperature, max_tokens</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Управление контекстом диалога, реализация чат-бота с памятью</td><td>практическое занятие</td><td>6</td></tr>
+        <tr><td></td><td>Механизм вызова функций (function calling)</td><td>лекция + практикум</td><td>6</td></tr>
+        <tr><td></td><td>Понятие ИИ-агента. Архитектура: восприятие — планирование — действие</td><td>лекция</td><td>2</td></tr>
+        <tr><td></td><td>Реализация агента-конвертера валют с вызовом API</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Агент-помощник для финансовых задач (расчёт процентов, бюджет)</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Агент с краткосрочной памятью. Агент-модератор</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Интеграция с веб-интерфейсом Streamlit (минимальный вариант)</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Локальные БЯМ через Ollama (опционально)</td><td>лабораторная работа</td><td>2</td></tr>
+        <tr><td></td><td>Отладка агентов: логирование, анализ галлюцинаций</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Промежуточная аттестация / проект</td><td>тестирование</td><td>2</td></tr>
+        <tr><td></td><td>Резерв</td><td>резерв</td><td>10</td></tr>
+        <tr><td colspan="4"><strong>11 класс (68 ч): Продвинутая архитектура, мультиагенты, развёртывание</strong></td></tr>
+        <tr><td></td><td>Контекстная память: буфер, скользящее окно, суммаризация</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>RAG на концептуальном уровне. Векторные БД (Chroma, FAISS)</td><td>лекция + практикум</td><td>6</td></tr>
+        <tr><td></td><td>Фреймворки: LangChain (Chains, Tools, Agents, Memory)</td><td>лекция + практикум</td><td>8</td></tr>
+        <tr><td></td><td>Режимы планирования: ReAct, Plan-and-Execute</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Оценка качества работы агента. Трассировка (LangSmith)</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Понятие многоагентных систем. Кооперация и координация</td><td>лекция</td><td>2</td></tr>
+        <tr><td></td><td>Реализация пары «исполнитель — критик»</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Агент-маршрутизатор (router). Финансовая МАС</td><td>практическое занятие</td><td>4</td></tr>
+        <tr><td></td><td>Взаимодействие агентов через общую память</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Создание веб-интерфейса / Telegram-бота для агента</td><td>практическое занятие</td><td>6</td></tr>
+        <tr><td></td><td>Развёртывание на Render/PythonAnywhere</td><td>практическое занятие</td><td>2</td></tr>
+        <tr><td></td><td>Безопасность: фильтрация промптов, защита от промпт-инъекций</td><td>лекция + практикум</td><td>2</td></tr>
+        <tr><td></td><td>Итоговый групповой проект</td><td>проектная деятельность</td><td>16</td></tr>
+        <tr><td></td><td>Защита проекта</td><td>проектная деятельность</td><td>4</td></tr>
+        <tr><td></td><td>Резерв</td><td>резерв</td><td>4</td></tr>
+        <tr><td colspan="3"><strong>Итого</strong></td><td><strong>136</strong></td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>12.4. Проектный практикум в сфере ИИ (10–11 классы)</h3>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>№</th><th>Тема</th><th>Часы</th></tr></thead>
+        <tbody>
+        <tr><td colspan="3"><strong>10 класс (34 ч)</strong></td></tr>
+        <tr><td colspan="3"><em>Модуль 1. Проектная логика и постановка задачи</em></td></tr>
+        <tr><td>1.1</td><td>Понятие ИИ-проекта. Жизненный цикл. Типы задач. Критерии успеха</td><td>3</td></tr>
+        <tr><td>1.2</td><td>Методологии управления (Waterfall, Agile). Роли. План. Риски</td><td>3</td></tr>
+        <tr><td>1.3</td><td>Проектная документация: устав, бэклог, Trello/GitHub Projects</td><td>2</td></tr>
+        <tr><td colspan="3"><em>Модуль 2. Инструментарий и работа с данными</em></td></tr>
+        <tr><td>2.1</td><td>Jupyter/Colab. Python для данных: pandas Series/DataFrame</td><td>4</td></tr>
+        <tr><td>2.2</td><td>EDA: загрузка, пропуски, статистики. Очистка данных</td><td>4</td></tr>
+        <tr><td>2.3</td><td>NumPy, matplotlib, seaborn: визуализация, тепловые карты</td><td>4</td></tr>
+        <tr><td colspan="3"><em>Модуль 3. Первые модели — обучение с учителем</em></td></tr>
+        <tr><td>3.1</td><td>Линейная регрессия. MSE, R². Тренировка на sklearn</td><td>4</td></tr>
+        <tr><td>3.2</td><td>Дерево решений. Классификация. Матрица ошибок</td><td>4</td></tr>
+        <tr><td colspan="3"><em>Модуль 4. Промежуточная защита эскиза проекта</em></td></tr>
+        <tr><td>4.1–4.3</td><td>Выбор темы, EDA, базовая модель, отчёт, защита</td><td>6</td></tr>
+        <tr><td colspan="3"><strong>11 класс (34 ч)</strong></td></tr>
+        <tr><td colspan="3"><em>Модуль 5. Нейросетевые технологии и работа с API</em></td></tr>
+        <tr><td>5.1</td><td>Принципы нейронных сетей. Обзор архитектур (CNN, RNN, трансформеры)</td><td>3</td></tr>
+        <tr><td>5.2</td><td>Работа с API облачных ИИ-сервисов (YandexGPT, GigaChat)</td><td>4</td></tr>
+        <tr><td>5.3</td><td>Создание чат-бота на основе API (python-telegram-bot)</td><td>3</td></tr>
+        <tr><td colspan="3"><em>Модуль 6. Проектный практикум: от идеи до агента</em></td></tr>
+        <tr><td>6.1</td><td>Формулировка проблемы и сбор данных</td><td>3</td></tr>
+        <tr><td>6.2</td><td>Выбор архитектуры и инструментов</td><td>3</td></tr>
+        <tr><td>6.3</td><td>Реализация прототипа</td><td>6</td></tr>
+        <tr><td>6.4</td><td>Тестирование и улучшение модели</td><td>4</td></tr>
+        <tr><td colspan="3"><em>Модуль 7. Этика ИИ и подготовка защиты</em></td></tr>
+        <tr><td>7.1</td><td>Этические проблемы ИИ (предвзятость, приватность)</td><td>2</td></tr>
+        <tr><td>7.2</td><td>Подготовка презентации и peer-review</td><td>2</td></tr>
+        <tr><td colspan="3"><em>Модуль 8. Итоговая защита проектов</em></td></tr>
+        <tr><td>8.1</td><td>Публичная защита проектов</td><td>4</td></tr>
+        <tr><td colspan="2"><strong>Итого</strong></td><td><strong>68</strong></td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>12.5. Введение в ИИ-грамотность (10 класс)</h3>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>№</th><th>Тема</th><th>Часы</th></tr></thead>
+        <tbody>
+        <tr><td colspan="3"><strong>Раздел 1. Искусственный интеллект: базовые понятия</strong></td></tr>
+        <tr><td>1.1</td><td>Что такое искусственный интеллект</td><td>2</td></tr>
+        <tr><td>1.2</td><td>Данные и их роль в ИИ</td><td>2</td></tr>
+        <tr><td>1.3</td><td>Как учится машина: парадигмы ML (с учителем, без учителя, с подкреплением)</td><td>4</td></tr>
+        <tr><td colspan="3"><strong>Раздел 2. Инструменты и сервисы ИИ</strong></td></tr>
+        <tr><td>2.1</td><td>Распознавание образов и компьютерное зрение</td><td>3</td></tr>
+        <tr><td>2.2</td><td>Обработка естественного языка (NLP). Промптинг</td><td>4</td></tr>
+        <tr><td>2.3</td><td>Рекомендательные системы</td><td>2</td></tr>
+        <tr><td>2.4</td><td>Генеративный ИИ (изображения, дипфейки, этика)</td><td>4</td></tr>
+        <tr><td colspan="3"><strong>Раздел 3. Этика, безопасность и регулирование ИИ</strong></td></tr>
+        <tr><td>3.1</td><td>Предвзятость и дискриминация в ИИ</td><td>3</td></tr>
+        <tr><td>3.2</td><td>Защита персональных данных (152-ФЗ, анонимизация)</td><td>3</td></tr>
+        <tr><td>3.3</td><td>Правовое регулирование ИИ в РФ (Нацстратегия, ЭПР)</td><td>2</td></tr>
+        <tr><td colspan="3"><strong>Раздел 4. Проектная деятельность</strong></td></tr>
+        <tr><td>4.1</td><td>Этапы ИИ-проекта. Введение в Google Colab</td><td>2</td></tr>
+        <tr><td>4.2</td><td>Выполнение мини-проекта (Teachable Machine / API / генерация)</td><td>4</td></tr>
+        <tr><td>4.3</td><td>Защита проекта</td><td>1</td></tr>
+        <tr><td colspan="2"><strong>Итого</strong></td><td><strong>34</strong></td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h3>12.6. Кружок для 8–9 классов</h3>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Модуль</th><th>Тема</th><th>Форма</th><th>Часы</th></tr></thead>
+        <tbody>
+        <tr><td rowspan="11"><strong>1. Промптинг и основы работы с генеративными ИИ</strong></td>
+            <td>Стартовая диагностика: анкетирование, тест на ИИ-грамотность</td><td>диагностика</td><td>2</td></tr>
+        <tr><td>Что такое ИИ: генеративные модели, принципы работы</td><td>лекция</td><td>2</td></tr>
+        <tr><td>Прямой и контекстный промпт</td><td>практика</td><td>2</td></tr>
+        <tr><td>Ролевой и цепочечный промпт</td><td>практика</td><td>2</td></tr>
+        <tr><td>Мета-промпт (промпт для промптов)</td><td>практика</td><td>2</td></tr>
+        <tr><td>Промптинг для графических нейросетей</td><td>практика</td><td>2</td></tr>
+        <tr><td>Итеративное улучшение промптов</td><td>практика</td><td>2</td></tr>
+        <tr><td>Этические и правовые аспекты</td><td>лекция</td><td>2</td></tr>
+        <tr><td>Как распознавать ИИ-сгенерированный контент</td><td>практика</td><td>2</td></tr>
+        <tr><td>Создание памятки «Безопасный ИИ для школьника»</td><td>практика</td><td>2</td></tr>
+        <tr><td colspan="2"><em>Итого модуль 1</em></td><td><em>20</em></td></tr>
+        <tr><td rowspan="14"><strong>2. Разработка ИИ-агентов и чат-ботов</strong></td>
+            <td>Введение в Telegram Bot API</td><td>практика</td><td>2</td></tr>
+        <tr><td>Обработка сообщений, клавиатуры, инлайн-кнопки</td><td>практика</td><td>2</td></tr>
+        <tr><td>Подключение языковой модели через API (mock-режим)</td><td>практика</td><td>2</td></tr>
+        <tr><td>Создание бота-консультанта</td><td>практика</td><td>2</td></tr>
+        <tr><td>Добавление контекста диалога, управление памятью</td><td>практика</td><td>2</td></tr>
+        <tr><td>Отладка и журналирование бота</td><td>практика</td><td>2</td></tr>
+        <tr><td>Тестирование ботов другими группами (взаимооценка)</td><td>практика</td><td>2</td></tr>
+        <tr><td>Мини-хакатон «Бот за 2 часа»</td><td>хакатон</td><td>4</td></tr>
+        <tr><td>Разбор ошибок, рефакторинг, упаковка в репозиторий</td><td>практика</td><td>2</td></tr>
+        <tr><td>Проектная мастерская: выбор темы итогового проекта</td><td>проект</td><td>4</td></tr>
+        <tr><td>Реализация проекта (бота) — консультации, кодинг</td><td>проект</td><td>8</td></tr>
+        <tr><td>Кросс-тестирование проектов, доработка</td><td>практика</td><td>2</td></tr>
+        <tr><td>Подготовка презентации и демо</td><td>проект</td><td>2</td></tr>
+        <tr><td>Защита итоговых проектов 8 класса</td><td>проект</td><td>4</td></tr>
+        <tr><td colspan="2"><em>Итого модуль 2</em></td><td><em>40</em></td></tr>
+        <tr><td rowspan="8"><strong>3. Фреймворки для создания ИИ-агентов</strong></td>
+            <td>Понятие ИИ-агента: инструменты, память, планирование</td><td>лекция</td><td>2</td></tr>
+        <tr><td>Обзор фреймворков (Coze, LangChain)</td><td>лекция</td><td>2</td></tr>
+        <tr><td>Установка и настройка среды</td><td>практика</td><td>2</td></tr>
+        <tr><td>Создание агента с инструментом (калькулятор, погода)</td><td>практика</td><td>4</td></tr>
+        <tr><td>Добавление памяти (краткосрочная / долгосрочная)</td><td>практика</td><td>2</td></tr>
+        <tr><td>Агент с ролевым поведением</td><td>практика</td><td>4</td></tr>
+        <tr><td>Взаимодействие нескольких агентов (коллаборация)</td><td>практика</td><td>4</td></tr>
+        <tr><td>Интеграция агента в Telegram</td><td>практика</td><td>4</td></tr>
+        <tr><td>Тестирование и отладка агентов</td><td>практика</td><td>2</td></tr>
+        <tr><td colspan="2"><em>Итого модуль 3</em></td><td><em>26</em></td></tr>
+        <tr><td rowspan="7"><strong>4. Вайбкодинг и геймдизайн с ИИ</strong></td>
+            <td>Что такое вайбкодинг</td><td>лекция</td><td>2</td></tr>
+        <tr><td>Быстрое прототипирование: текстовый квест на Python</td><td>практика</td><td>4</td></tr>
+        <tr><td>Генерация игровых уровней и спрайтов через нейросети</td><td>практика</td><td>2</td></tr>
+        <tr><td>Создание игровых диалогов и сюжетов через промптинг</td><td>практика</td><td>2</td></tr>
+        <tr><td>Игровые механики с ИИ-динамикой</td><td>лекция</td><td>2</td></tr>
+        <tr><td>Разработка мини-игры с элементами ИИ</td><td>практика</td><td>8</td></tr>
+        <tr><td>Тестирование, балансировка, улучшение</td><td>практика</td><td>2</td></tr>
+        <tr><td colspan="2"><em>Итого модуль 4</em></td><td><em>22</em></td></tr>
+        <tr><td rowspan="7"><strong>5. Итоговая проектная деятельность</strong></td>
+            <td>Выбор темы итогового проекта</td><td>проект</td><td>2</td></tr>
+        <tr><td>Проектирование: сценарий, архитектура, роли</td><td>проект</td><td>2</td></tr>
+        <tr><td>Реализация проекта</td><td>проект</td><td>12</td></tr>
+        <tr><td>Документирование проекта</td><td>проект</td><td>2</td></tr>
+        <tr><td>Подготовка презентации и демо-материалов</td><td>проект</td><td>2</td></tr>
+        <tr><td>Предзащита проектов</td><td>проект</td><td>2</td></tr>
+        <tr><td>Итоговая защита проектов 9 класса</td><td>проект</td><td>4</td></tr>
+        <tr><td colspan="2"><em>Итого модуль 5</em></td><td><em>26</em></td></tr>
+        <tr><td colspan="3"><strong>ОБЩЕЕ КОЛИЧЕСТВО ЧАСОВ</strong></td><td><strong>136</strong></td></tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Электромагнитная индукция — Профильный 10 класс</title>
+<style>
+body{margin:0;padding:0;font-family:Arial,sans-serif;background:#0b1023;color:#dde4ff}
+*{box-sizing:border-box}
+
+/* NAV BAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:#111936;display:flex;align-items:center;padding:0 20px;z-index:999;border-bottom:1px solid #1e2a5a;gap:12px}
+.topbar button{background:#1a2450;color:#7eb8ff;border:1px solid #2a3a70;padding:6px 18px;border-radius:6px;cursor:pointer;font-size:14px}
+.topbar button:hover{background:#2a3a70}
+.topbar button:disabled{opacity:0.3;cursor:default}
+.topbar .info{color:#6882b8;font-size:13px;flex:1;text-align:center}
+.prog{position:fixed;top:50px;left:0;right:0;height:3px;background:#111936;z-index:999}
+.prog div{height:100%;background:#448aff;transition:width 0.3s}
+
+/* SLIDES */
+.slides{margin-top:53px}
+.slide{display:none;padding:30px 40px 60px;min-height:calc(100vh - 53px)}
+.slide.active{display:block}
+
+/* TYPOGRAPHY */
+h1{font-size:36px;color:#448aff;margin:0 0 10px}
+h2{font-size:26px;color:#5c9cff;margin:0 0 16px;border-bottom:2px solid #1e2a5a;padding-bottom:8px}
+h3{font-size:18px;color:#90b8ff;margin:14px 0 8px}
+p{font-size:15px;line-height:1.6;color:#c8d4f0;margin:6px 0}
+.center{text-align:center}
+.muted{color:#6882b8;font-size:13px}
+
+/* CARDS */
+.card{background:#131b3a;border:1px solid #1e2a5a;border-radius:10px;padding:18px;margin:10px 0}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.row>.col{flex:1;min-width:280px}
+
+/* FORMULA */
+.formula{background:#0e1530;border:1px solid #2a3a70;border-radius:8px;padding:14px 20px;margin:10px 0;text-align:center}
+.formula b{font-size:22px;color:#ffd54f;font-family:'Courier New',monospace}
+.formula small{display:block;color:#6882b8;font-size:12px;margin-top:4px}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:8px 10px;border-bottom:1px solid #1e2a5a;text-align:left;color:#c8d4f0}
+th{color:#5c9cff;font-weight:bold}
+
+/* TAG */
+.tag{display:inline-block;background:#1a2450;color:#7eb8ff;border:1px solid #2a3a70;padding:3px 12px;border-radius:20px;font-size:12px;margin:2px}
+
+/* LISTS */
+ul{margin:6px 0;padding-left:20px}
+li{margin:4px 0;font-size:14px;color:#c8d4f0;line-height:1.5}
+
+/* INTERACTIVE CALC */
+.calc{background:#0e1530;border:1px solid #2a3a70;border-radius:10px;padding:16px;margin:12px 0}
+.calc label{color:#7eb8ff;font-size:13px;display:block;margin:6px 0 2px}
+.calc input[type=number]{background:#131b3a;border:1px solid #2a3a70;color:#e8ecff;padding:6px 10px;border-radius:6px;width:120px;font-size:14px}
+.calc button{background:#448aff;color:#fff;border:none;padding:7px 20px;border-radius:6px;cursor:pointer;font-size:14px;margin-top:8px}
+.calc button:hover{background:#5c9cff}
+.calc .result{color:#ffd54f;font-size:18px;font-weight:bold;margin-top:10px}
+
+/* QUIZ */
+.qblock{background:#131b3a;border:1px solid #1e2a5a;border-radius:10px;padding:16px;margin:10px 0}
+.qblock p{margin:0 0 10px;font-size:15px;color:#e8ecff}
+.qopt{display:block;width:100%;text-align:left;background:#0e1530;border:1px solid #2a3a70;color:#c8d4f0;padding:10px 14px;margin:5px 0;border-radius:8px;cursor:pointer;font-size:14px;font-family:Arial,sans-serif}
+.qopt:hover{border-color:#448aff;background:#151d40}
+.qopt.ok{border-color:#00c853;background:rgba(0,200,83,0.1);color:#69f0ae}
+.qopt.bad{border-color:#ff5252;background:rgba(255,82,82,0.1);color:#ff8a80}
+.qopt:disabled{cursor:default;opacity:0.6}
+.qfb{margin:6px 0;padding:8px 12px;border-radius:6px;font-size:13px;display:none}
+.qfb.vis{display:block}
+.qfb.fb-ok{background:rgba(0,200,83,0.1);color:#69f0ae;border:1px solid rgba(0,200,83,0.2)}
+.qfb.fb-bad{background:rgba(255,82,82,0.1);color:#ff8a80;border:1px solid rgba(255,82,82,0.2)}
+
+/* SCORE */
+.scorebox{text-align:center;padding:20px;display:none}
+.scorebox .num{font-size:48px;font-weight:bold;color:#ffd54f}
+.scorebox .bar{height:10px;background:#1e2a5a;border-radius:5px;margin:12px auto;max-width:400px;overflow:hidden}
+.scorebox .bar div{height:100%;background:#448aff;border-radius:5px;transition:width 1s}
+.scorebox p{color:#90b8ff;font-size:15px}
+
+/* SVG container */
+.svgwrap{text-align:center;margin:10px 0}
+.svgwrap svg{max-width:100%;height:auto}
+
+/* TOGGLE BTN */
+.tbtn{background:#5c3abf;color:#fff;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-size:13px;margin-top:8px}
+.tbtn:hover{background:#7c5cdf}
+.sol{display:none;margin-top:8px;padding:14px;background:#0e1530;border:1px solid #2a3a70;border-radius:8px}
+.sol.vis{display:block}
+
+/* TIMELINE */
+.tl{border-left:3px solid #2a3a70;padding-left:20px;margin:10px 0}
+.tl .ti{margin-bottom:16px;position:relative}
+.tl .ti::before{content:'';position:absolute;left:-27px;top:4px;width:10px;height:10px;background:#448aff;border-radius:50%}
+.tl .ti b{color:#448aff;font-size:15px}
+
+/* STEP */
+.step{background:#0e1530;border-left:3px solid #ffd54f;padding:10px 14px;margin:8px 0;border-radius:0 8px 8px 0;font-size:14px;color:#c8d4f0}
+.step b{color:#ffd54f}
+
+/* FINAL */
+.answer{color:#69f0ae;font-weight:bold}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <button id="btnPrev" onclick="go(-1)" disabled>&#8592; Назад</button>
+  <div class="info"><span id="pageInfo">1 / 13</span></div>
+  <button id="btnNext" onclick="go(1)">Далее &#8594;</button>
+</div>
+<div class="prog"><div id="progBar" style="width:7.7%"></div></div>
+
+<!-- ==================== СЛАЙД 1: ТИТУЛ ==================== -->
+<div class="slide active" id="s0">
+  <div class="center" style="padding-top:100px">
+    <div style="font-size:60px">&#9889;</div>
+    <h1 style="font-size:42px">Электромагнитная индукция</h1>
+    <p style="font-size:18px;color:#90b8ff">Профильный 10 класс &middot; Физика &middot; 45 минут</p>
+    <div style="margin-top:20px">
+      <span class="tag">ФГОС</span>
+      <span class="tag">Закон Фарадея</span>
+      <span class="tag">Правило Ленца</span>
+    </div>
+    <p class="muted" style="margin-top:40px">Навигация: кнопки &#8592; &#8594; или клавиши клавиатуры</p>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 2: ЦЕЛИ ==================== -->
+<div class="slide" id="s1">
+  <h2>Цели и задачи урока</h2>
+  <div class="row">
+    <div class="col card">
+      <h3>&#127919; Цель</h3>
+      <p>Сформировать представление об электромагнитной индукции как явлении возникновения ЭДС при изменении магнитного потока</p>
+    </div>
+    <div class="col card">
+      <h3>&#128203; Результаты</h3>
+      <ul>
+        <li>Объяснить явление ЭМИ на основе закона Фарадея</li>
+        <li>Вывести и применять формулу ЭДС индукции</li>
+        <li>Определять направление тока по правилу Ленца</li>
+        <li>Решать задачи базового и повышенного уровней</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>&#128218; Связь с ФГОС</h3>
+    <span class="tag">Познавательные УУД</span>
+    <span class="tag">Регулятивные УУД</span>
+    <span class="tag">Метапредметные связи</span>
+    <span class="tag">Физика &#8594; Техника</span>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 3: ИСТОРИЯ ==================== -->
+<div class="slide" id="s2">
+  <h2>Историческая справка</h2>
+  <div class="card">
+    <div class="tl">
+      <div class="ti">
+        <b>1820</b>
+        <p><strong>Х.К. Эрстед</strong> обнаружил отклонение магнитной стрелки рядом с проводником с током. Вопрос: а работает ли обратная связь?</p>
+      </div>
+      <div class="ti">
+        <b>1831</b>
+        <p><strong>М. Фарадей</strong> провёл серию экспериментов и открыл явление <strong>электромагнитной индукции</strong> &mdash; возникновение ЭДС при изменении магнитного потока.</p>
+      </div>
+      <div class="ti">
+        <b>1834</b>
+        <p><strong>Э.Х. Ленц</strong> сформулировал правило для определения направления индукционного тока.</p>
+      </div>
+      <div class="ti">
+        <b>1830-е</b>
+        <p>Фарадей построил первую <strong>электрическую динамо-машину</strong> &mdash; прообраз современного генератора.</p>
+      </div>
+    </div>
+  </div>
+  <p class="muted center" style="margin-top:12px">&laquo;Электричество и магнетизм &mdash; это две стороны одной медали&raquo; &mdash; М. Фарадей</p>
+</div>
+
+<!-- ==================== СЛАЙД 4: МАГНИТНЫЙ ПОТОК ==================== -->
+<div class="slide" id="s3">
+  <h2>Магнитный поток &#934;</h2>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <h3>Определение</h3>
+        <p><strong>Магнитный поток</strong> &mdash; скалярная величина, равная произведению модуля вектора магнитной индукции на площадь контура и косинус угла между вектором <strong>B</strong> и нормалью к контуру.</p>
+      </div>
+      <div class="formula">
+        <b>&#934; = B &middot; S &middot; cos &#945;</b>
+        <small>&#934; &mdash; магнитный поток, Вб &nbsp;|&nbsp; B &mdash; индукция, Тл &nbsp;|&nbsp; S &mdash; площадь, м&sup2;</small>
+      </div>
+      <div class="card">
+        <h3>Когда &#934; = 0?</h3>
+        <ul>
+          <li>B = 0 (нет магнитного поля)</li>
+          <li>S = 0 (нет контура)</li>
+          <li>&#945; = 90&deg; (плоскость контура параллельна силовым линиям)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>Визуализация магнитного потока</h3>
+        <div class="svgwrap">
+          <svg viewBox="0 0 300 260" width="280">
+            <!-- Контур -->
+            <rect x="90" y="40" width="120" height="140" rx="4" fill="none" stroke="#448aff" stroke-width="2.5"/>
+            <text x="150" y="200" text-anchor="middle" fill="#6882b8" font-size="13" font-family="Arial">Контур (S)</text>
+            <!-- Силовые линии -->
+            <line x1="120" y1="10" x2="120" y2="230" stroke="#7c4dff" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.5"/>
+            <polygon points="120,230 116,220 124,220" fill="#7c4dff" opacity="0.6"/>
+            <line x1="150" y1="10" x2="150" y2="230" stroke="#7c4dff" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+            <polygon points="150,230 146,220 154,220" fill="#7c4dff" opacity="0.7"/>
+            <line x1="180" y1="10" x2="180" y2="230" stroke="#7c4dff" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.5"/>
+            <polygon points="180,230 176,220 184,220" fill="#7c4dff" opacity="0.6"/>
+            <text x="150" y="250" text-anchor="middle" fill="#7c4dff" font-size="12" font-family="Arial">B &#8595;</text>
+            <!-- Угол -->
+            <path d="M150,80 A18,18 0 0,1 163,88" fill="none" stroke="#ffd54f" stroke-width="1.5"/>
+            <text x="170" y="86" fill="#ffd54f" font-size="12" font-family="Arial">&#945;</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 5: ЯВЛЕНИЕ ЭМИ ==================== -->
+<div class="slide" id="s4">
+  <h2>Явление электромагнитной индукции</h2>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <h3>Суть явления</h3>
+        <p>При <strong>изменении магнитного потока</strong> через замкнутый проводящий контур в нём возникает <strong>ЭДС</strong>, а значит &mdash; <strong>индукционный ток</strong>.</p>
+        <p class="muted">Важно: ЭДС возникает не от наличия поля, а от его изменения!</p>
+      </div>
+      <div class="card">
+        <h3>Способы изменения &#934;</h3>
+        <ul>
+          <li><strong>Изменение B</strong> &mdash; усиление/ослабление поля</li>
+          <li><strong>Изменение S</strong> &mdash; изменение площади контура</li>
+          <li><strong>Изменение &#945;</strong> &mdash; поворот контура в поле</li>
+          <li><strong>Движение</strong> &mdash; относительное перемещение контура и магнита</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>Демонстрация: магнит и катушка</h3>
+        <div class="svgwrap">
+          <svg viewBox="0 0 340 220" width="320">
+            <!-- Катушка -->
+            <rect x="150" y="20" width="70" height="160" rx="5" fill="none" stroke="#448aff" stroke-width="2"/>
+            <!-- Витки -->
+            <line x1="150" y1="40" x2="220" y2="40" stroke="#448aff" stroke-width="1.2" opacity="0.5"/>
+            <line x1="150" y1="60" x2="220" y2="60" stroke="#448aff" stroke-width="1.2" opacity="0.5"/>
+            <line x1="150" y1="80" x2="220" y2="80" stroke="#448aff" stroke-width="1.2" opacity="0.5"/>
+            <line x1="150" y1="100" x2="220" y2="100" stroke="#448aff" stroke-width="1.2" opacity="0.5"/>
+            <line x1="150" y1="120" x2="220" y2="120" stroke="#448aff" stroke-width="1.2" opacity="0.5"/>
+            <line x1="150" y1="140" x2="220" y2="140" stroke="#448aff" stroke-width="1.2" opacity="0.5"/>
+            <line x1="150" y1="160" x2="220" y2="160" stroke="#448aff" stroke-width="1.2" opacity="0.5"/>
+            <text x="185" y="195" text-anchor="middle" fill="#6882b8" font-size="11" font-family="Arial">Катушка</text>
+            <!-- Магнит -->
+            <rect id="magnet" x="30" y="75" width="80" height="30" rx="4" fill="#ff6e40"/>
+            <text x="48" y="95" fill="#fff" font-size="13" font-weight="bold" font-family="Arial">S</text>
+            <text x="85" y="95" fill="#fff" font-size="13" font-weight="bold" font-family="Arial">N</text>
+            <line x1="112" y1="90" x2="147" y2="90" stroke="#ff6e40" stroke-width="2" stroke-dasharray="4,3" opacity="0.6"/>
+            <!-- Стрелка движения -->
+            <polygon points="147,86 155,90 147,94" fill="#ff6e40" opacity="0.8"/>
+            <!-- Гальванометр -->
+            <circle cx="285" cy="100" r="25" fill="#131b3a" stroke="#ffd54f" stroke-width="1.5"/>
+            <text x="285" y="72" text-anchor="middle" fill="#ffd54f" font-size="10" font-family="Arial">G</text>
+            <line id="needle" x1="285" y1="100" x2="285" y2="80" stroke="#ffd54f" stroke-width="2"/>
+            <circle cx="285" cy="100" r="3" fill="#ffd54f"/>
+            <!-- Провода -->
+            <line x1="185" y1="20" x2="185" y2="5" stroke="#6882b8" stroke-width="1"/>
+            <line x1="185" y1="5" x2="285" y2="5" stroke="#6882b8" stroke-width="1"/>
+            <line x1="285" y1="5" x2="285" y2="75" stroke="#6882b8" stroke-width="1"/>
+            <line x1="185" y1="180" x2="185" y2="210" stroke="#6882b8" stroke-width="1"/>
+            <line x1="185" y1="210" x2="285" y2="210" stroke="#6882b8" stroke-width="1"/>
+            <line x1="285" y1="210" x2="285" y2="125" stroke="#6882b8" stroke-width="1"/>
+          </svg>
+        </div>
+        <p class="muted">Движение магнита &#8594; изменение &#934; &#8594; ЭДС &#8594; отклонение стрелки</p>
+        <button class="tbtn" onclick="animateMagnet()">Запустить анимацию</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 6: ЗАКОН ФАРАДЕЯ ==================== -->
+<div class="slide" id="s5">
+  <h2>Закон Фарадея</h2>
+  <div class="card">
+    <h3>Формулировка</h3>
+    <p><em>ЭДС индукции в замкнутом контуре равна модулю скорости изменения магнитного потока через поверхность, ограниченную контуром.</em></p>
+  </div>
+  <div class="formula" style="border-color:#ffd54f">
+    <b style="color:#ffd54f">&#1013; = &minus;N &middot; &#916;&#934; / &#916;t</b>
+    <small>&#1013; &mdash; ЭДС индукции, В &nbsp;|&nbsp; N &mdash; число витков &nbsp;|&nbsp; &#916;&#934;/&#916;t &mdash; скорость изменения потока</small>
+  </div>
+  <h3>Вывод формулы пошагово</h3>
+  <div class="step"><b>Шаг 1.</b> Магнитный поток: &#934; = B &middot; S &middot; cos &#945;</div>
+  <div class="step"><b>Шаг 2.</b> Изменение потока за &#916;t: &#916;&#934; = &#934;&#8322; &minus; &#934;&#8321;</div>
+  <div class="step"><b>Шаг 3.</b> Средняя ЭДС: &#1013; = N &middot; |&#916;&#934;| / &#916;t</div>
+  <div class="step"><b>Шаг 4.</b> Знак &laquo;&minus;&raquo; &mdash; правило Ленца (направление тока противодействует изменению &#934;)</div>
+  <div class="card">
+    <h3>Когда меняется &#934;?</h3>
+    <table>
+      <tr><th>Параметр</th><th>Как меняется</th><th>Пример</th></tr>
+      <tr><td>B</td><td>Усиление/ослабление поля</td><td>Поднесение магнита</td></tr>
+      <tr><td>S</td><td>Изменение площади контура</td><td>Растяжение проводника</td></tr>
+      <tr><td>&#945;</td><td>Поворот контура</td><td>Вращение катушки</td></tr>
+      <tr><td>Движение</td><td>Относительное перемещение</td><td>Втягивание контура в поле</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 7: ПРАВИЛО ЛЕНЦА ==================== -->
+<div class="slide" id="s6">
+  <h2>Правило Ленца</h2>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <h3>Формулировка</h3>
+        <p><em>Индукционный ток направлен так, чтобы своим магнитным полем <strong>противодействовать</strong> изменению магнитного потока, вызвавшему этот ток.</em></p>
+      </div>
+      <div class="card">
+        <h3>Алгоритм определения направления</h3>
+        <ul>
+          <li><strong>1.</strong> Определите направление вектора B внешнего поля</li>
+          <li><strong>2.</strong> Определите: увеличивается или уменьшается &#934;</li>
+          <li><strong>3.</strong> Если &#934; &#8593; &mdash; поле тока направлено <strong>против</strong> внешнего</li>
+          <li><strong>4.</strong> Если &#934; &#8595; &mdash; поле тока направлено <strong>вдоль</strong> внешнего</li>
+          <li><strong>5.</strong> По правилу правой руки определите направление тока</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h3>Наглядная схема</h3>
+        <div class="svgwrap">
+          <svg viewBox="0 0 300 200" width="280">
+            <!-- Вдвигаем магнит -->
+            <text x="75" y="18" text-anchor="middle" fill="#448aff" font-size="12" font-family="Arial">Вдвигаем магнит</text>
+            <rect x="30" y="25" width="40" height="20" rx="3" fill="#ff6e40"/>
+            <text x="45" y="40" fill="#fff" font-size="10" font-weight="bold" font-family="Arial">N &#8594;</text>
+            <rect x="90" y="22" width="50" height="50" rx="3" fill="none" stroke="#448aff" stroke-width="1.5"/>
+            <text x="115" y="88" text-anchor="middle" fill="#6882b8" font-size="9" font-family="Arial">Контур</text>
+            <text x="75" y="115" text-anchor="middle" fill="#ff8a80" font-size="11" font-family="Arial">&#934; &#8593; &#8594; I по ч.с.</text>
+            <text x="75" y="130" text-anchor="middle" fill="#6882b8" font-size="10" font-family="Arial">(поле тока &#8592;)</text>
+
+            <!-- Разделитель -->
+            <line x1="150" y1="10" x2="150" y2="190" stroke="#1e2a5a" stroke-width="1"/>
+
+            <!-- Выдвигаем магнит -->
+            <text x="225" y="18" text-anchor="middle" fill="#448aff" font-size="12" font-family="Arial">Выдвигаем магнит</text>
+            <rect x="190" y="25" width="40" height="20" rx="3" fill="#ff6e40"/>
+            <text x="205" y="40" fill="#fff" font-size="10" font-weight="bold" font-family="Arial">N &#8594;</text>
+            <rect x="240" y="22" width="50" height="50" rx="3" fill="none" stroke="#448aff" stroke-width="1.5"/>
+            <text x="265" y="88" text-anchor="middle" fill="#6882b8" font-size="9" font-family="Arial">Контур</text>
+            <text x="225" y="115" text-anchor="middle" fill="#69f0ae" font-size="11" font-family="Arial">&#934; &#8595; &#8594; I по ч.с.</text>
+            <text x="225" y="130" text-anchor="middle" fill="#6882b8" font-size="10" font-family="Arial">(поле тока &#8594;)</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 8: ПРИМЕНЕНИЕ ==================== -->
+<div class="slide" id="s7">
+  <h2>Практическое применение ЭМИ</h2>
+  <div class="row">
+    <div class="col card">
+      <h3>&#9881;&#65039; Электрогенератор</h3>
+      <p>Вращение катушки в магнитном поле &#8594; непрерывное изменение &#934; &#8594; переменная ЭДС &#8594; электрический ток</p>
+    </div>
+    <div class="col card">
+      <h3>&#128268; Трансформатор</h3>
+      <p>Переменный ток в одной катушке &#8594; &#934; меняется &#8594; ЭДС во второй катушке. Повышение/понижение напряжения.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col card">
+      <h3>&#128225; Бесконтактные датчики</h3>
+      <p>Металлический объект нарушает магнитное поле &#8594; наведённый ток &#8594; детектирование</p>
+    </div>
+    <div class="col card">
+      <h3>&#128293; Индукционная плита</h3>
+      <p>Высокочастотное поле &#8594; вихревые токи в металле &#8594; нагрев</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col card">
+      <h3>&#128241; Беспроводная зарядка</h3>
+      <p>Катушки передают энергию через ЭМИ без прямого контакта</p>
+    </div>
+    <div class="col card">
+      <h3>&#128660; Электромобили</h3>
+      <p>Рекуперация тормозной энергии: двигатель работает как генератор</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 9: КАЛЬКУЛЯТОР ЭДС ==================== -->
+<div class="slide" id="s8">
+  <h2>Интерактивный калькулятор ЭДС</h2>
+  <div class="row">
+    <div class="col">
+      <div class="calc">
+        <h3>Расчёт ЭДС по закону Фарадея</h3>
+        <label>Число витков N:</label>
+        <input type="number" id="cN" value="200" min="1">
+        <label>Начальный поток &#934;&#8321; (Вб):</label>
+        <input type="number" id="cF1" value="0.02" step="0.01">
+        <label>Конечный поток &#934;&#8322; (Вб):</label>
+        <input type="number" id="cF2" value="0.08" step="0.01">
+        <label>Время &#916;t (с):</label>
+        <input type="number" id="cT" value="0.1" step="0.01">
+        <br>
+        <button onclick="calcEDS()">Вычислить ЭДС</button>
+        <div class="result" id="cResult">ЭДС = ?</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="calc">
+        <h3>Расчёт при вращении катушки</h3>
+        <label>Площадь контура S (м&sup2;):</label>
+        <input type="number" id="cS" value="0.04" step="0.01">
+        <label>Индукция B (Тл):</label>
+        <input type="number" id="cB" value="0.2" step="0.01">
+        <label>Частота вращения n (об/с):</label>
+        <input type="number" id="cn" value="50" step="1">
+        <br>
+        <button onclick="calcRot()">Вычислить максимальную ЭДС</button>
+        <div class="result" id="cResult2">&#1013;&#8345;&#8341; = ?</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Формулы для справки</h3>
+    <div class="formula">
+      <b>&#1013; = N &middot; |&#916;&#934;| / &#916;t</b>
+      <small>Средняя ЭДС при изменении потока</small>
+    </div>
+    <div class="formula">
+      <b>&#1013;&#8345;&#8341; = B &middot; S &middot; 2&#960;n</b>
+      <small>Максимальная ЭДС при вращении катушки</small>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 10: ЗАДАЧИ БАЗОВЫЕ ==================== -->
+<div class="slide" id="s9">
+  <h2>Задачи &mdash; базовый уровень</h2>
+
+  <div class="card">
+    <h3>Задача 1</h3>
+    <p>В катушке с числом витков <strong>N = 200</strong> магнитный поток изменяется от &#934;&#8321; = 0,02 Вб до &#934;&#8322; = 0,08 Вб за время &#916;t = 0,1 с. Найти среднее значение ЭДС индукции.</p>
+    <button class="tbtn" onclick="toggleSol('sol1')">Показать решение</button>
+    <div class="sol" id="sol1">
+      <p><strong>Дано:</strong> N = 200, &#934;&#8321; = 0,02 Вб, &#934;&#8322; = 0,08 Вб, &#916;t = 0,1 с</p>
+      <p><strong>Формула:</strong> &#1013; = N &middot; (&#934;&#8322; &minus; &#934;&#8321;) / &#916;t</p>
+      <div class="formula"><b>&#1013; = 200 &middot; (0,08 &minus; 0,02) / 0,1 = 200 &middot; 0,6 = 120 В</b></div>
+      <p><strong class="answer">Ответ: 120 В</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Задача 2</h3>
+    <p>Круглый контур площадью <strong>S = 0,05 м&sup2;</strong> находится в однородном магнитном поле <strong>B = 0,4 Тл</strong>, перпендикулярном плоскости контура. Магнитное поле уменьшается со скоростью <strong>0,1 Тл/с</strong>. Определите ЭДС индукции и направление тока.</p>
+    <button class="tbtn" onclick="toggleSol('sol2')">Показать решение</button>
+    <div class="sol" id="sol2">
+      <p><strong>Дано:</strong> S = 0,05 м&sup2;, dB/dt = 0,1 Тл/с, &#945; = 0&deg;</p>
+      <p><strong>Формула:</strong> &#1013; = S &middot; |dB/dt|</p>
+      <div class="formula"><b>&#1013; = 0,05 &middot; 0,1 = 0,005 В = 5 мВ</b></div>
+      <p><strong>Направление:</strong> &#934; убывает &#8594; индукционный ток создаёт поле вдоль внешнего &#8594; <strong>по часовой стрелке</strong> (при взгляде вдоль B).</p>
+      <p><strong class="answer">Ответ: 5 мВ, по часовой стрелке</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 11: ЗАДАЧИ ЕГЭ ==================== -->
+<div class="slide" id="s10">
+  <h2>Задачи ЕГЭ &mdash; повышенный уровень</h2>
+
+  <div class="card">
+    <div><span class="tag">ЕГЭ &middot; Задание 21</span> <span class="tag">Повышенный</span></div>
+    <h3>Задача 3</h3>
+    <p>Квадратный контур со стороной <strong>a = 20 см</strong> вращается с частотой <strong>n = 50 об/с</strong> в однородном магнитном поле <strong>B = 0,2 Тл</strong> вокруг оси, перпендикулярной полю. Определите максимальное значение ЭДС индукции.</p>
+    <button class="tbtn" onclick="toggleSol('sol3')">Показать решение</button>
+    <div class="sol" id="sol3">
+      <p><strong>Дано:</strong> a = 0,2 м &#8594; S = 0,04 м&sup2;, n = 50 об/с, B = 0,2 Тл</p>
+      <p><strong>Формулы:</strong></p>
+      <div class="formula"><b>&#934;(t) = B &middot; S &middot; cos(&#969;t), &nbsp; &#969; = 2&#960;n</b></div>
+      <div class="formula"><b>&#1013;&#8345;&#8341; = B &middot; S &middot; 2&#960;n</b></div>
+      <p><strong>Вычисление:</strong></p>
+      <div class="formula"><b>&#1013;&#8345;&#8341; = 0,2 &middot; 0,04 &middot; 2 &middot; 3,14 &middot; 50 = 2,51 В</b></div>
+      <p><strong class="answer">Ответ: ≈ 2,5 В</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div><span class="tag">ЕГЭ &middot; Задание 22</span> <span class="tag">Повышенный</span></div>
+    <h3>Задача 4</h3>
+    <p>Катушка с индуктивностью <strong>L = 0,5 Гн</strong> и сопротивлением <strong>R = 10 Ом</strong> подключена к источнику ЭДС &#1013; = 10 В. После замыкания цепи через время t = 0,05 с отключите источник. Какое максимальное напряжение возникнет на катушке?</p>
+    <button class="tbtn" onclick="toggleSol('sol4')">Показать решение</button>
+    <div class="sol" id="sol4">
+      <p><strong>1)</strong> Максимальный ток: I&#8320; = &#1013;/R = 10/10 = 1 А</p>
+      <p><strong>2)</strong> Постоянная времени: &#964; = L/R = 0,5/10 = 0,05 с</p>
+      <p><strong>3)</strong> К моменту t = 0,05 с (= &#964;) ток: I = I&#8320;(1 &minus; e<sup>&minus;1</sup>) &#8776; 0,63 А</p>
+      <p><strong>4)</strong> При размыкании U<sub>max</sub> &#8776; I &middot; R = 0,63 &middot; 10</p>
+      <div class="formula"><b>U<sub>max</sub> &#8776; 6,3 В</b></div>
+      <p><strong class="answer">Ответ: ≈ 6,3 В</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div><span class="tag">ЕГЭ &middot; Задание 23</span> <span class="tag">Повышенный</span></div>
+    <h3>Задача 5</h3>
+    <p>Прямоугольный контур площадью <strong>S = 100 см&sup2;</strong> сопротивлением <strong>R = 2 Ом</strong> втягивается в однородное магнитное поле <strong>B = 0,5 Тл</strong> со скоростью <strong>v = 2 м/с</strong>. Активная сторона контура <strong>l = 10 см</strong>. Определите силу тока и силу Ампера.</p>
+    <button class="tbtn" onclick="toggleSol('sol5')">Показать решение</button>
+    <div class="sol" id="sol5">
+      <p><strong>Дано:</strong> B = 0,5 Тл, l = 0,1 м, v = 2 м/с, R = 2 Ом</p>
+      <p><strong>1)</strong> ЭДС: &#1013; = B &middot; l &middot; v = 0,5 &middot; 0,1 &middot; 2 = 0,1 В</p>
+      <p><strong>2)</strong> Ток: I = &#1013;/R = 0,1/2 = 0,05 А = 50 мА</p>
+      <p><strong>3)</strong> Сила Ампера: F = B &middot; I &middot; l = 0,5 &middot; 0,05 &middot; 0,1 = 0,0025 Н</p>
+      <div class="formula"><b>I = 50 мА, &nbsp; F = 2,5 мН</b></div>
+      <p><strong class="answer">Ответ: I = 50 мА, F = 2,5 мН</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 12: ТЕСТ ==================== -->
+<div class="slide" id="s11">
+  <h2>Тест для самопроверки</h2>
+  <p class="muted">Выберите один ответ на каждый вопрос</p>
+
+  <div id="quizArea"></div>
+
+  <div class="scorebox" id="scoreBox">
+    <div class="num" id="scoreNum">0 / 8</div>
+    <div class="bar"><div id="scoreBar" style="width:0%"></div></div>
+    <p id="scoreMsg"></p>
+    <button class="tbtn" onclick="resetQuiz()" style="margin-top:12px">Пройти заново</button>
+  </div>
+</div>
+
+<!-- ==================== СЛАЙД 13: ИТОГ ==================== -->
+<div class="slide" id="s12">
+  <h2>Подведение итогов</h2>
+  <div class="row">
+    <div class="col card">
+      <h3>&#128204; Ключевые выводы</h3>
+      <ul>
+        <li><strong>ЭМИ</strong> &mdash; явление возникновения ЭДС при изменении магнитного потока</li>
+        <li><strong>Закон Фарадея:</strong> &#1013; = N&middot;&#916;&#934;/&#916;t</li>
+        <li><strong>Правило Ленца:</strong> ток направлен против изменения &#934;</li>
+        <li><strong>Применение:</strong> генераторы, трансформаторы, датчики, зарядка</li>
+      </ul>
+    </div>
+    <div class="col card">
+      <h3>&#128221; Формулы для запоминания</h3>
+      <div class="formula"><b>&#934; = B &middot; S &middot; cos &#945;</b></div>
+      <div class="formula"><b>&#1013; = &minus;N &middot; d&#934;/dt</b></div>
+      <div class="formula"><b>&#1013; = B &middot; l &middot; v</b><small>при движении проводника</small></div>
+    </div>
+  </div>
+  <div class="card center">
+    <h3>Домашнее задание</h3>
+    <p>&#167; (по учебнику) &middot; Задачи на закон Фарадея &middot; Подготовить рассказ об устройстве на ЭМИ (1&ndash;2 мин)</p>
+  </div>
+  <p class="center" style="margin-top:20px;color:#6882b8">Спасибо за внимание! &#9889;</p>
+</div>
+
+<script>
+// ====== NAVIGATION ======
+var cur = 0;
+var total = 13;
+
+function go(dir) {
+  var next = cur + dir;
+  if (next < 0 || next >= total) return;
+  document.getElementById('s' + cur).classList.remove('active');
+  cur = next;
+  document.getElementById('s' + cur).classList.add('active');
+  document.getElementById('pageInfo').textContent = (cur + 1) + ' / ' + total;
+  document.getElementById('progBar').style.width = ((cur + 1) / total * 100) + '%';
+  document.getElementById('btnPrev').disabled = (cur === 0);
+  document.getElementById('btnNext').disabled = (cur === total - 1);
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+});
+
+// ====== MAGNET ANIMATION ======
+function animateMagnet() {
+  var magnet = document.getElementById('magnet');
+  var needle = document.getElementById('needle');
+  if (!magnet || !needle) return;
+  var pos = 30;
+  var dir = 1;
+  var step = 0;
+  var interval = setInterval(function() {
+    pos += dir * 4;
+    step++;
+    if (pos > 130) dir = -1;
+    if (pos < 30) { clearInterval(interval); return; }
+    magnet.setAttribute('x', pos);
+    if (dir > 0) {
+      needle.setAttribute('x2', 285 + 15);
+    } else {
+      needle.setAttribute('x2', 285 - 15);
+    }
+    if (step > 60) { clearInterval(interval); needle.setAttribute('x2', 285); }
+  }, 30);
+}
+
+// ====== SOLUTIONS ======
+function toggleSol(id) {
+  var el = document.getElementById(id);
+  el.classList.toggle('vis');
+  var btn = el.previousElementSibling;
+  btn.textContent = el.classList.contains('vis') ? 'Скрыть решение' : 'Показать решение';
+}
+
+// ====== CALCULATORS ======
+function calcEDS() {
+  var N = parseFloat(document.getElementById('cN').value) || 0;
+  var F1 = parseFloat(document.getElementById('cF1').value) || 0;
+  var F2 = parseFloat(document.getElementById('cF2').value) || 0;
+  var T = parseFloat(document.getElementById('cT').value) || 1;
+  var eds = N * Math.abs(F2 - F1) / T;
+  document.getElementById('cResult').textContent = 'ЭДС = ' + eds.toFixed(4) + ' В';
+}
+
+function calcRot() {
+  var S = parseFloat(document.getElementById('cS').value) || 0;
+  var B = parseFloat(document.getElementById('cB').value) || 0;
+  var n = parseFloat(document.getElementById('cn').value) || 0;
+  var eds = B * S * 2 * Math.PI * n;
+  document.getElementById('cResult2').textContent = 'ЭДС_макс = ' + eds.toFixed(4) + ' В';
+}
+
+// ====== QUIZ ======
+var quizData = [
+  {
+    q: '1. Кто открыл явление электромагнитной индукции?',
+    opts: ['А) Ампер', 'Б) Фарадей', 'В) Максвелл', 'Г) Ленц'],
+    ans: 1,
+    explain: 'Майкл Фарадей открыл явление ЭМИ в 1831 году.'
+  },
+  {
+    q: '2. ЭДС индукции в контуре возникает, когда:',
+    opts: ['А) Магнитное поле постоянно', 'Б) Контур движется равномерно в однородном поле', 'В) Магнитный поток через контур изменяется', 'Г) Контур находится в неподвижном магнитном поле'],
+    ans: 2,
+    explain: 'ЭДС возникает только при изменении магнитного потока.'
+  },
+  {
+    q: '3. Закон Фарадея имеет вид:',
+    opts: ['А) ЭДС = N·ΔΦ/Δt', 'Б) ЭДС = B·l·v', 'В) F = q·v·B', 'Г) I = U/R'],
+    ans: 0,
+    explain: 'Закон Фарадея: ЭДС = N·ΔΦ/Δt.'
+  },
+  {
+    q: '4. Магнитный поток Φ равен нулю, если:',
+    opts: ['А) Магнитное поле равно нулю', 'Б) Плоскость контура параллельна силовым линиям', 'В) Контур замкнут', 'Г) В витках нет тока'],
+    ans: 1,
+    explain: 'При α = 90° cos α = 0, поэтому Φ = 0.'
+  },
+  {
+    q: '5. По правилу Ленца индукционный ток направлен так, чтобы:',
+    opts: ['А) Усилить изменение магнитного потока', 'Б) Противодействовать изменению магнитного потока', 'В) Создать максимальное магнитное поле', 'Г) Уменьшить сопротивление контура'],
+    ans: 1,
+    explain: 'Правило Ленца: ток направлен против изменения Φ.'
+  },
+  {
+    q: '6. В катушке с 500 витками Φ увеличивается на 0,04 Вб за 0,2 с. ЭДС равна:',
+    opts: ['А) 100 В', 'Б) 0,1 В', 'В) 500 В', 'Г) 40 В'],
+    ans: 0,
+    explain: 'ЭДС = 500·0,04/0,2 = 100 В.'
+  },
+  {
+    q: '7. Если число витков увеличить в 3 раза, ЭДС индукции:',
+    opts: ['А) Увеличится в 3 раза', 'Б) Уменьшится в 3 раза', 'В) Не изменится', 'Г) Увеличится в 9 раз'],
+    ans: 0,
+    explain: 'ЭДС пропорциональна N: ЭДС = N·ΔΦ/Δt.'
+  },
+  {
+    q: '8. В каком устройстве НЕ используется явление ЭМИ?',
+    opts: ['А) Электрогенератор', 'Б) Трансформатор', 'В) Электрическая лампа накаливания', 'Г) Индукционная плита'],
+    ans: 2,
+    explain: 'Лампа накаливания работает на эффекте Джоуля-Ленца (нагрев проводника током).'
+  }
+];
+
+var quizAnswered = 0;
+var quizCorrect = 0;
+
+function buildQuiz() {
+  var area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  quizAnswered = 0;
+  quizCorrect = 0;
+  document.getElementById('scoreBox').style.display = 'none';
+
+  for (var i = 0; i < quizData.length; i++) {
+    var d = quizData[i];
+    var block = document.createElement('div');
+    block.className = 'qblock';
+    block.setAttribute('data-idx', i);
+
+    var p = document.createElement('p');
+    p.textContent = d.q;
+    block.appendChild(p);
+
+    for (var j = 0; j < d.opts.length; j++) {
+      var btn = document.createElement('button');
+      btn.className = 'qopt';
+      btn.textContent = d.opts[j];
+      btn.setAttribute('data-q', i);
+      btn.setAttribute('data-o', j);
+      btn.onclick = function() { pickAnswer(this); };
+      block.appendChild(btn);
+    }
+
+    var fb = document.createElement('div');
+    fb.className = 'qfb';
+    fb.id = 'fb' + i;
+    block.appendChild(fb);
+
+    area.appendChild(block);
+  }
+}
+
+function pickAnswer(btn) {
+  var qi = parseInt(btn.getAttribute('data-q'));
+  var oi = parseInt(btn.getAttribute('data-o'));
+  var block = btn.closest('.qblock');
+  if (block.getAttribute('data-done')) return;
+  block.setAttribute('data-done', '1');
+
+  var correct = quizData[qi].ans;
+  var buttons = block.querySelectorAll('.qopt');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].disabled = true;
+    if (i === correct) buttons[i].classList.add('ok');
+  }
+  if (oi !== correct) btn.classList.add('bad');
+
+  var fb = document.getElementById('fb' + qi);
+  fb.className = 'qfb vis ' + (oi === correct ? 'fb-ok' : 'fb-bad');
+  fb.textContent = (oi === correct ? '✓ Правильно! ' : '✗ Неправильно. ') + quizData[qi].explain;
+
+  quizAnswered++;
+  if (oi === correct) quizCorrect++;
+
+  if (quizAnswered === quizData.length) showScore();
+}
+
+function showScore() {
+  var box = document.getElementById('scoreBox');
+  box.style.display = 'block';
+  document.getElementById('scoreNum').textContent = quizCorrect + ' / ' + quizData.length;
+  setTimeout(function() {
+    document.getElementById('scoreBar').style.width = (quizCorrect / quizData.length * 100) + '%';
+  }, 100);
+  var pct = quizCorrect / quizData.length;
+  var msg = '';
+  if (pct === 1) msg = 'Отлично! Вы完美掌握ыли материал!';
+  else if (pct >= 0.75) msg = 'Хорошо! Немного повторите — и будет идеально.';
+  else if (pct >= 0.5) msg = 'Неплохо, но стоит повторить материал.';
+  else msg = 'Рекомендуем повторить тему и пройти тест снова.';
+  document.getElementById('scoreMsg').textContent = msg;
+}
+
+function resetQuiz() {
+  buildQuiz();
+  window.scrollTo(0, 0);
+}
+
+// Init quiz on load
+buildQuiz();
+</script>
+</body>
+</html>

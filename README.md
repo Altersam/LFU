@@ -7,6 +7,7 @@
 - [Открыть портал](index.html)
 - [Каталог ИИ](guides/AI_guide.html)
 - [Практический гайд для преподавателя](guides/ai_teacher_guide.html)
+- [Демо-уроки и LMS](demo_edu/edu_test.html)
 - [Расписание с кабинетами](schedule/lfu_2026-2027_shedule.html)
 - [Карта кабинетов и свободных слотов](schedule/cabinets.html)
 - [Расписание без кабинетов](schedule/shedule.html)
@@ -19,6 +20,7 @@
 | [`guides/AI_guide.html`](guides/AI_guide.html) | Каталог 114 ИИ-сервисов с фильтрами и локальными сценариями |
 | [`guides/ai_teacher_guide.html`](guides/ai_teacher_guide.html) | Практический гайд: промпт, урок, конспект, тест и LMS |
 | [`guides/guide.html`](guides/guide.html) | Инструкция Лицея и FAQ для педагогов |
+| [`demo_edu/`](demo_edu/) | Готовые HTML-уроки, конспект и LMS-демо |
 | [`schedule/lfu_2026-2027_shedule.html`](schedule/lfu_2026-2027_shedule.html) | Полное расписание 2026–2027 |
 | [`schedule/cabinets.html`](schedule/cabinets.html) | Кабинеты и свободные слоты |
 | [`schedule/shedule.html`](schedule/shedule.html) | Упрощённое расписание |
@@ -59,6 +61,7 @@ python -m http.server 8000
 LFU/
 ├── index.html
 ├── guides/
+├── demo_edu/
 ├── schedule/
 ├── projects/
 ├── admission/

@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Руководство для преподавателя: Moodle + Конвертер + МТС Линк</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-hover: #263548;
+    --accent: #38bdf8;
+    --accent2: #f472b6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #334155;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 {
+    font-size: 2.2rem;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  header p { color: var(--muted); font-size: 1rem; }
+
+  /* Tabs */
+  .tabs {
+    position: sticky;
+    top: 0;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs::-webkit-scrollbar { height: 4px; }
+  .tabs::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 16px 20px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: var(--text); background: rgba(56,189,248,0.05); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: rgba(56,189,248,0.08);
+  }
+
+  /* Container */
+  .container { max-width: 1100px; margin: 0 auto; padding: 30px 24px 60px; }
+
+  /* Tab content */
+  .tab-content { display: none; animation: fadeIn 0.3s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Sections inside tabs */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .section h2 {
+    color: var(--accent);
+    font-size: 1.6rem;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section h3 {
+    color: var(--accent2);
+    margin: 24px 0 12px;
+    font-size: 1.2rem;
+  }
+  .section h4 {
+    color: var(--success);
+    margin: 16px 0 8px;
+    font-size: 1.05rem;
+  }
+  .section p { margin-bottom: 12px; }
+  .section ul, .section ol { padding-left: 24px; margin-bottom: 12px; }
+  .section li { margin-bottom: 8px; }
+  .section li::marker { color: var(--accent); }
+
+  /* Code */
+  code {
+    background: #0f172a;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #fbbf24;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+  }
+  pre {
+    background: #0f172a;
+    padding: 14px 18px;
+    border-radius: 8px;
+    overflow-x: auto;
+    border-left: 3px solid var(--accent);
+    margin: 12px 0;
+    font-size: 0.9rem;
+  }
+  pre code { background: none; padding: 0; color: var(--text); }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    background: #0f172a;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.95rem;
+  }
+  th {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0f172a;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .grid-item {
+    background: #0f172a;
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 8px;
+  }
+  .grid-item strong { color: var(--accent); display: block; margin-bottom: 6px; }
+
+  /* Steps */
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    background: #0f172a;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--accent);
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0f172a;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-content { flex: 1; }
+  .step-content strong { color: var(--accent); display: block; margin-bottom: 4px; }
+
+  /* Callouts */
+  .callout {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 14px 0;
+    border-left: 4px solid;
+  }
+  .callout.info {
+    background: linear-gradient(135deg, rgba(56,189,248,0.1), rgba(56,189,248,0.03));
+    border-color: var(--accent);
+  }
+  .callout.tip {
+    background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.03));
+    border-color: var(--success);
+  }
+  .callout.warning {
+    background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.03));
+    border-color: var(--warning);
+  }
+  .callout strong { display: block; margin-bottom: 6px; }
+  .callout ul { margin: 6px 0 0; }
+
+  /* Example blocks */
+  .example {
+    background: #0f172a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .example-title {
+    color: var(--accent2);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  /* Resource links */
+  .resources { display: flex; flex-direction: column; gap: 10px; }
+  .resources a {
+    color: var(--accent);
+    text-decoration: none;
+    padding: 14px 18px;
+    background: #0f172a;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent2);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .resources a:hover {
+    background: var(--card-hover);
+    transform: translateX(4px);
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .badge-windows { background: #0078d4; color: white; }
+  .badge-mac { background: #a855f7; color: white; }
+  .badge-python { background: #3776ab; color: white; }
+  .badge-online { background: #10b981; color: white; }
+
+  /* Hero cards */
+  .hero-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    margin: 20px 0;
+  }
+  .hero-card {
+    background: linear-gradient(135deg, var(--card), #263548);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+  }
+  .hero-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(56,189,248,0.15);
+  }
+  .hero-card .icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .hero-card h3 { color: var(--accent); margin: 0 0 8px; font-size: 1.2rem; }
+  .hero-card p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6rem; }
+    .container { padding: 20px 14px 40px; }
+    .section { padding: 18px; }
+    .tab-btn { padding: 12px 14px; font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎓 Руководство для преподавателя</h1>
+  <p>Как создавать тесты, курсы и проводить онлайн-занятия</p>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab-btn active" data-tab="home">🏠 С чего начать</button>
+  <button class="tab-btn" data-tab="converter">🔧 Конвертер</button>
+  <button class="tab-btn" data-tab="templates">📝 Как писать вопросы</button>
+  <button class="tab-btn" data-tab="moodle">🎓 Moodle</button>
+  <button class="tab-btn" data-tab="mtslink">🎥 Онлайн-занятия</button>
+  <button class="tab-btn" data-tab="workflow">🔄 Пошаговый план</button>
+  <button class="tab-btn" data-tab="faq">❓ Вопросы и ответы</button>
+</nav>
+
+<div class="container">
+
+  <!-- ============ HOME ============ -->
+  <div class="tab-content active" id="home">
+    <div class="section">
+      <h2>👋 Что это за система?</h2>
+      <p>У нас есть три основных инструмента, которые работают вместе:</p>
+
+      <div class="hero-cards">
+        <div class="hero-card" onclick="switchTab('converter')">
+          <div class="icon">🔧</div>
+          <h3>Конвертер</h3>
+          <p>Превращает ваши вопросы из Word в формат, который понимает Moodle</p>
+        </div>
+        <div class="hero-card" onclick="switchTab('templates')">
+          <div class="icon">📝</div>
+          <h3>Шаблоны</h3>
+          <p>Правила, как оформлять вопросы в Word, чтобы конвертер их понял</p>
+        </div>
+        <div class="hero-card" onclick="switchTab('moodle')">
+          <div class="icon">🎓</div>
+          <h3>Moodle</h3>
+          <p>Наша учебная платформа — здесь живут курсы, тесты и оценки</p>
+        </div>
+        <div class="hero-card" onclick="switchTab('mtslink')">
+          <div class="icon">🎥</div>
+          <h3>МТС Линк</h3>
+          <p>Платформа для онлайн-занятий, вебинаров и групповой работы</p>
+        </div>
+      </div>
+
+      <h3>🎯 Как это работает вместе?</h3>
+      <p>Представьте простой путь:</p>
+      <ol>
+        <li><strong>Вы пишете вопросы в Word</strong> — как обычно, в привычном редакторе</li>
+        <li><strong>Конвертер превращает их</strong> — в специальный файл, который понимает Moodle</li>
+        <li><strong>Moodle принимает вопросы</strong> — и вы создаёте из них тест для студентов</li>
+        <li><strong>Студенты проходят тест</strong> — а вы видите оценки в журнале</li>
+      </ol>
+
+      <div class="callout tip">
+        <strong>💡 Главный совет</strong>
+        Не пытайтесь освоить всё сразу. Начните с одного теста — пройдите путь от Word до Moodle. Когда разберётесь, всё остальное будет легко.
+      </div>
+
+      <h3>🔗 Что нужно скачать</h3>
+      <div class="resources">
+        <a href="https://altersam.github.io/Moodle-WORD-to-XML-Converter-v3/taskmanager/Moodle_converter.html" target="_blank">
+          🛠️ Страница конвертера — здесь программа и шаблон Word
+        </a>
+        <a href="https://altersam.tech/converter/" target="_blank">
+          🌐 Онлайн-версия конвертера — работает прямо в браузере
+        </a>
+        <a href="https://edu.fa.ru/" target="_blank">
+          🎓 Платформа edu.fa.ru — заходите сюда под своей учёткой
+        </a>
+      </div>
+
+      <h3>🔐 Как войти в систему</h3>
+      <p>И в Moodle, и в МТС Линк вы входите <strong>одной и той же учёткой</strong>:</p>
+      <ul>
+        <li>Логин: ваш корпоративный логин + <code>@fa.ru</code></li>
+        <li>Пароль: тот же, что вы используете для входа в компьютеры университета</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ CONVERTER ============ -->
+  <div class="tab-content" id="converter">
+    <div class="section">
+      <h2>🔧 Конвертер: из Word в Moodle</h2>
+      <p>Это маленькая программа, которая берёт ваш Word-файл с вопросами и превращает его в формат, который понимает Moodle. Вам не нужно разбираться в технических деталях — просто загружаете файл и получаете результат.</p>
+
+      <h3>📥 Где взять программу</h3>
+      <p>Есть три варианта — выбирайте удобный:</p>
+
+      <div class="grid">
+        <div class="grid-item">
+          <span class="badge badge-windows">Windows</span>
+          <strong>Программа для Windows</strong>
+          Скачайте .exe файл и запустите. Ничего устанавливать не нужно.
+          <div style="margin-top: 10px;">
+            <a href="https://altersam.github.io/Moodle-WORD-to-XML-Converter-v3/taskmanager/Moodle_converter.html" target="_blank" style="color: var(--accent); font-size: 0.9rem;">→ Скачать со страницы</a>
+          </div>
+        </div>
+        <div class="grid-item">
+          <span class="badge badge-online">Онлайн</span>
+          <strong>Онлайн-версия</strong>
+          Работает прямо в браузере — на любом компьютере, даже на Mac. Ничего скачивать не нужно.
+          <div style="margin-top: 10px;">
+            <a href="https://altersam.tech/converter/" target="_blank" style="color: var(--accent); font-size: 0.9rem;">→ Открыть онлайн-конвертер</a>
+          </div>
+        </div>
+        <div class="grid-item">
+          <span class="badge badge-python">Python</span>
+          <strong>Исходный код</strong>
+          Для продвинутых пользователей. Работает на любой системе, если установлен Python.
+          <div style="margin-top: 10px;">
+            <a href="https://github.com/altersam/Moodle-WORD-to-XML-Converter-v3" target="_blank" style="color: var(--accent); font-size: 0.9rem;">→ GitHub репозиторий</a>
+          </div>
+        </div>
+      </div>
+
+      <p>На странице конвертера вы также найдёте <strong>шаблон Word</strong> — образец, как оформлять вопросы.</p>
+
+      <h3>🚀 Как пользоваться — 6 простых шагов</h3>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Откройте программу</strong>
+          Запустите скачанный .exe файл или откройте онлайн-версию в браузере.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Выберите ваш Word-файл</strong>
+          Нажмите «Обзор» и найдите свой .docx файл с вопросами.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Нажмите «Просмотр»</strong>
+          Программа покажет список всех вопросов из файла. Слева — список, справа — как вопрос будет выглядеть в Moodle.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Проверьте вопросы</strong>
+          Пройдитесь по списку. Если вопрос красный — значит, в нём ошибка (обычно неправильно оформлен в Word).
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <strong>Выберите, что конвертировать</strong>
+          Отметьте галочками нужные вопросы или нажмите «Выделить все».
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <strong>Нажмите «Конвертировать»</strong>
+          Программа создаст XML-файл. Его мы и будем загружать в Moodle.
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <strong>✨ Что ещё умеет конвертер</strong>
+        <ul>
+          <li>Автоматически распознаёт формулы и картинки из Word</li>
+          <li>Показывает, как вопрос будет выглядеть в Moodle — до загрузки</li>
+          <li>Подсвечивает ошибки красным — вы сразу их видите</li>
+          <li>Если вопросов очень много — сам разбивает файл на части</li>
+        </ul>
+      </div>
+
+      <h3>📤 Что делать дальше?</h3>
+      <p>Полученный XML-файл нужно загрузить в Moodle. Как это сделать — читайте во вкладке «Moodle».</p>
+    </div>
+  </div>
+
+  <!-- ============ TEMPLATES ============ -->
+  <div class="tab-content" id="templates">
+    <div class="section">
+      <h2>📝 Как писать вопросы в Word</h2>
+      <p>Чтобы конвертер понял ваши вопросы, их нужно оформить по определённым правилам. Не пугайтесь — правила простые, а шаблон Word поможет.</p>
+
+      <h3>📐 Главная идея</h3>
+      <p>Каждый вопрос в Word состоит из нескольких строк с особыми метками:</p>
+      <pre><code>{тип вопроса}V2: Название темы
+I: Задание 1. Иванов И.И., ТЗ1-1, b=1
+S:  Текст вопроса
++:  Правильный ответ
+-:  Неправильный ответ</code></pre>
+
+      <p>Что здесь что:</p>
+      <ul>
+        <li><code>{тип вопроса}</code> — маркер в фигурных скобках, говорит конвертеру, какой это тип вопроса</li>
+        <li><code>V2:</code> — название темы (например, «Грамматика»)</li>
+        <li><code>I:</code> — информация о задании (автор, номер, балл)</li>
+        <li><code>S:</code> — сам текст вопроса</li>
+        <li><code>+:</code> — правильный ответ (может быть несколько)</li>
+        <li><code>-:</code> — неправильный ответ</li>
+      </ul>
+
+      <div class="callout tip">
+        <strong>💡 Лайфхак</strong>
+        Не пишите вопросы вручную с нуля! Попросите нейросеть (ChatGPT, YandexGPT) сгенерировать вопросы по вашему шаблону. Скажите ей: «Сделай 10 вопросов в таком формате...» — и она выдаст готовый текст. Вам останется только скопировать в Word.
+      </div>
+
+      <h3>📋 Какие бывают типы вопросов</h3>
+      <table>
+        <thead>
+          <tr><th>Что это</th><th>Маркер</th><th>Как выглядит в тесте</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Выбор одного ответа</td>
+            <td><code>{multichoice_one}</code></td>
+            <td>Круглые кнопки, выбрать одну</td>
+          </tr>
+          <tr>
+            <td>Несколько правильных</td>
+            <td><code>{multichoice_many}</code></td>
+            <td>Квадратные кнопки, можно выбрать несколько</td>
+          </tr>
+          <tr>
+            <td>Ввести слово/фразу</td>
+            <td><code>{shortanswer_phrase}</code></td>
+            <td>Поле для ввода текста</td>
+          </tr>
+          <tr>
+            <td>Ввести цифры</td>
+            <td><code>{numerical}</code></td>
+            <td>Поле для числа (точка и запятая — одно и то же)</td>
+          </tr>
+          <tr>
+            <td>Цифры с частичным баллом</td>
+            <td><code>{numerical_partial}</code></td>
+            <td>Частичное начисление баллов</td>
+          </tr>
+          <tr>
+            <td>Цифры в любом порядке</td>
+            <td><code>{numerical_numcombo}</code></td>
+            <td>Принимает любую перестановку</td>
+          </tr>
+          <tr>
+            <td>Соответствие</td>
+            <td><code>{matching}</code></td>
+            <td>Выпадающие списки, соединить пары</td>
+          </tr>
+          <tr>
+            <td>Последовательность</td>
+            <td><code>{match_123}</code></td>
+            <td>Расставить по порядку</td>
+          </tr>
+          <tr>
+            <td>Перетаскивание</td>
+            <td><code>{ddmatch}</code></td>
+            <td>Drag-and-drop</td>
+          </tr>
+          <tr>
+            <td>Пропуски в тексте</td>
+            <td><code>{gapselect}</code></td>
+            <td>В тексте выпадающие списки</td>
+          </tr>
+          <tr>
+            <td>Встроенные ответы</td>
+            <td><code>{cloze}</code></td>
+            <td>Ответы прямо внутри текста</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>📖 Примеры — как это выглядит</h3>
+
+      <div class="example">
+        <div class="example-title">🔘 Выбор одного ответа</div>
+        <p>Классический тест: вопрос и 4 варианта, один правильный.</p>
+        <pre><code>{multichoice_one}V2: Грамматика
+I:Задание 1. Иванов И.И., ТЗ1-1, b=1
+S:Выберите правильную форму: I … tennis every day.
++:play
+-:plays
+-:played
+-:playing</code></pre>
+      </div>
+
+      <div class="example">
+        <div class="example-title">☑️ Несколько правильных ответов</div>
+        <p>Нужно выбрать несколько верных вариантов. За каждый неверный — штраф.</p>
+        <pre><code>{multichoice_many}V2: Термины
+I:Задание 1. Петров П.П., ТЗ1-1, b=1
+S:Найдите два термина, «выпадающие» из общего ряда.
++:либерализм;
+-:монархия;
+-:унитарное государство;
++:избирательное право;
+-:авторитаризм.</code></pre>
+      </div>
+
+      <div class="example">
+        <div class="example-title">✍️ Студент вводит слово</div>
+        <p>Можно указать несколько правильных вариантов — любой подойдёт.</p>
+        <pre><code>{shortanswer_phrase}V2: Лексика
+I:Задание 505. Иванов И.И., ТЗ9-1, b=1
+S:Поставьте слово AGGRESSIVE в подходящую форму.
++:AGGRESSIVENESS
++:AGGRESSION</code></pre>
+      </div>
+
+      <div class="example">
+        <div class="example-title">🔢 Студент вводит число</div>
+        <p>Точка и запятая — одно и то же. «16,8» и «16.8» оба засчитаются.</p>
+        <pre><code>{numerical}V2: Значения выражений
+I:Задание 1. Иванов И.И., ТЗ1-1, b=2
+S:Найдите значение выражения.
++:16,8</code></pre>
+      </div>
+
+      <div class="example">
+        <div class="example-title">🔗 Соответствие (две колонки)</div>
+        <p>Слева — термины, справа — определения. Студент соединяет пары.</p>
+        <pre><code>{matching}V2: Соответствия
+I:Задание 1. Иванов И.И., ТЗ1-1, b=1
+S:Установите соответствие.
+L1: Метафора
+L2: Эпитет
+L3: Гипербола
+R1: скрытое сравнение
+R2: художественное определение
+R3: преувеличение
+R4: противопоставление (лишнее)</code></pre>
+        <p style="margin-top:8px; color: var(--muted); font-size: 0.9rem;">L — левая колонка, R — правая. R4 — лишний вариант, чтобы было сложнее.</p>
+      </div>
+
+      <div class="example">
+        <div class="example-title">📅 Расставить по порядку</div>
+        <p>Студент расставляет события в правильной последовательности.</p>
+        <pre><code>{match_123}V2: Хронология
+I:Задание 124. Иванов И.И., Т318-7, b=2
+S:Расположите события в хронологическом порядке.
+1: Крещение Руси
+2: Куликовская битва
+3: Стояние на реке Угре</code></pre>
+      </div>
+
+      <div class="example">
+        <div class="example-title">🎯 Пропуски в тексте</div>
+        <p>В тексте есть пропуски (1), (2) — студент выбирает из выпадающих списков.</p>
+        <pre><code>{gapselect}V2: Множественный выбор
+I:Задание 566. Иванов И.И., T42-1, b=3
+S:Вставьте пропущенные слова.
+The students want to improve their (1) of English.
+A) standard; B) degree; C) measure; D) ability
+A) a sore; B) an aching; C) a hurtful; D) a painful
++: AB</code></pre>
+      </div>
+
+      <div class="callout info">
+        <strong>🖼️ Картинки и формулы</strong>
+        Можете вставлять в Word картинки и формулы — конвертер их подхватит. Формулы автоматически превратятся в красивый математический вид, а картинки встроятся в тест.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MOODLE ============ -->
+  <div class="tab-content" id="moodle">
+    <div class="section">
+      <h2>🎓 Работа в Moodle (edu.fa.ru)</h2>
+      <p>Moodle — это наша учебная платформа. Здесь вы создаёте курсы, загружаете тесты, материалы и видите оценки студентов. Адрес: <code>edu.fa.ru</code></p>
+
+      <h3>🚪 Как войти</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Откройте edu.fa.ru</strong>
+          В любом браузере.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Войдите</strong>
+          Ваш логин: <code>ваш_логин@fa.ru</code>. Пароль: тот же, что для входа в компьютеры университета.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Выберите курс</strong>
+          После входа увидите список курсов, к которым у вас есть доступ. Кликните на нужный.
+        </div>
+      </div>
+
+      <h3>✏️ Режим редактирования</h3>
+      <p>Чтобы добавлять в курс новые элементы (тесты, файлы, ссылки), нужно включить <strong>режим редактирования</strong>. Кнопка находится справа сверху. Пока он выключен — вы видите курс так, как его видят студенты.</p>
+
+      <h3>📚 Что можно добавить в курс</h3>
+      <div class="grid">
+        <div class="grid-item">
+          <strong>Тест</strong>
+          Набор вопросов с автоматической проверкой. То, ради чего всё затевалось.
+        </div>
+        <div class="grid-item">
+          <strong>Лекция</strong>
+          Многостраничный материал — как учебник с навигацией.
+        </div>
+        <div class="grid-item">
+          <strong>Файл</strong>
+          PDF, Word, презентация, картинка, видео. Студент скачивает.
+        </div>
+        <div class="grid-item">
+          <strong>Ссылка (URL)</strong>
+          Ссылка на YouTube, RuTube или любой другой сайт.
+        </div>
+        <div class="grid-item">
+          <strong>Папка</strong>
+          Несколько файлов в одной папке.
+        </div>
+        <div class="grid-item">
+          <strong>Вебинар</strong>
+          Онлайн-занятие через МТС Линк.
+        </div>
+      </div>
+
+      <h3>📝 Как создать тест</h3>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Добавьте элемент «Тест»</strong>
+          В режиме редактирования: «Добавить элемент» → «Тест». Придумайте название.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Настройте параметры теста</strong>
+          Здесь вы указываете:
+          <ul>
+            <li><strong>Когда доступен</strong> — даты начала и окончания</li>
+            <li><strong>Сколько времени</strong> даётся на прохождение</li>
+            <li><strong>Сколько попыток</strong> можно сделать</li>
+            <li><strong>Какая попытка засчитывается</strong> — первая, последняя, лучшая или средняя</li>
+            <li><strong>Что видит студент после сдачи</strong> — правильные ответы, свои ошибки, баллы</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Загрузите вопросы</strong>
+          Откройте: «Шестерёнка» (настройки курса) → «Банк вопросов» → «Импорт» → «Moodle XML». Загрузите XML-файл из конвертера.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Добавьте вопросы в тест</strong>
+          Вернитесь в режим редактирования теста. Нажмите «Добавить» → «из банка вопросов». Выберите нужные.
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <strong>Проверьте</strong>
+          Сохраните и пройдите тест сами — как студент. Убедитесь, что всё работает.
+        </div>
+      </div>
+
+      <h3>📊 Как увидеть оценки студентов</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Откройте журнал оценок</strong>
+          Путь: «Шестерёнка» → «Настройка журнала оценок».
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Посмотрите таблицу</strong>
+          Слева — студенты, сверху — тесты и задания. Видны все баллы.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Скачайте в Excel</strong>
+          Нажмите «Экспорт» → «Таблица». Получите CSV-файл со всеми оценками — удобно для отчётности.
+        </div>
+      </div>
+
+      <h3>👥 Как добавить студентов в курс</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Откройте список пользователей</strong>
+          «Шестерёнка» → «Пользователи» → «Зачисленные пользователи».
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Нажмите «Зачислить пользователей»</strong>
+          В поиске введите имя или почту студента (<code>логин@fa.ru</code>).
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Выберите роль «Студент»</strong>
+          И подтвердите.
+        </div>
+      </div>
+
+      <h3>📁 Как загрузить материалы</h3>
+      <p><strong>Файл:</strong> «Добавить элемент» → «Файл» → перетащите или выберите файл. Студент увидит его и сможет скачать.</p>
+      <p><strong>Ссылка:</strong> «Добавить элемент» → «URL» → вставьте ссылку. Можно встроить видео с YouTube или RuTube прямо в курс.</p>
+      <p><strong>Лекция:</strong> «Добавить элемент» → «Лекция». Создайте многостраничный материал с вопросами внутри.</p>
+
+      <div class="callout tip">
+        <strong>💡 Совет</strong>
+        Если вы загрузили презентацию как файл — студент её скачивает. Если хотите, чтобы она открывалась прямо в браузере — используйте элемент «Лекция» и встройте слайды туда.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MTS LINK ============ -->
+  <div class="tab-content" id="mtslink">
+    <div class="section">
+      <h2>🎥 Онлайн-занятия в МТС Линк</h2>
+      <p>Это наша платформа для вебинаров и онлайн-занятий. Университет оплатил корпоративный тариф — у нас есть расширенные возможности.</p>
+
+      <h3>🚪 Как войти</h3>
+      <p>Откройте МТС Линк (через браузер или приложение) и войдите под своей корпоративной учёткой: <code>логин@fa.ru</code>. Пароль — тот же, что везде.</p>
+
+      <h3>📅 Как запланировать занятие</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Нажмите «Запланировать»</strong>
+          Укажите название, дату, время и сколько продлится занятие.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Настройте параметры</strong>
+          <ul>
+            <li>Кто может зайти — по ссылке или по приглашению</li>
+            <li>Включить запись занятия</li>
+            <li>Включить текстовую расшифровку (об этом ниже)</li>
+            <li>Комната ожидания — чтобы пускать участников вручную</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Пригласите участников</strong>
+          Отправьте им ссылку на занятие или добавьте по email.
+        </div>
+      </div>
+
+      <h3>🎬 Что есть во время занятия</h3>
+
+      <div class="grid">
+        <div class="grid-item">
+          <strong>📋 Доска</strong>
+          Виртуальная доска — можно рисовать, писать, загружать картинки и PDF. Как маркерная доска, только онлайн.
+        </div>
+        <div class="grid-item">
+          <strong>🗳 Голосование</strong>
+          Быстрый опрос прямо во время занятия. Один вариант, несколько вариантов или открытый вопрос. Результаты видны сразу.
+        </div>
+        <div class="grid-item">
+          <strong>✋ «Поднять руку»</strong>
+          Студенты нажимают кнопку — вы видите очередь. Удобно, когда хотят задать вопрос.
+        </div>
+        <div class="grid-item">
+          <strong>🖥 Демонстрация экрана</strong>
+          Показать весь экран, одно окно или вкладку браузера.
+        </div>
+      </div>
+
+      <h3>👥 Как разделить студентов на группы</h3>
+      <p>Очень полезная функция для групповой работы. Студенты расходятся по «комнаткам» и работают там, а вы можете переходить между группами.</p>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Найдите кнопку «Разделить на группы»</strong>
+          Она находится рядом с чатом.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Настройте</strong>
+          Укажите, сколько групп нужно. Можно распределить автоматически (случайно) или вручную — самому раскидать студентов.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Запустите работу</strong>
+          Студенты автоматически попадут в свои группы. У каждой — своя комната с видео и чатом.
+        </div>
+      </div>
+
+      <h4>Что вы можете делать как ведущий:</h4>
+      <ul>
+        <li><strong>Переходить между группами</strong> — заглядывать, помогать, слушать</li>
+        <li><strong>Отправлять объявления</strong> — одно сообщение для всех групп сразу</li>
+        <li><strong>Ставить таймер</strong> — чтобы все знали, сколько осталось</li>
+        <li><strong>Собрать всех обратно</strong> — одной кнопкой</li>
+      </ul>
+
+      <div class="callout tip">
+        <strong>💡 Совет</strong>
+        Можно назначить в каждой группе «старшего» — например, старосту. Он сможет управлять своей группой: выключать микрофоны, включать демонстрацию.
+      </div>
+
+      <h3>🎥 Как записать занятие</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Нажмите кнопку «Запись»</strong>
+          Выберите: записать только видео или видео + текстовую расшифровку.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Ведите занятие как обычно</strong>
+          Индикатор покажет, что идёт запись.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Остановите запись в конце</strong>
+          Файл обработается и будет доступен для скачивания.
+        </div>
+      </div>
+
+      <h4>📦 Где хранить записи</h4>
+      <ul>
+        <li><strong>RuTube</strong> — <em>рекомендуется</em>. У университета есть свой канал, Самир даст вам доступ. Загружайте туда.</li>
+        <li><strong>Кинескоп</strong> — альтернатива, но там ограничение: 24 бесплатные загрузки на аккаунт.</li>
+        <li><strong>В самом МТС Линк</strong> — временно, в личном кабинете. Не подходит для долгого хранения.</li>
+      </ul>
+
+      <h3>🤖 Магия с ИИ: конспект из записи</h3>
+      <p>Это очень интересная возможность. Если вы включили <strong>текстовую расшифровку</strong>, МТС Линк автоматически превратит вашу речь в текст.</p>
+
+      <p>Что можно сделать с этим текстом:</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>Скачайте расшифровку</strong>
+          После занятия — обычный текстовый файл.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>Добавьте презентацию</strong>
+          Если вы показывали слайды — возьмите и их.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>Загрузите всё в нейросеть</strong>
+          ChatGPT, YandexGPT, Claude — что вам удобнее.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Попросите сделать конспект</strong>
+          Пример запроса: «Сделай из этого конспект-карточки для студентов. Выдели главное, определения, примеры».
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <strong>Загрузите результат в Moodle</strong>
+          Готовые карточки — студентам. Они будут в восторге.
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <strong>🎯 Что ещё можно попросить у ИИ</strong>
+        <ul>
+          <li>Тестовые вопросы по материалу → сразу в конвертер → в Moodle</li>
+          <li>Глоссарий терминов</li>
+          <li>Дополнительные задания для практики</li>
+          <li>Краткое содержание для тех, кто пропустил</li>
+        </ul>
+      </div>
+
+      <h3>⚙️ Полезные мелочи</h3>
+      <ul>
+        <li><strong>Контроль присутствия</strong> — система сама фиксирует, кто заходил и когда. Но работает не идеально (примерно 50/50). Лучше перепроверять по записи.</li>
+        <li><strong>Календарь вебинаров</strong> — можно планировать постоянные и разовые встречи.</li>
+        <li><strong>Роли</strong> — администратор, ведущий, участник. Кто администратор — настраивает Самир.</li>
+      </ul>
+
+      <div class="callout warning">
+        <strong>⚠️ Важно знать</strong>
+        Мы сидим на корпоративной учётке университета (тариф ТНТ Slim). Есть расширенные возможности, но и некоторые ограничения. Если что-то не работает — уточните у Самира.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ WORKFLOW ============ -->
+  <div class="tab-content" id="workflow">
+    <div class="section">
+      <h2>🔄 Полный путь: от вопросов до оценок</h2>
+      <p>Вот как выглядит весь процесс целиком. Пройдите его один раз — и дальше будет легко.</p>
+
+      <h3>📋 Шаг 1. Пишем вопросы</h3>
+      <ol>
+        <li>Скачайте шаблон Word со <a href="https://altersam.github.io/Moodle-WORD-to-XML-Converter-v3/taskmanager/Moodle_converter.html" target="_blank" style="color: var(--accent);">страницы конвертера</a></li>
+        <li>Откройте его и посмотрите, как оформлены примеры</li>
+        <li>Напишите свои вопросы по тому же принципу</li>
+        <li>Если лень писать руками — попросите нейросеть. Скажите ей: «Сделай 10 вопросов по теме X в таком формате...» и вставьте шаблон</li>
+        <li>Сохраните файл как .docx</li>
+      </ol>
+
+      <h3>🔧 Шаг 2. Превращаем в формат Moodle</h3>
+      <ol>
+        <li>Запустите конвертер (.exe файл) или откройте <a href="https://altersam.tech/converter/" target="_blank" style="color: var(--accent);">онлайн-версию</a></li>
+        <li>Выберите свой .docx</li>
+        <li>Нажмите «Просмотр» — посмотрите, как вопросы будут выглядеть</li>
+        <li>Если есть красные — исправьте в Word и повторите</li>
+        <li>Выберите нужные вопросы и нажмите «Конвертировать»</li>
+        <li>Получите XML-файл</li>
+      </ol>
+
+      <h3>🎓 Шаг 3. Загружаем в Moodle</h3>
+      <ol>
+        <li>Войдите в edu.fa.ru</li>
+        <li>Откройте свой курс</li>
+        <li>«Шестерёнка» → «Банк вопросов» → «Импорт» → «Moodle XML»</li>
+        <li>Загрузите XML-файл</li>
+        <li>Вопросы появятся в банке — автоматически разложатся по темам</li>
+      </ol>
+
+      <h3>📝 Шаг 4. Создаём тест</h3>
+      <ol>
+        <li>В режиме редактирования курса: «Добавить элемент» → «Тест»</li>
+        <li>Настройте сроки, время, количество попыток</li>
+        <li>В режиме редактирования теста: «Добавить» → «из банка вопросов»</li>
+        <li>Выберите нужные вопросы</li>
+        <li>Сохраните и пройдите тест сами — проверьте</li>
+      </ol>
+
+      <h3>👥 Шаг 5. Добавляем студентов</h3>
+      <ol>
+        <li>«Шестерёнка» → «Пользователи» → «Зачислить»</li>
+        <li>Найдите студентов по имени или почте</li>
+        <li>Назначьте роль «Студент»</li>
+      </ol>
+
+      <h3>🎥 Шаг 6. Проводим онлайн-занятие (если нужно)</h3>
+      <ol>
+        <li>Запланируйте вебинар в МТС Линк</li>
+        <li>Включите запись и текстовую расшифровку</li>
+        <li>Используйте доску, голосование, группы</li>
+        <li>После занятия скачайте запись и расшифровку</li>
+      </ol>
+
+      <h3>🤖 Шаг 7. Делаем конспект с помощью ИИ (по желанию)</h3>
+      <ol>
+        <li>Загрузите расшифровку + презентацию в нейросеть</li>
+        <li>Попросите сделать конспект-карточки</li>
+        <li>Загрузите карточки в Moodle — студенты будут благодарны</li>
+      </ol>
+
+      <h3>📊 Шаг 8. Смотрим результаты</h3>
+      <ol>
+        <li>После того как студенты сдали тест: «Шестерёнка» → «Настройка журнала оценок»</li>
+        <li>Видите таблицу: кто, сколько баллов, когда сдавал</li>
+        <li>«Экспорт» → «Таблица» — скачайте CSV для отчётности</li>
+      </ol>
+
+      <h3>🎬 Шаг 9. Публикуем запись (по желанию)</h3>
+      <ol>
+        <li>Загрузите запись на RuTube (через корпоративный канал)</li>
+        <li>В Moodle добавьте элемент «URL» со ссылкой</li>
+        <li>Студенты смогут пересмотреть занятие</li>
+      </ol>
+
+      <div class="callout tip">
+        <strong>💡 Не бойтесь начать</strong>
+        Пройдите этот путь один раз — с одним тестом, с одной группой студентов. Дальше всё будет получаться автоматически. И не стесняйтесь задавать вопросы Самиру — он поможет.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ FAQ ============ -->
+  <div class="tab-content" id="faq">
+    <div class="section">
+      <h2>❓ Частые вопросы</h2>
+
+      <h3>В: Как засчитывается лучшая попытка?</h3>
+      <p><strong>О:</strong> Это настраивается при создании теста: «Оценивание» → «Метод оценивания». Можно выбрать: первая попытка, последняя, лучшая или средняя. По умолчанию — лучшая.</p>
+
+      <h3>В: Можно ли изменить вопрос после того, как загрузил?</h3>
+      <p><strong>О:</strong> Да. В банке вопросов кликните на вопрос → «Редактировать». Изменения применятся во всех тестах, где этот вопрос используется.</p>
+
+      <h3>В: Как разделить студентов на группы во время вебинара?</h3>
+      <p><strong>О:</strong> Во время занятия: кнопка «Разделить на группы» (рядом с чатом) → укажите количество → автоматическое или ручное распределение. Вы как ведущий можете переходить между группами.</p>
+
+      <h3>В: Где лучше хранить записи занятий?</h3>
+      <p><strong>О:</strong> На RuTube — у университета есть корпоративный канал. Самир даст вам доступ. В Кинескопе ограничение — 24 загрузки, не очень удобно.</p>
+
+      <h3>В: Как получить права администратора в МТС Линк?</h3>
+      <p><strong>О:</strong> Обратитесь к Самиру. Он настроит роли централизованно.</p>
+
+      <h3>В: У меня очень много вопросов — можно конвертировать сразу папку?</h3>
+      <p><strong>О:</strong> Да, через командную строку. Но это для продвинутых пользователей. Проще разбейте вопросы на несколько Word-файлов и прогоните их по очереди.</p>
+
+      <h3>В: Как выгрузить оценки в Excel?</h3>
+      <p><strong>О:</strong> Журнал оценок → «Экспорт» → «Таблица». Скачается CSV-файл — он открывается в Excel. Там будут ФИО, почты и все оценки.</p>
+
+      <h3>В: Студент не может войти в Moodle</h3>
+      <p><strong>О:</strong> Убедитесь, что он зачислен в курс (см. раздел Moodle). И что использует корпоративную учётку <code>логин@fa.ru</code> с паролем от компьютеров университета.</p>
+
+      <h3>В: Можно ли сделать так, чтобы студент не видел правильных ответов после теста?</h3>
+      <p><strong>О:</strong> Да, это настраивается в параметрах теста. Найдите раздел «Что показывать после сдачи» и отключите показ правильных ответов.</p>
+
+      <h3>📞 К кому обращаться за помощью</h3>
+      <p>По всем вопросам доступа, настроек, прав администратора — <strong>Самир Алиев Алиевич</strong>. Он администрирует систему и поможет разобраться.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  📚 Руководство для преподавателя · Версия 3.2 · Июнь 2026<br>
+  Составлено на основе встречи с Самиром Алиевым
+</footer>
+
+<script>
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  function switchTab(tabId) {
+    tabBtns.forEach(btn => btn.classList.remove('active'));
+    tabContents.forEach(content => content.classList.remove('active'));
+    
+    const targetBtn = document.querySelector(`[data-tab="${tabId}"]`);
+    const targetContent = document.getElementById(tabId);
+    
+    if (targetBtn) targetBtn.classList.add('active');
+    if (targetContent) targetContent.classList.add('active');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchTab(btn.dataset.tab);
+      localStorage.setItem('activeTab', btn.dataset.tab);
+    });
+  });
+
+  const savedTab = localStorage.getItem('activeTab');
+  if (savedTab && document.getElementById(savedTab)) {
+    switchTab(savedTab);
+  }
+</script>
+
+</body>
+</html>

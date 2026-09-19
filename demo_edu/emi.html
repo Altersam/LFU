@@ -1,0 +1,1734 @@
+<!-- ============================================================
+     Урок: Электромагнитная индукция
+     Назначение: вставка в Moodle, тип ресурса "Страница"
+     Формат: самостоятельный HTML-фрагмент с CSS и SVG
+============================================================= -->
+
+<div class="emi-lesson">
+
+<style>
+/* ===== Базовые стили урока ===== */
+.emi-lesson{
+  --ink:#101828;
+  --muted:#475467;
+  --line:#d0d5dd;
+  --soft:#f9fafb;
+  --white:#ffffff;
+  --blue:#175cd3;
+  --blue-soft:#eff8ff;
+  --green:#067647;
+  --green-soft:#ecfdf3;
+  --amber:#b54708;
+  --amber-soft:#fffaeb;
+  --red:#b42318;
+  --red-soft:#fef3f2;
+  --violet:#6941c6;
+  --violet-soft:#f4f3ff;
+
+  max-width:1180px;
+  margin:0 auto;
+  padding:16px;
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  line-height:1.55;
+}
+.emi-lesson *,
+.emi-lesson *::before,
+.emi-lesson *::after{box-sizing:border-box;}
+
+.emi-lesson h1,
+.emi-lesson h2,
+.emi-lesson h3,
+.emi-lesson h4{
+  line-height:1.2;
+  margin:0.8em 0 0.45em;
+  color:#0c1427;
+}
+.emi-lesson h1{font-size:clamp(1.8rem,3vw,2.6rem);}
+.emi-lesson h2{font-size:clamp(1.35rem,2.2vw,1.8rem);}
+.emi-lesson h3{font-size:clamp(1.1rem,1.7vw,1.35rem);}
+.emi-lesson p{margin:0.55em 0;}
+.emi-lesson ul,
+.emi-lesson ol{margin:0.55em 0 0.55em 1.35em; padding:0;}
+.emi-lesson li{margin:0.28em 0;}
+.emi-lesson a{color:var(--blue); text-decoration:none;}
+.emi-lesson a:hover{text-decoration:underline;}
+
+.emi-lesson .emi-kicker{
+  display:inline-block;
+  font-size:0.92rem;
+  letter-spacing:0.02em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.25rem;
+}
+.emi-lesson .emi-lede{
+  font-size:1.08rem;
+  color:#344054;
+  max-width:88ch;
+}
+
+/* ===== Карточки и секции ===== */
+.emi-hero,
+.emi-section{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:clamp(16px,2.2vw,26px);
+  margin:16px 0;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);
+}
+.emi-hero{
+  background:linear-gradient(135deg,#ffffff 0%,#f5f8ff 55%,#eef6ff 100%);
+}
+.emi-section-head{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  border-bottom:2px solid #e4e7ec;
+  padding-bottom:10px;
+  margin-bottom:14px;
+}
+.emi-section-head h2{margin:0;}
+.emi-time{
+  margin-left:auto;
+  font-size:0.86rem;
+  font-weight:700;
+  color:#3538cd;
+  background:#eef2ff;
+  border:1px solid #c7d2fe;
+  border-radius:999px;
+  padding:4px 10px;
+  white-space:nowrap;
+}
+
+/* ===== Навигация ===== */
+.emi-nav{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px 14px;
+  margin-bottom:14px;
+}
+.emi-nav strong{display:block; margin-bottom:6px;}
+.emi-nav-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.emi-nav-list a{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:8px;
+  background:var(--soft);
+  border:1px solid var(--line);
+  font-size:0.94rem;
+}
+
+/* ===== Бейджи, метки, теги ===== */
+.emi-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.emi-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:0.9rem;
+  color:#344054;
+}
+.emi-badge.blue{background:var(--blue-soft); border-color:#b8dcff; color:#175cd3;}
+.emi-badge.green{background:var(--green-soft); border-color:#abefc6; color:#067647;}
+.emi-badge.amber{background:var(--amber-soft); border-color:#fedf89; color:#b54708;}
+.emi-badge.violet{background:var(--violet-soft); border-color:#d9c6ff; color:#6941c6;}
+
+.emi-tag{
+  display:inline-block;
+  font-size:0.78rem;
+  font-weight:700;
+  padding:3px 8px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#3538cd;
+  margin-right:6px;
+}
+
+/* ===== Сетки и карточки ===== */
+.emi-grid{
+  display:grid;
+  gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+}
+.emi-grid-2{
+  display:grid;
+  gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+}
+.emi-card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  background:#fcfcfd;
+}
+.emi-card h3{margin-top:0;}
+.emi-card.center{text-align:center;}
+
+.emi-callout{
+  border-left:5px solid var(--blue);
+  background:var(--blue-soft);
+  border-radius:12px;
+  padding:14px 16px;
+  margin:14px 0;
+}
+.emi-callout.warning{border-left-color:var(--amber); background:var(--amber-soft);}
+.emi-callout.success{border-left-color:var(--green); background:var(--green-soft);}
+.emi-callout.danger{border-left-color:var(--red); background:var(--red-soft);}
+.emi-callout.violet{border-left-color:var(--violet); background:var(--violet-soft);}
+.emi-callout p:last-child{margin-bottom:0;}
+
+/* ===== Формулы ===== */
+.emi-formula{
+  font-size:1.22rem;
+  text-align:center;
+  padding:14px 12px;
+  margin:12px 0;
+  background:#f8fafc;
+  border:1px dashed #98a2b3;
+  border-radius:14px;
+  overflow-x:auto;
+}
+.emi-formula.small{font-size:1.02rem;}
+.emi-inline-formula{
+  white-space:nowrap;
+  font-weight:600;
+}
+.emi-frac{
+  display:inline-flex;
+  flex-direction:column;
+  vertical-align:middle;
+  text-align:center;
+  margin:0 0.18em;
+  line-height:1.05;
+}
+.emi-frac > span:first-child{
+  border-bottom:1.5px solid currentColor;
+  padding:0 0.28em 2px;
+}
+.emi-frac > span:last-child{
+  padding:2px 0.28em 0;
+}
+.emi-vec{
+  font-weight:700;
+  font-style:italic;
+}
+.emi-note{
+  font-size:0.92rem;
+  color:var(--muted);
+}
+
+/* ===== Таблицы ===== */
+.emi-table-wrap{
+  overflow-x:auto;
+  margin:12px 0;
+}
+.emi-lesson table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0;
+  background:#fff;
+}
+.emi-lesson th,
+.emi-lesson td{
+  border:1px solid var(--line);
+  padding:10px 12px;
+  vertical-align:top;
+  text-align:left;
+}
+.emi-lesson th{
+  background:#f2f4f7;
+  font-weight:700;
+}
+.emi-lesson tr:nth-child(even) td{background:#fbfbfc;}
+
+/* ===== Рисунки ===== */
+.emi-figure{
+  margin:16px 0;
+  text-align:center;
+}
+.emi-figure svg{
+  width:100%;
+  height:auto;
+  max-width:900px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+}
+.emi-figure figcaption{
+  margin-top:8px;
+  font-size:0.92rem;
+  color:var(--muted);
+}
+
+/* ===== Шаги и алгоритмы ===== */
+.emi-steps{
+  counter-reset:emi-step;
+  list-style:none;
+  margin-left:0;
+  padding-left:0;
+}
+.emi-steps > li{
+  position:relative;
+  padding-left:42px;
+  margin:10px 0;
+}
+.emi-steps > li::before{
+  counter-increment:emi-step;
+  content:counter(emi-step);
+  position:absolute;
+  left:0;
+  top:1px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:var(--blue);
+  color:#fff;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:0.95rem;
+}
+
+/* ===== Ответы / решения ===== */
+.emi-lesson details{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 12px;
+  margin:10px 0;
+  background:#fff;
+}
+.emi-lesson details[open]{
+  background:#f9fbff;
+}
+.emi-lesson summary{
+  cursor:pointer;
+  font-weight:700;
+  color:var(--blue);
+}
+.emi-lesson summary::-webkit-details-marker{display:none;}
+.emi-lesson summary::before{
+  content:"▸ ";
+  color:var(--blue);
+}
+.emi-lesson details[open] summary::before{content:"▾ ";}
+
+/* ===== Цепочка причинно-следственная ===== */
+.emi-flow{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin:14px 0;
+}
+.emi-flow .emi-flow-step{
+  min-width:150px;
+  padding:10px 12px;
+  border:2px solid var(--blue);
+  border-radius:12px;
+  background:var(--blue-soft);
+  font-weight:700;
+  text-align:center;
+}
+.emi-flow .emi-flow-arrow{
+  color:var(--blue);
+  font-size:1.4rem;
+  font-weight:900;
+}
+
+/* ===== Тест ===== */
+.emi-quiz fieldset{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  margin:12px 0;
+  background:#fff;
+}
+.emi-quiz legend{
+  font-weight:700;
+  color:#0c1427;
+  padding:0 6px;
+}
+.emi-options{
+  list-style:none;
+  margin:8px 0 0;
+  padding:0;
+}
+.emi-options li{
+  margin:6px 0;
+  padding:8px 10px;
+  border:1px solid #eaecf0;
+  border-radius:10px;
+  background:#fcfcfd;
+}
+
+/* ===== Разное ===== */
+.emi-divider{
+  height:1px;
+  background:var(--line);
+  border:0;
+  margin:18px 0;
+}
+.emi-footer{
+  font-size:0.92rem;
+  color:var(--muted);
+}
+.emi-footer a{word-break:break-word;}
+
+@media (max-width:640px){
+  .emi-lesson{padding:10px;}
+  .emi-hero,
+  .emi-section{padding:14px; border-radius:14px;}
+  .emi-formula{font-size:1.05rem; padding:10px;}
+  .emi-flow .emi-flow-step{min-width:120px; font-size:0.95rem;}
+}
+
+@media print{
+  .emi-lesson{max-width:none; padding:0;}
+  .emi-hero,
+  .emi-section,
+  .emi-card,
+  .emi-figure svg{box-shadow:none;}
+  .emi-lesson details{display:block;}
+  .emi-lesson details > *:not(summary){display:block !important;}
+  .emi-nav{display:none;}
+  .emi-section{break-inside:avoid;}
+}
+</style>
+
+<!-- ===================== НАВИГАЦИЯ ===================== -->
+<nav class="emi-nav" aria-label="Содержание урока">
+  <strong>Содержание урока</strong>
+  <ul class="emi-nav-list">
+    <li><a href="#emi-plan">План и цели</a></li>
+    <li><a href="#emi-problem">Проблемная ситуация</a></li>
+    <li><a href="#emi-faraday">Опыт Фарадея</a></li>
+    <li><a href="#emi-flux">Магнитный поток</a></li>
+    <li><a href="#emi-law">Закон Фарадея</a></li>
+    <li><a href="#emi-lenz">Правило Ленца</a></li>
+    <li><a href="#emi-generator">Генератор</a></li>
+    <li><a href="#emi-tasks">Задачи</a></li>
+    <li><a href="#emi-summary">Итоги и домашнее задание</a></li>
+  </ul>
+</nav>
+
+<!-- ===================== ШАПКА ===================== -->
+<header class="emi-hero" id="emi-top">
+  <p class="emi-kicker">Физика • профильный уровень • 45 минут</p>
+  <h1>Электромагнитная индукция</h1>
+  <p class="emi-lede">
+    Как изменение магнитного потока создаёт ЭДС — и почему направление индукционного тока
+    подчиняется закону сохранения энергии.
+  </p>
+
+  <div class="emi-badges">
+    <span class="emi-badge blue">Φ = B·S·cos α</span>
+    <span class="emi-badge violet">ε<sub>i</sub> = −N·dΦ/dt</span>
+    <span class="emi-badge green">правило Ленца</span>
+    <span class="emi-badge amber">задачи ЕГЭ</span>
+    <span class="emi-badge">гальванометр</span>
+    <span class="emi-badge">генератор переменного тока</span>
+  </div>
+</header>
+
+<!-- ===================== ПЛАН И ЦЕЛИ ===================== -->
+<section class="emi-section" id="emi-plan">
+  <div class="emi-section-head">
+    <h2>План урока, цели и ожидаемые результаты</h2>
+    <span class="emi-time">45 минут</span>
+  </div>
+
+  <div class="emi-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Этап</th>
+          <th>Время</th>
+          <th>Основной фокус</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Проблемная постановка</td>
+          <td>2 мин</td>
+          <td>Почему при наличии магнитного поля ток может отсутствовать?</td>
+        </tr>
+        <tr>
+          <td>Наблюдение → закономерность</td>
+          <td>3 мин</td>
+          <td>Опыт Фарадея: движение магнита, скорость, направление отклонения стрелки.</td>
+        </tr>
+        <tr>
+          <td>Магнитный поток Φ</td>
+          <td>8 мин</td>
+          <td>Смысл величины, формула, угол с нормалью, способы изменения потока.</td>
+        </tr>
+        <tr>
+          <td>Закон Фарадея</td>
+          <td>6 мин</td>
+          <td>От средней скорости изменения потока к производной; размерность; роль N.</td>
+        </tr>
+        <tr>
+          <td>Правило Ленца</td>
+          <td>7 мин</td>
+          <td>Знак «−», направление тока, связь с законом сохранения энергии.</td>
+        </tr>
+        <tr>
+          <td>Генератор и применения</td>
+          <td>5 мин</td>
+          <td>Вращающаяся рамка, синусоидальная ЭДС, трансформатор, беспроводная передача энергии.</td>
+        </tr>
+        <tr>
+          <td>Задачи и самопроверка</td>
+          <td>10 мин</td>
+          <td>Расчётные, качественные и графиковые задания профильного уровня.</td>
+        </tr>
+        <tr>
+          <td>Рефлексия и итоги</td>
+          <td>4 мин</td>
+          <td>Сборка темы в причинную цепочку, домашнее задание.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="emi-divider">
+
+  <div class="emi-grid">
+    <article class="emi-card">
+      <h3>Знать</h3>
+      <ul>
+        <li>понятие магнитного потока;</li>
+        <li>явление электромагнитной индукции;</li>
+        <li>закон Фарадея;</li>
+        <li>правило Ленца.</li>
+      </ul>
+    </article>
+
+    <article class="emi-card">
+      <h3>Понимать</h3>
+      <ul>
+        <li>почему ток возникает только при изменении потока;</li>
+        <li>физический смысл знака «минус»;</li>
+        <li>чем ЭДС отличается от самого магнитного потока;</li>
+        <li>как закон Фарадея связан с сохранением энергии.</li>
+      </ul>
+    </article>
+
+    <article class="emi-card">
+      <h3>Уметь</h3>
+      <ul>
+        <li>вычислять Φ = B·S·cos α;</li>
+        <li>находить среднюю и мгновенную ЭДС индукции;</li>
+        <li>определять направление тока по правилу Ленца;</li>
+        <li>строить анализ графика Φ(t) → ε(t);</li>
+        <li>решать задачи профильного уровня и формата ЕГЭ.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== ПРОБЛЕМНАЯ СИТУАЦИЯ ===================== -->
+<section class="emi-section" id="emi-problem">
+  <div class="emi-section-head">
+    <h2>1. Проблемная постановка: магнитное поле есть — а тока может не быть</h2>
+    <span class="emi-time">≈ 2 мин</span>
+  </div>
+
+  <p><strong>Вопрос классу:</strong> будет ли ток в катушке, если рядом просто лежит постоянный магнит?  
+  Что должно произойти, чтобы ток появился?</p>
+
+  <div class="emi-grid-2">
+    <article class="emi-card">
+      <h3>Ситуация A</h3>
+      <p>Постоянный магнит неподвижен внутри катушки.</p>
+      <p class="emi-inline-formula">B ≠ 0, но Φ = const</p>
+      <p><strong>Индукционного тока нет.</strong></p>
+    </article>
+
+    <article class="emi-card">
+      <h3>Ситуация B</h3>
+      <p>Тот же магнит движется относительно катушки.</p>
+      <p class="emi-inline-formula">B меняется во времени → Φ меняется</p>
+      <p><strong>Возникает ЭДС индукции.</strong></p>
+    </article>
+  </div>
+
+  <div class="emi-callout">
+    <p><strong>Ключевая идея урока:</strong>
+      электромагнитная индукция связана не с самим магнитным полем,
+      а с <em>изменением магнитного потока</em> через контур.
+    </p>
+  </div>
+
+  <div class="emi-callout warning">
+    <p><strong>Вопрос для предсказания:</strong>
+      если магнит остановить внутри катушки, отклонится ли стрелка гальванометра?
+      Почему? Подчеркните: B может быть большим, но если поток постоянен, ЭДС индукции равна нулю.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== ОПЫТ ФАРАДЕЯ ===================== -->
+<section class="emi-section" id="emi-faraday">
+  <div class="emi-section-head">
+    <h2>2. Наблюдение → закономерность: что показывает опыт Фарадея?</h2>
+    <span class="emi-time">≈ 3 мин</span>
+  </div>
+
+  <figure class="emi-figure">
+    <svg viewBox="0 0 820 300" role="img" aria-labelledby="emi-fig-faraday-title">
+      <title id="emi-fig-faraday-title">Схема опыта Фарадея: магнит, катушка и гальванометр</title>
+
+      <!-- Катушка -->
+      <rect x="270" y="70" width="190" height="110" rx="12" fill="#f8fafc" stroke="#98a2b3" stroke-width="2"/>
+      <g fill="none" stroke="#344054" stroke-width="4" stroke-linecap="round">
+        <path d="M285 90 C305 65 325 115 345 90 C365 65 385 115 405 90 C425 65 445 115 465 90"/>
+        <path d="M285 120 C305 95 325 145 345 120 C365 95 385 145 405 120 C425 95 445 145 465 120"/>
+        <path d="M285 150 C305 125 325 175 345 150 C365 125 385 175 405 150 C425 125 445 175 465 150"/>
+      </g>
+
+      <!-- Магнит -->
+      <rect x="90" y="95" width="120" height="60" rx="10" fill="#fee4e2" stroke="#b42318" stroke-width="3"/>
+      <text x="120" y="135" font-size="28" font-weight="700" fill="#b42318">N</text>
+      <text x="170" y="135" font-size="28" font-weight="700" fill="#175cd3">S</text>
+
+      <!-- Стрелка движения -->
+      <line x1="225" y1="125" x2="258" y2="125" stroke="#175cd3" stroke-width="5"/>
+      <polygon points="258,117 276,125 258,133" fill="#175cd3"/>
+      <text x="198" y="88" font-size="18" fill="#475467">движение</text>
+
+      <!-- Провода -->
+      <path d="M465 100 C520 100 520 205 575 205" fill="none" stroke="#344054" stroke-width="4"/>
+      <path d="M465 150 C535 150 535 225 575 225" fill="none" stroke="#344054" stroke-width="4"/>
+
+      <!-- Гальванометр -->
+      <circle cx="650" cy="215" r="60" fill="#ffffff" stroke="#344054" stroke-width="4"/>
+      <text x="650" y="190" text-anchor="middle" font-size="24" fill="#475467">G</text>
+      <line x1="650" y1="215" x2="685" y2="175" stroke="#b42318" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="650" cy="215" r="6" fill="#344054"/>
+
+      <text x="650" y="292" text-anchor="middle" font-size="17" fill="#475467">
+        Отклонение стрелки наблюдается только при изменении потока
+      </text>
+    </svg>
+    <figcaption>Рис. 1. Демонстрационная модель опыта Фарадея: катушка, постоянный магнит и гальванометр.</figcaption>
+  </figure>
+
+  <div class="emi-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Действие</th>
+          <th>Наблюдение</th>
+          <th>Вывод</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Магнит неподвижен</td>
+          <td>Стрелка гальванометра возвращается к нулю.</td>
+          <td>Поток перестал меняться: dΦ/dt = 0.</td>
+        </tr>
+        <tr>
+          <td>Двигаем магнит быстрее</td>
+          <td>Отклонение стрелки становится больше.</td>
+          <td>Больше скорость изменения потока → больше |ε|.</td>
+        </tr>
+        <tr>
+          <td>Меняем направление движения</td>
+          <td>Стрелка отклоняется в противоположную сторону.</td>
+          <td>Меняется знак dΦ/dt → меняется направление тока.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="emi-formula">
+    |ε<sub>i</sub>| ∝ скорости изменения магнитного потока
+  </div>
+
+  <div class="emi-callout warning">
+    <p><strong>Важная методическая ремарка:</strong>
+      это не лабораторная работа. На уроке достаточно демонстрации или интерактивной визуализации.
+      Корректно говорить: опыт показывает зависимость ЭДС от скорости изменения потока,
+      а закон Фарадея является количественным обобщением экспериментов.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== МАГНИТНЫЙ ПОТОК ===================== -->
+<section class="emi-section" id="emi-flux">
+  <div class="emi-section-head">
+    <h2>3. Новое понятие: магнитный поток Φ</h2>
+    <span class="emi-time">≈ 8 мин</span>
+  </div>
+
+  <p>
+    <strong>Магнитный поток</strong> характеризует, насколько сильно магнитное поле
+    «пронизывает» выбранную поверхность.
+  </p>
+
+  <div class="emi-formula">
+    Φ = B · S · cos α
+  </div>
+
+  <p class="emi-note">
+    для однородного поля и плоской поверхности;  
+    <span class="emi-vec">B</span> — магнитная индукция, S — площадь контура,
+    α — угол между вектором <span class="emi-vec">B</span> и нормалью <span class="emi-vec">n</span> к поверхности.
+  </p>
+
+  <figure class="emi-figure">
+    <svg viewBox="0 0 760 360" role="img" aria-labelledby="emi-fig-flux-title">
+      <title id="emi-fig-flux-title">Магнитный поток через площадку: вектор B, нормаль n и угол α</title>
+
+      <!-- Поверхность -->
+      <path d="M180 230 L420 160 L580 230 L340 300 Z" fill="#eff8ff" stroke="#175cd3" stroke-width="4"/>
+      <text x="360" y="255" font-size="24" font-weight="700" fill="#175cd3">S</text>
+
+      <!-- Нормаль -->
+      <line x1="380" y1="230" x2="380" y2="85" stroke="#067647" stroke-width="5"/>
+      <polygon points="372,88 388,88 380,66" fill="#067647"/>
+      <text x="392" y="78" font-size="24" font-weight="700" fill="#067647">n</text>
+
+      <!-- Вектор B -->
+      <line x1="380" y1="230" x2="605" y2="130" stroke="#175cd3" stroke-width="5"/>
+      <polygon points="605,130 586,124 593,144" fill="#175cd3"/>
+      <text x="618" y="126" font-size="24" font-weight="700" fill="#175cd3">B</text>
+
+      <!-- Дуга угла -->
+      <path d="M380 150 Q430 132 455 158" fill="none" stroke="#b54708" stroke-width="3" stroke-dasharray="6 4"/>
+      <text x="430" y="128" font-size="22" font-weight="700" fill="#b54708">α</text>
+
+      <!-- Линии поля -->
+      <g stroke="#98a2b3" stroke-width="2" stroke-dasharray="6 6" opacity="0.75">
+        <line x1="220" y1="205" x2="470" y2="95"/>
+        <line x1="260" y1="235" x2="510" y2="125"/>
+        <line x1="300" y1="265" x2="550" y2="155"/>
+      </g>
+
+      <text x="380" y="338" text-anchor="middle" font-size="17" fill="#475467">
+        α отсчитывается от нормали n, а не от плоскости рамки
+      </text>
+    </svg>
+    <figcaption>Рис. 2. Геометрический смысл магнитного потока: важна проекция площади на направление поля.</figcaption>
+  </figure>
+
+  <div class="emi-callout danger">
+    <p><strong>Частая ошибка:</strong> считать α углом между <span class="emi-vec">B</span> и самой плоскостью рамки.
+      Нужно брать угол между <span class="emi-vec">B</span> и <em>нормалью</em> к поверхности.
+    </p>
+    <ul>
+      <li>Если <span class="emi-vec">B</span> перпендикулярно плоскости, то α = 0°, cos α = 1, поток максимален.</li>
+      <li>Если <span class="emi-vec">B</span> вдоль плоскости, то α = 90°, cos α = 0, поток равен нулю.</li>
+      <li>Если α &gt; 90°, поток формально отрицателен относительно выбранной нормали.</li>
+    </ul>
+  </div>
+
+  <h3>Единица измерения</h3>
+  <div class="emi-formula small">
+    1 Вб = 1 Тл · 1 м²
+  </div>
+
+  <h3>Быстрая числовая модель</h3>
+  <p>Пусть B = 0,50 Тл, S = 0,050 м². Тогда:</p>
+  <div class="emi-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Угол α к нормали</th>
+          <th>cos α</th>
+          <th>Φ = B·S·cos α</th>
+          <th>Комментарий</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0°</td>
+          <td>1</td>
+          <td>0,025 Вб</td>
+          <td>Максимальный поток</td>
+        </tr>
+        <tr>
+          <td>60°</td>
+          <td>0,5</td>
+          <td>0,0125 Вб</td>
+          <td>Поток уменьшился вдвое</td>
+        </tr>
+        <tr>
+          <td>90°</td>
+          <td>0</td>
+          <td>0</td>
+          <td>Линии поля скользят вдоль площадки</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details>
+    <summary>Три быстрых вопроса к классу — ответы</summary>
+    <ol>
+      <li><strong>Как сделать Φ = 0 при B ≠ 0?</strong><br>
+        Повернуть контур так, чтобы α = 90°, т.е. линии поля шли вдоль плоскости рамки.
+      </li>
+      <li><strong>Как удвоить Φ, не меняя площадь?</strong><br>
+        Увеличить B вдвое или изменить ориентацию так, чтобы cos α удвоился, например перейти от α = 60° к α = 0°.
+      </li>
+      <li><strong>Что произойдёт с Φ при α → 90°?</strong><br>
+        Поток будет стремиться к нулю, потому что cos α → 0.
+      </li>
+    </ol>
+  </details>
+</section>
+
+<!-- ===================== ТРИ МЕХАНИЗМА ИЗМЕНЕНИЯ ПОТОКА ===================== -->
+<section class="emi-section" id="emi-mechanisms">
+  <div class="emi-section-head">
+    <h2>4. Три физических механизма: индукция возможна даже без движения магнита</h2>
+    <span class="emi-time">≈ 2 мин</span>
+  </div>
+
+  <div class="emi-grid">
+    <article class="emi-card">
+      <h3>1. Меняется B</h3>
+      <p>Меняется величина магнитного поля.</p>
+      <p class="emi-note">Например, изменяется ток в электромагните или соседней катушке.</p>
+    </article>
+
+    <article class="emi-card">
+      <h3>2. Меняется S</h3>
+      <p>Меняется площадь контура, находящаяся в поле.</p>
+      <p class="emi-note">Например, рамка входит в область магнитного поля или деформируется.</p>
+    </article>
+
+    <article class="emi-card">
+      <h3>3. Меняется α</h3>
+      <p>Рамка поворачивается относительно поля.</p>
+      <p class="emi-note">Это основа работы генератора переменного тока.</p>
+    </article>
+  </div>
+
+  <div class="emi-formula">
+    Φ(t) = B(t) · S(t) · cos α(t)
+  </div>
+
+  <div class="emi-callout success">
+    <p><strong>Главный акцент:</strong> важно не то, <em>что именно</em> меняется,
+      а то, что меняется <em>магнитный поток</em> через контур.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== ЗАКОН ФАРАДЕЯ ===================== -->
+<section class="emi-section" id="emi-law">
+  <div class="emi-section-head">
+    <h2>5. Количественный закон: от наблюдения к закону Фарадея</h2>
+    <span class="emi-time">≈ 6 мин</span>
+  </div>
+
+  <ol class="emi-steps">
+    <li>Эксперимент показывает: чем быстрее меняется Φ, тем больше |ε<sub>i</sub>|.</li>
+    <li>Средняя скорость изменения потока: <span class="emi-inline-formula">ΔΦ / Δt</span>.</li>
+    <li>В пределе Δt → 0 получаем производную: <span class="emi-inline-formula">dΦ / dt</span>.</li>
+    <li>Знак «−» задаёт правило Ленца, т.е. направление индукционного тока.</li>
+  </ol>
+
+  <div class="emi-formula">
+    ε<sub>ср</sub> = − N ·
+    <span class="emi-frac">
+      <span>ΔΦ</span>
+      <span>Δt</span>
+    </span>
+  </div>
+
+  <div class="emi-formula">
+    ε<sub>i</sub> = − N ·
+    <span class="emi-frac">
+      <span>dΦ</span>
+      <span>dt</span>
+    </span>
+  </div>
+
+  <p class="emi-note">
+    N — число витков; Φ — магнитный поток через один виток.  
+    Для катушки удобно вводить потокосцепление Ψ = N·Φ, тогда ε<sub>i</sub> = −dΨ/dt.
+  </p>
+
+  <div class="emi-callout">
+    <p><strong>Методически важно:</strong>
+      это не «вывод из другой формулы», а математическая запись экспериментального закона.
+      Для сильного класса подчеркните: производная означает мгновенную скорость изменения потока.
+    </p>
+  </div>
+
+  <h3>Проверка размерности: почему Вб/с — это вольт?</h3>
+  <div class="emi-formula small">
+    [ε] = [Φ] / [t] = Вб / с = В
+  </div>
+
+  <div class="emi-callout success">
+    <p><strong>Смысл:</strong>
+      если поток через один виток изменился на 1 Вб за 1 с, модуль средней ЭДС в одном витке равен 1 В.
+      ЭДС зависит от <em>темпа изменения</em> потока, а не от его абсолютного значения.
+    </p>
+  </div>
+
+  <h3>Ток и заряд в контуре</h3>
+  <p>Если контур замкнут и имеет сопротивление R, то индукционный ток равен:</p>
+  <div class="emi-formula small">
+    I<sub>i</sub> = ε<sub>i</sub> / R
+  </div>
+
+  <p>А полный заряд, прошедший через контур при изменении потока, не зависит от длительности процесса:</p>
+  <div class="emi-formula small">
+    q = N ·
+    <span class="emi-frac">
+      <span>|ΔΦ|</span>
+      <span>R</span>
+    </span>
+  </div>
+
+  <p class="emi-note">
+    Это полезно для задач: быстро меняющийся поток даёт большую ЭДС и большой ток,
+    но заряд определяется общим изменением потока и сопротивлением цепи.
+  </p>
+</section>
+
+<!-- ===================== ПРАВИЛО ЛЕНЦА ===================== -->
+<section class="emi-section" id="emi-lenz">
+  <div class="emi-section-head">
+    <h2>6. Направление индукционного тока: знак «−» — это правило Ленца</h2>
+    <span class="emi-time">≈ 7 мин</span>
+  </div>
+
+  <div class="emi-callout violet">
+    <p><strong>Правило Ленца:</strong>
+      индукционный ток имеет такое направление, что создаваемое им магнитное поле
+      противодействует изменению магнитного потока, вызвавшего этот ток.
+    </p>
+    <p><strong>Ключевое слово — «изменению».</strong>
+      Ток противодействует не всегда внешнему полю как таковому, а именно росту или убыванию потока.
+    </p>
+  </div>
+
+  <figure class="emi-figure">
+    <svg viewBox="0 0 860 320" role="img" aria-labelledby="emi-fig-lenz-title">
+      <title id="emi-fig-lenz-title">Правило Ленца: приближение и удаление магнита</title>
+
+      <!-- Левая панель: приближение -->
+      <text x="210" y="35" text-anchor="middle" font-size="22" font-weight="700" fill="#0c1427">Приближаем N-полюс</text>
+
+      <!-- Магнит -->
+      <rect x="60" y="120" width="110" height="55" rx="10" fill="#fee4e2" stroke="#b42318" stroke-width="3"/>
+      <text x="88" y="157" font-size="26" font-weight="700" fill="#b42318">N</text>
+      <text x="135" y="157" font-size="26" font-weight="700" fill="#175cd3">S</text>
+
+      <!-- Движение магнита вправо -->
+      <line x1="180" y1="95" x2="225" y2="95" stroke="#175cd3" stroke-width="5"/>
+      <polygon points="225,87 245,95 225,103" fill="#175cd3"/>
+      <text x="180" y="80" font-size="17" fill="#475467">движение</text>
+
+      <!-- Катушка -->
+      <ellipse cx="300" cy="148" rx="28" ry="70" fill="#f8fafc" stroke="#344054" stroke-width="5"/>
+      <text x="300" y="155" text-anchor="middle" font-size="24" font-weight="700" fill="#b42318">N</text>
+      <text x="300" y="245" text-anchor="middle" font-size="17" fill="#475467">лицо катушки</text>
+
+      <!-- Внешний поток -->
+      <line x1="190" y1="148" x2="255" y2="148" stroke="#98a2b3" stroke-width="4"/>
+      <polygon points="255,141 272,148 255,155" fill="#98a2b3"/>
+      <text x="196" y="132" font-size="17" fill="#475467">B外</text>
+
+      <!-- Индуцированное поле -->
+      <line x1="345" y1="148" x2="285" y2="148" stroke="#067647" stroke-width="4"/>
+      <polygon points="285,141 268,148 285,155" fill="#067647"/>
+      <text x="330" y="132" font-size="17" fill="#067647">Bинд</text>
+
+      <!-- Сила отталкивания -->
+      <line x1="120" y1="205" x2="70" y2="205" stroke="#b42318" stroke-width="5"/>
+      <polygon points="70,197 50,205 70,213" fill="#b42318"/>
+      <text x="72" y="235" font-size="17" fill="#b42318">отталкивание</text>
+
+      <!-- Правая панель: удаление -->
+      <text x="650" y="35" text-anchor="middle" font-size="22" font-weight="700" fill="#0c1427">Удаляем N-полюс</text>
+
+      <!-- Магнит -->
+      <rect x="500" y="120" width="110" height="55" rx="10" fill="#fee4e2" stroke="#b42318" stroke-width="3"/>
+      <text x="528" y="157" font-size="26" font-weight="700" fill="#b42318">N</text>
+      <text x="575" y="157" font-size="26" font-weight="700" fill="#175cd3">S</text>
+
+      <!-- Движение магнита влево -->
+      <line x1="490" y1="95" x2="445" y2="95" stroke="#175cd3" stroke-width="5"/>
+      <polygon points="445,87 425,95 445,103" fill="#175cd3"/>
+      <text x="430" y="80" font-size="17" fill="#475467">движение</text>
+
+      <!-- Катушка -->
+      <ellipse cx="740" cy="148" rx="28" ry="70" fill="#f8fafc" stroke="#344054" stroke-width="5"/>
+      <text x="740" y="155" text-anchor="middle" font-size="24" font-weight="700" fill="#175cd3">S</text>
+      <text x="740" y="245" text-anchor="middle" font-size="17" fill="#475467">лицо катушки</text>
+
+      <!-- Внешний поток -->
+      <line x1="630" y1="148" x2="695" y2="148" stroke="#98a2b3" stroke-width="4"/>
+      <polygon points="695,141 712,148 695,155" fill="#98a2b3"/>
+      <text x="636" y="132" font-size="17" fill="#475467">B外</text>
+
+      <!-- Индуцированное поле поддерживает -->
+      <line x1="700" y1="180" x2="760" y2="180" stroke="#067647" stroke-width="4"/>
+      <polygon points="760,173 777,180 760,187" fill="#067647"/>
+      <text x="700" y="205" font-size="17" fill="#067647">Bинд</text>
+
+      <!-- Сила притяжения -->
+      <line x1="560" y1="205" x2="610" y2="205" stroke="#b42318" stroke-width="5"/>
+      <polygon points="610,197 630,205 610,213" fill="#b42318"/>
+      <text x="560" y="235" font-size="17" fill="#b42318">притяжение</text>
+    </svg>
+    <figcaption>Рис. 3. При приближении магнита катушка «отталкивает» его, при удалении — «удерживает». Это следствие правила Ленца.</figcaption>
+  </figure>
+
+  <div class="emi-callout warning">
+    <p><strong>Связь с законом сохранения энергии:</strong>
+      если бы возникающий ток усиливал движение магнита, система сама разгоняла бы магнит
+      и одновременно производила электрическую энергию. Это было бы вечным двигателем.
+      Поэтому знак «−» физически необходим.
+    </p>
+  </div>
+
+  <h3>Алгоритм для задач: как определить направление тока за 4 шага</h3>
+  <ol class="emi-steps">
+    <li>Определите направление внешнего поля <span class="emi-vec">B</span> через контур.</li>
+    <li>Решите: магнитный поток увеличивается или уменьшается?</li>
+    <li>По правилу Ленца выберите направление собственного поля <span class="emi-vec">B</span><sub>инд</sub>,
+        которое мешает этому изменению.</li>
+    <li>По правилу правой руки / буравчика найдите направление индукционного тока.</li>
+  </ol>
+
+  <div class="emi-callout danger">
+    <p><strong>Не начинайте сразу с направления тока.</strong>
+      Сначала поток → затем B<sub>инд</sub> → только потом ток.
+    </p>
+  </div>
+
+  <details>
+    <summary>Мнемоника и типичный качественный пример</summary>
+    <p><strong>Мнемоника:</strong> «приближение — отталкиваем, удаление — удерживаем».</p>
+    <p><strong>Пример.</strong> К катушке, замкнутой на гальванометр, приближают северный полюс постоянного магнита.</p>
+    <ol>
+      <li>Внешний поток через катушку растёт.</li>
+      <li>Индукционный ток должен препятствовать росту потока.</li>
+      <li>Обращённая к магниту сторона катушки становится северным полюсом.</li>
+      <li>Одноимённые полюсы отталкиваются: катушка тормозит приближение магнита.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- ===================== ГЕНЕРАТОЕР ===================== -->
+<section class="emi-section" id="emi-generator">
+  <div class="emi-section-head">
+    <h2>7. Связь с генератором: вращающаяся рамка → синусоидальная ЭДС</h2>
+    <span class="emi-time">≈ 3 мин</span>
+  </div>
+
+  <p>
+    Пусть рамка вращается с постоянной угловой скоростью ω. Тогда угол между нормалью к рамке
+    и вектором <span class="emi-vec">B</span> меняется по закону α = ωt.
+  </p>
+
+  <div class="emi-formula small">
+    Φ(t) = B · S · cos(ωt)
+  </div>
+
+  <p>По закону Фарадея:</p>
+  <div class="emi-formula">
+    ε<sub>i</sub>(t) = − N ·
+    <span class="emi-frac">
+      <span>dΦ</span>
+      <span>dt</span>
+    </span>
+    = N · B · S · ω · sin(ωt)
+  </div>
+
+  <figure class="emi-figure">
+    <svg viewBox="0 0 880 320" role="img" aria-labelledby="emi-fig-gen-title">
+      <title id="emi-fig-gen-title">Вращающаяся рамка в магнитном поле и синусоидальная ЭДС</title>
+
+      <!-- Магнитное поле -->
+      <g stroke="#98a2b3" stroke-width="3" stroke-dasharray="8 6">
+        <line x1="60" y1="90" x2="330" y2="90"/>
+        <line x1="60" y1="140" x2="330" y2="140"/>
+        <line x1="60" y1="190" x2="330" y2="190"/>
+      </g>
+      <polygon points="330,83 348,90 330,97" fill="#98a2b3"/>
+      <polygon points="330,133 348,140 330,147" fill="#98a2b3"/>
+      <polygon points="330,183 348,190 330,197" fill="#98a2b3"/>
+      <text x="70" y="65" font-size="22" font-weight="700" fill="#475467">B</text>
+
+      <!-- Рамка -->
+      <ellipse cx="195" cy="140" rx="85" ry="42" fill="rgba(23,92,211,0.08)" stroke="#175cd3" stroke-width="5"/>
+      <line x1="195" y1="98" x2="195" y2="182" stroke="#344054" stroke-width="4"/>
+      <path d="M255 115 A70 70 0 0 1 255 165" fill="none" stroke="#067647" stroke-width="4"/>
+      <polygon points="255,165 247,150 263,150" fill="#067647"/>
+      <text x="268" y="145" font-size="20" font-weight="700" fill="#067647">ω</text>
+
+      <!-- График ЭДС -->
+      <line x1="430" y1="160" x2="830" y2="160" stroke="#344054" stroke-width="3"/>
+      <line x1="450" y1="50" x2="450" y2="270" stroke="#344054" stroke-width="3"/>
+      <text x="835" y="165" font-size="20" fill="#475467">t</text>
+      <text x="425" y="45" font-size="20" fill="#475467">ε</text>
+
+      <path d="M450 160
+               C490 60, 530 60, 570 160
+               C610 260, 650 260, 690 160
+               C730 60, 770 60, 810 160"
+            fill="none" stroke="#b42318" stroke-width="5"/>
+
+      <line x1="450" y1="80" x2="810" y2="80" stroke="#d0d5dd" stroke-width="2" stroke-dasharray="5 5"/>
+      <line x1="450" y1="240" x2="810" y2="240" stroke="#d0d5dd" stroke-width="2" stroke-dasharray="5 5"/>
+      <text x="815" y="85" font-size="18" fill="#475467">εmax</text>
+      <text x="815" y="245" font-size="18" fill="#475467">−εmax</text>
+    </svg>
+    <figcaption>Рис. 4. Вращение рамки приводит к периодическому изменению α, а значит — к синусоидальной ЭДС.</figcaption>
+  </figure>
+
+  <div class="emi-callout">
+    <p><strong>Амплитуда ЭДС:</strong></p>
+    <div class="emi-formula small">
+      ε<sub>max</sub> = N · B · S · ω = N · B · S · 2πf
+    </div>
+    <p>Эта модель — прямой мост к теме «Переменный ток».</p>
+  </div>
+</section>
+
+<!-- ===================== ПРИМЕНЕНИЯ ===================== -->
+<section class="emi-section" id="emi-applications">
+  <div class="emi-section-head">
+    <h2>8. Где работает электромагнитная индукция</h2>
+    <span class="emi-time">≈ 2 мин</span>
+  </div>
+
+  <div class="emi-grid">
+    <article class="emi-card">
+      <h3>⚙️ Генератор</h3>
+      <p>Вращение рамки в магнитном поле → периодическое изменение Φ → переменная ЭДС промышленной частоты.</p>
+    </article>
+
+    <article class="emi-card">
+      <h3>🔄 Трансформатор</h3>
+      <p>Переменный ток первичной обмотки создаёт меняющийся поток в сердечнике → ЭДС во вторичной обмотке.</p>
+    </article>
+
+    <article class="emi-card">
+      <h3>🍳 Индукционная плита</h3>
+      <p>Высокочастотное поле наводит вихревые токи в дне посуды → металл нагревается.</p>
+    </article>
+
+    <article class="emi-card">
+      <h3>📱 Беспроводная зарядка</h3>
+      <p>Катушка-передатчик создаёт переменное поле, катушка-приёмник преобразует его в ток зарядки.</p>
+    </article>
+
+    <article class="emi-card">
+      <h3>🚗 Рекуперация в электромобилях</h3>
+      <p>При торможении двигатель работает как генератор: механическая энергия частично превращается в электрическую.</p>
+    </article>
+
+    <article class="emi-card">
+      <h3>🧲 Вихревые токи и торможение</h3>
+      <p>Токи Фуко возникают в проводниках при изменении потока; они могут полезны для нагрева или вредны как потери.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== ЗАДАЧИ ===================== -->
+<section class="emi-section" id="emi-tasks">
+  <div class="emi-section-head">
+    <h2>9. Задачи: расчётные, качественные и графиковые</h2>
+    <span class="emi-time">≈ 10 мин</span>
+  </div>
+
+  <!-- Задача 1 -->
+  <article class="emi-card">
+    <h3><span class="emi-tag">Базовая расчётная</span> Задача 1. Изменяется магнитный поток</h3>
+    <p><strong>Условие.</strong> Магнитный поток через один виток катушки изменился от 8 мВб до 2 мВб за 0,020 с.
+      Катушка содержит 50 витков. Найдите модуль средней ЭДС индукции.</p>
+
+    <div class="emi-formula small">
+      Φ₁ = 8·10⁻³ Вб, Φ₂ = 2·10⁻³ Вб, Δt = 2,0·10⁻² с, N = 50
+    </div>
+
+    <details>
+      <summary>Показать решение</summary>
+      <ol>
+        <li>Изменение потока:<br>
+          |ΔΦ| = |2 − 8|·10⁻³ = 6·10⁻³ Вб.
+        </li>
+        <li>Закон Фарадея:<br>
+          |ε| = N·|ΔΦ| / Δt = 50 · 6·10⁻³ / 0,020 = 15 В.
+        </li>
+      </ol>
+      <p><strong>Ответ:</strong> 15 В.</p>
+    </details>
+  </article>
+
+  <!-- Задача 2 -->
+  <article class="emi-card">
+    <h3><span class="emi-tag">Профильная</span> Задача 2. Поле меняется, рамка неподвижна</h3>
+    <p><strong>Условие.</strong> Катушка из 200 витков имеет площадь каждого витка 50 см².
+      Вектор <span class="emi-vec">B</span> перпендикулярен плоскости витка.
+      Индукция равномерно увеличивается от 0,20 Тл до 0,80 Тл за 0,050 с.
+      Найдите модуль ЭДС. Дополнительно: если сопротивление цепи R = 6 Ом, найдите силу тока и прошедший заряд.</p>
+
+    <details>
+      <summary>Решить пошагово</summary>
+      <ol>
+        <li>Перевод площади:<br>
+          50 см² = 50·10⁻⁴ м² = 5,0·10⁻³ м².
+        </li>
+        <li>Так как <span class="emi-vec">B</span> ⟂ плоскости витка, α = 0°, cos α = 1.</li>
+        <li>Изменение потока через один виток:<br>
+          |ΔΦ| = S·|ΔB| = 5·10⁻³ · (0,80 − 0,20) = 5·10⁻³ · 0,60 = 3·10⁻³ Вб.
+        </li>
+        <li>Модуль средней ЭДС:<br>
+          |ε| = N·|ΔΦ| / Δt = 200 · 3·10⁻³ / 0,050 = 12 В.
+        </li>
+        <li>Сила тока:<br>
+          I = ε / R = 12 / 6 = 2 А.
+        </li>
+        <li>Заряд:<br>
+          q = N·|ΔΦ| / R = 200 · 3·10⁻³ / 6 = 0,1 Кл.
+        </li>
+      </ol>
+      <p><strong>Ответ:</strong> ε = 12 В; I = 2 А; q = 0,1 Кл.</p>
+      <p class="emi-note"><strong>Типичная ошибка:</strong> забыть перевести см² в м².  
+        1 см² = 10⁻⁴ м², а не 10⁻² м².</p>
+    </details>
+  </article>
+
+  <!-- Задача 3: график -->
+  <article class="emi-card">
+    <h3><span class="emi-tag">ЕГЭ-формат</span> Задача 3. График Φ(t): где ЭДС максимальна?</h3>
+
+    <figure class="emi-figure">
+      <svg viewBox="0 0 880 430" role="img" aria-labelledby="emi-fig-graph-title">
+        <title id="emi-fig-graph-title">Графики магнитного потока и ЭДС индукции</title>
+
+        <!-- Верхний график Φ(t) -->
+        <text x="60" y="35" font-size="20" font-weight="700" fill="#0c1427">Φ, мВб</text>
+        <line x1="80" y1="180" x2="760" y2="180" stroke="#344054" stroke-width="3"/>
+        <line x1="80" y1="40" x2="80" y2="200" stroke="#344054" stroke-width="3"/>
+        <text x="770" y="185" font-size="18" fill="#475467">t, с</text>
+
+        <!-- деления t -->
+        <g font-size="16" fill="#475467" text-anchor="middle">
+          <text x="80" y="215">0</text>
+          <text x="250" y="215">1</text>
+          <text x="420" y="215">2</text>
+          <text x="590" y="215">3</text>
+          <text x="760" y="215">4</text>
+        </g>
+
+        <!-- деления Φ -->
+        <g font-size="15" fill="#475467" text-anchor="end">
+          <text x="70" y="185">0</text>
+          <text x="70" y="135">4</text>
+          <text x="70" y="85">8</text>
+          <text x="70" y="45">10</text>
+        </g>
+
+        <!-- ломаная Φ(t): 0->8 за 1 с, постоянно, 8->2, 2->0 -->
+        <polyline points="80,180 250,80 420,80 590,140 760,180"
+                  fill="none" stroke="#175cd3" stroke-width="5" stroke-linejoin="round"/>
+
+        <!-- Нижний график ε(t) -->
+        <text x="60" y="275" font-size="20" font-weight="700" fill="#0c1427">ε, мВ</text>
+        <line x1="80" y1="340" x2="760" y2="340" stroke="#344054" stroke-width="3"/>
+        <line x1="80" y1="260" x2="80" y2="410" stroke="#344054" stroke-width="3"/>
+        <text x="770" y="345" font-size="18" fill="#475467">t, с</text>
+
+        <g font-size="16" fill="#475467" text-anchor="middle">
+          <text x="80" y="375">0</text>
+          <text x="250" y="375">1</text>
+          <text x="420" y="375">2</text>
+          <text x="590" y="375">3</text>
+          <text x="760" y="375">4</text>
+        </g>
+
+        <!-- ЭДС: -8, 0, +6, +2 (масштаб: 10 px на 1 мВ, ноль y=340) -->
+        <polyline points="80,420 250,420 250,340 420,340 420,280 590,280 590,320 760,320"
+                  fill="none" stroke="#b42318" stroke-width="5" stroke-linejoin="round"/>
+
+        <text x="140" y="405" font-size="16" fill="#b42318">−8</text>
+        <text x="320" y="330" font-size="16" fill="#b42318">0</text>
+        <text x="480" y="268" font-size="16" fill="#b42318">+6</text>
+        <text x="650" y="308" font-size="16" fill="#b42318">+2</text>
+      </svg>
+      <figcaption>Рис. 5. Модуль ЭДС равен модулю наклона графика Φ(t). На участке 0–1 с наклон наибольший по модулю.</figcaption>
+    </figure>
+
+    <p><strong>Вопрос.</strong> На каком интервале времени модуль ЭДС индукции в одном витке наибольший?</p>
+
+    <div class="emi-quiz">
+      <fieldset>
+        <legend>Выберите один ответ</legend>
+        <ol class="emi-options" type="A">
+          <li>1–2 с</li>
+          <li>0–1 с</li>
+          <li>2–3 с</li>
+          <li>3–4 с</li>
+        </ol>
+      </fieldset>
+    </div>
+
+    <details>
+      <summary>Ответ и объяснение</summary>
+      <p><strong>Верно: Б. 0–1 с.</strong></p>
+      <p>Идея: |ε| = |dΦ/dt| — это модуль наклона графика Φ(t).</p>
+      <ul>
+        <li>0–1 с: наклон = 8 мВб/с → |ε| = 8 мВ.</li>
+        <li>1–2 с: поток постоянен → ε = 0.</li>
+        <li>2–3 с: наклон по модулю = 6 мВб/с → |ε| = 6 мВ.</li>
+        <li>3–4 с: наклон по модулю = 2 мВб/с → |ε| = 2 мВ.</li>
+      </ul>
+    </details>
+  </article>
+
+  <!-- Задача 4: концептуальная -->
+  <article class="emi-card">
+    <h3><span class="emi-tag">Концептуальная ловушка</span> Задача 4. Может ли ЭДС быть нулевой при Φ ≠ 0?</h3>
+    <p><strong>Условие.</strong> Замкнутая рамка неподвижна в однородном постоянном магнитном поле.
+      Магнитный поток через рамку равен 0,030 Вб и не меняется. Чему равна ЭДС индукции?</p>
+
+    <div class="emi-quiz">
+      <fieldset>
+        <legend>Выберите один ответ</legend>
+        <ol class="emi-options" type="A">
+          <li>0 В</li>
+          <li>0,03 В</li>
+          <li>30 В</li>
+          <li>Недостаточно данных</li>
+        </ol>
+      </fieldset>
+    </div>
+
+    <details>
+      <summary>Ответ и объяснение</summary>
+      <p><strong>Верно: А. 0 В.</strong></p>
+      <p>Это одна из главных концептуальных ловушек: Φ ≠ 0 не означает ε ≠ 0.
+        Нужна величина dΦ/dt. Если поток постоянен, ЭДС индукции равна нулю,
+        даже если сам поток довольно велик.</p>
+    </details>
+  </article>
+
+  <!-- Задача 5: движущийся проводник -->
+  <article class="emi-card">
+    <h3><span class="emi-tag">Резерв / профиль</span> Задача 5. ЭДС в движущемся проводнике</h3>
+    <p>Прямой проводник длины l движется со скоростью v в однородном поле B.</p>
+
+    <figure class="emi-figure">
+      <svg viewBox="0 0 780 300" role="img" aria-labelledby="emi-fig-rod-title">
+        <title id="emi-fig-rod-title">Подвижный стержень в магнитном поле</title>
+
+        <!-- Рельсы -->
+        <line x1="120" y1="90" x2="650" y2="90" stroke="#344054" stroke-width="5"/>
+        <line x1="120" y1="210" x2="650" y2="210" stroke="#344054" stroke-width="5"/>
+
+        <!-- Резистор -->
+        <path d="M120 90 L100 105 L140 125 L100 145 L140 165 L100 185 L120 210"
+              fill="none" stroke="#b54708" stroke-width="5" stroke-linejoin="round"/>
+        <text x="60" y="155" font-size="22" font-weight="700" fill="#b54708">R</text>
+
+        <!-- Стержень -->
+        <line x1="390" y1="80" x2="390" y2="220" stroke="#175cd3" stroke-width="8" stroke-linecap="round"/>
+        <text x="405" y="70" font-size="22" font-weight="700" fill="#175cd3">l</text>
+
+        <!-- Скорость -->
+        <line x1="410" y1="150" x2="500" y2="150" stroke="#067647" stroke-width="5"/>
+        <polygon points="500,142 520,150 500,158" fill="#067647"/>
+        <text x="445" y="135" font-size="22" font-weight="700" fill="#067647">v</text>
+
+        <!-- Поле внутрь страницы: крестики -->
+        <g stroke="#475467" stroke-width="3">
+          <g transform="translate(220,120)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(280,120)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(340,120)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(460,120)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(520,120)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(580,120)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+
+          <g transform="translate(220,180)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(280,180)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(340,180)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(460,180)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(520,180)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+          <g transform="translate(580,180)"><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="8" y1="-8" x2="-8" y2="8"/></g>
+        </g>
+        <text x="610" y="80" font-size="22" font-weight="700" fill="#475467">B (от нас)</text>
+      </svg>
+      <figcaption>Рис. 6. Стержень «подметает» площадь, поэтому поток через контур меняется.</figcaption>
+    </figure>
+
+    <div class="emi-formula small">
+      |ε| = B · l · v · sin β
+    </div>
+    <p class="emi-note">β — угол между <span class="emi-vec">B</span> и <span class="emi-vec">v</span>; в стандартной конфигурации β = 90°.</p>
+
+    <p><strong>Задача.</strong> l = 0,40 м, B = 0,50 Тл, v = 6,0 м/с, B ⟂ v. Найдите ЭДС.</p>
+
+    <details>
+      <summary>Показать решение</summary>
+      <p>ε = B·l·v = 0,50 · 0,40 · 6,0 = 1,2 В.</p>
+      <p><strong>Ответ:</strong> 1,2 В.</p>
+    </details>
+  </article>
+
+  <!-- Задача 6: вращение рамки -->
+  <article class="emi-card">
+    <h3><span class="emi-tag">Резерв / ЕГЭ</span> Задача 6. Амплитуда ЭДС вращающейся рамки</h3>
+    <p><strong>Условие.</strong> Рамка из N = 100 витков площадью S = 40 см² равномерно вращается
+      в поле B = 0,25 Тл с частотой f = 50 Гц. Определите амплитуду ЭДС.</p>
+
+    <details>
+      <summary>Показать решение</summary>
+      <ol>
+        <li>Перевод площади: 40 см² = 4,0·10⁻³ м².</li>
+        <li>Угловая скорость: ω = 2πf = 100π рад/с.</li>
+        <li>Амплитуда: ε<sub>max</sub> = N·B·S·ω.</li>
+        <li>Подстановка:<br>
+          ε<sub>max</sub> = 100 · 0,25 · 4·10⁻³ · 100π ≈ 31,4 В.
+        </li>
+      </ol>
+      <p><strong>Ответ:</strong> ≈ 31,4 В.</p>
+    </details>
+  </article>
+</section>
+
+<!-- ===================== АНТИОШИБКИ ===================== -->
+<section class="emi-section" id="emi-mistakes">
+  <div class="emi-section-head">
+    <h2>10. Антиошибки: пять ловушек, которые встречаются в задачах</h2>
+    <span class="emi-time">≈ 2 мин</span>
+  </div>
+
+  <div class="emi-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Ошибка</th>
+          <th>Как правильно</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>❌ α — угол с плоскостью рамки.</td>
+          <td>✓ α — угол с нормалью к поверхности.</td>
+        </tr>
+        <tr>
+          <td>❌ Есть B → обязательно есть ЭДС.</td>
+          <td>✓ Нужен dΦ/dt ≠ 0.</td>
+        </tr>
+        <tr>
+          <td>❌ Для катушки забываем N.</td>
+          <td>✓ ε = −N·dΦ/dt.</td>
+        </tr>
+        <tr>
+          <td>❌ см² переводим как 10⁻² м².</td>
+          <td>✓ 1 см² = 10⁻⁴ м².</td>
+        </tr>
+        <tr>
+          <td>❌ Ленц «всегда против B».</td>
+          <td>✓ Он против изменения потока.</td>
+        </tr>
+        <tr>
+          <td>❌ Знак «−» используют как «ЭДС отрицательна».</td>
+          <td>✓ Знак фиксирует направление в выбранной ориентации контура.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== СБОРКА ТЕМЫ ===================== -->
+<section class="emi-section" id="emi-summary">
+  <div class="emi-section-head">
+    <h2>11. Собираем тему в одну схему</h2>
+    <span class="emi-time">≈ 2 мин</span>
+  </div>
+
+  <div class="emi-flow" aria-label="Причинная цепочка электромагнитной индукции">
+    <div class="emi-flow-step">
+      1. Поток<br>
+      <span class="emi-inline-formula">Φ = B·S·cos α</span>
+    </div>
+    <div class="emi-flow-arrow">→</div>
+    <div class="emi-flow-step">
+      2. Изменение<br>
+      <span class="emi-inline-formula">dΦ/dt</span>
+    </div>
+    <div class="emi-flow-arrow">→</div>
+    <div class="emi-flow-step">
+      3. ЭДС<br>
+      <span class="emi-inline-formula">ε = −N·dΦ/dt</span>
+    </div>
+    <div class="emi-flow-arrow">→</div>
+    <div class="emi-flow-step">
+      4. Ток<br>
+      <span class="emi-inline-formula">I = ε/R</span>
+    </div>
+  </div>
+
+  <div class="emi-callout violet">
+    <p><strong>Физический смысл глубже формулы:</strong>
+      изменяющийся магнитный поток создаёт вихревое электрическое поле;
+      в проводящем замкнутом контуре оно приводит к индукционному току.
+    </p>
+  </div>
+
+  <h3>Три фразы, которые нужно унести с урока</h3>
+  <ol>
+    <li><strong>Магнитный поток:</strong> Φ = B·S·cos α.</li>
+    <li><strong>ЭДС возникает, когда поток изменяется:</strong> ε = −N·dΦ/dt.</li>
+    <li><strong>Направление индукционного тока</strong> определяется правилом Ленца.</li>
+  </ol>
+
+  <p class="emi-note">
+    Следующий естественный шаг темы: самоиндукция, индуктивность и энергия магнитного поля.
+  </p>
+</section>
+
+<!-- ===================== РЕФЛЕКСИЯ ===================== -->
+<section class="emi-section" id="emi-reflection">
+  <div class="emi-section-head">
+    <h2>12. Рефлексия: проверьте, что осталось после урока</h2>
+    <span class="emi-time">≈ 3 мин</span>
+  </div>
+
+  <p>Ответьте устно или письменно. Рефлексия проверяет четыре опорные идеи: поток, изменение потока, закон Фарадея, правило Ленца.</p>
+
+  <ol>
+    <li>Что показывает магнитный поток и почему он скалярная величина?</li>
+    <li>Почему при постоянном B и неподвижной рамке ЭДС может быть равна нулю?</li>
+    <li>Какой физический смысл имеет производная dΦ/dt?</li>
+    <li>Почему в законе Фарадея стоит знак «минус»?</li>
+    <li>По какому алгоритму определять направление индукционного тока?</li>
+    <li>Почему вращение рамки в магнитном поле порождает переменную ЭДС?</li>
+  </ol>
+
+  <details>
+    <summary>Опорные ответы для самопроверки</summary>
+    <ol>
+      <li>Поток показывает, сколько линий магнитной индукции пронизывает поверхность; зависит от модуля B, площади и ориентации.</li>
+      <li>Поток не меняется, следовательно dΦ/dt = 0 и ЭДС отсутствует.</li>
+      <li>Производная — мгновенная скорость изменения потока.</li>
+      <li>Знак «минус» выражает правило Ленца и обеспечивает выполнение закона сохранения энергии.</li>
+      <li>Сначала направление внешнего B, затем рост/убывание Φ, затем направление B<sub>инд</sub>, затем ток по правилу правой руки.</li>
+      <li>При вращении меняется угол α, значит Φ(t) = BS cos ωt, а ЭДС пропорциональна sin ωt.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- ===================== ДОМАШНЕЕ ЗАДАНИЕ ===================== -->
+<section class="emi-section" id="emi-homework">
+  <div class="emi-section-head">
+    <h2>13. Домашнее задание: дифференцированный подход</h2>
+    <span class="emi-time">вне урока</span>
+  </div>
+
+  <div class="emi-grid">
+    <article class="emi-card">
+      <h3>Базовый уровень</h3>
+      <ul>
+        <li>Выучить определения: магнитный поток, ЭДС индукции, правило Ленца.</li>
+        <li>Записать формулы: Φ = B·S·cos α; ε = −N·ΔΦ/Δt; ε = −N·dΦ/dt.</li>
+        <li>Качественная задача: к катушке удаляют южный полюс магнита. Какой полюс возникнет на обращённой к магниту стороне катушки и каким будет взаимодействие?</li>
+      </ul>
+      <details>
+        <summary>Подсказка к качественной задаче</summary>
+        <p>При удалении S-полюса поток через катушку уменьшается. Индукционный ток должен поддерживать убывающий поток,
+          поэтому обращённая к магниту сторона катушки станет S-полюсом и будет притягивать удаляемый магнит.</p>
+      </details>
+    </article>
+
+    <article class="emi-card">
+      <h3>Профильный уровень</h3>
+      <p><strong>Задача.</strong> Катушка: N = 500, S = 20 см². Индукция поля убывает с 0,8 Тл до 0,2 Тл за 0,3 с.
+        Сопротивление цепи R = 10 Ом. Найти ε, I и заряд q.</p>
+      <details>
+        <summary>Ответ для самопроверки</summary>
+        <p>S = 20 см² = 2,0·10⁻³ м².<br>
+          |ΔB| = 0,6 Тл.<br>
+          |ΔΦ| = S·|ΔB| = 2·10⁻³ · 0,6 = 1,2·10⁻³ Вб.<br>
+          |ε| = N·|ΔΦ|/Δt = 500 · 1,2·10⁻³ / 0,3 = 2 В.<br>
+          I = ε/R = 2/10 = 0,2 А.<br>
+          q = N·|ΔΦ|/R = 500 · 1,2·10⁻³ / 10 = 0,06 Кл.</p>
+        <p><strong>Ответ:</strong> 2 В; 0,2 А; 0,06 Кл.</p>
+      </details>
+    </article>
+
+    <article class="emi-card">
+      <h3>Творческий уровень</h3>
+      <p>Подготовить объяснение на 1–2 минуты: как работает беспроводная зарядка смартфона или индукционная плита —
+        с опорой на закон Фарадея и правило Ленца.</p>
+      <p class="emi-note">Желательно использовать хотя бы одну из формул и показать, где именно меняется магнитный поток.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== МИНИ-ТЕСТ ===================== -->
+<section class="emi-section emi-quiz" id="emi-mini-test">
+  <div class="emi-section-head">
+    <h2>14. Мини-тест для самоконтроля</h2>
+    <span class="emi-time">5–7 мин</span>
+  </div>
+
+  <fieldset>
+    <legend>1. Индукционный ток возникает в катушке, если…</legend>
+    <ol class="emi-options" type="A">
+      <li>в катушке есть сильное магнитное поле;</li>
+      <li>магнитный поток через катушку изменяется;</li>
+      <li>катушка сделана из меди.</li>
+    </ol>
+    <details>
+      <summary>Ответ</summary>
+      <p><strong>Б.</strong> Причина тока — изменение потока. Неверно: важен не сам поток, а его изменение.</p>
+    </details>
+  </fieldset>
+
+  <fieldset>
+    <legend>2. ЭДС индукции пропорциональна…</legend>
+    <ol class="emi-options" type="A">
+      <li>величине магнитного потока;</li>
+      <li>сопротивлению контура;</li>
+      <li>скорости изменения магнитного потока.</li>
+    </ol>
+    <details>
+      <summary>Ответ</summary>
+      <p><strong>В.</strong> ε = −N·dΦ/dt. ЭДС зависит от скорости изменения потока.</p>
+    </details>
+  </fieldset>
+
+  <fieldset>
+    <legend>3. Знак «минус» в законе Фарадея отражает…</legend>
+    <ol class="emi-options" type="A">
+      <li>отрицательный заряд электрона;</li>
+      <li>потерю энергии в проводах;</li>
+      <li>правило Ленца.</li>
+    </ol>
+    <details>
+      <summary>Ответ</summary>
+      <p><strong>В.</strong> Это математическая запись правила Ленца: ток противодействует изменению потока.</p>
+    </details>
+  </fieldset>
+
+  <fieldset>
+    <legend>4. Катушка N = 100 витков: поток изменился на 2 мВб за 0,5 с. Среднее значение ЭДС:</legend>
+    <ol class="emi-options" type="A">
+      <li>0,04 В;</li>
+      <li>0,4 В;</li>
+      <li>4 В.</li>
+    </ol>
+    <details>
+      <summary>Ответ</summary>
+      <p><strong>Б.</strong> ε = N·ΔΦ/Δt = 100 · 0,002 / 0,5 = 0,4 В.</p>
+    </details>
+  </fieldset>
+
+  <fieldset>
+    <legend>5. Поток через рамку велик, но постоянен. Чему равна ЭДС?</legend>
+    <ol class="emi-options" type="A">
+      <li>большой, потому что поток большой;</li>
+      <li>нулю, потому что dΦ/dt = 0;</li>
+      <li>неизвестно без сопротивления.</li>
+    </ol>
+    <details>
+      <summary>Ответ</summary>
+      <p><strong>Б.</strong> Если поток не меняется, ЭДС индукции равна нулю независимо от его величины.</p>
+    </details>
+  </fieldset>
+</section>
+
+<!-- ===================== СПРАВОЧНЫЙ РАЗДЕЛ ДЛЯ УЧИТЕЛЯ ===================== -->
+<section class="emi-section" id="emi-teacher">
+  <div class="emi-section-head">
+    <h2>Справочный раздел для учителя</h2>
+    <span class="emi-time">служебный</span>
+  </div>
+
+  <h3>На что опирается содержание</h3>
+  <ul>
+    <li>
+      Федеральная рабочая программа: физика, 10–11 классы, углублённый уровень —
+      магнитный поток, ЭДС индукции, закон Фарадея, правило Ленца, решение расчётных и качественных задач.
+    </li>
+    <li>
+      В действующей федеральной программе блок «Электромагнитная индукция» размещён в 11 классе;
+      презентация может использоваться в профильном 10 классе при соответствующей последовательности локальной рабочей программы.
+    </li>
+    <li>
+      Задания построены по проверяемым элементам содержания ФИПИ: магнитный поток,
+      явление электромагнитной индукции, закон Фарадея и правило Ленца.
+    </li>
+  </ul>
+
+  <h3>Полезные ссылки</h3>
+  <ul>
+    <li>
+      <a href="https://edsoo.ru/wp-content/uploads/2025/07/2025_soo_frp_fizika_10_11_ugl.pdf" target="_blank" rel="noopener noreferrer">
+        Официальная ФРП на ЕДСОО
+      </a>
+    </li>
+    <li>
+      <a href="https://fipi.ru/ege/demoversii-specifikacii-kodifikatory" target="_blank" rel="noopener noreferrer">
+        Проекты КИМ ЕГЭ
+      </a>
+    </li>
+    <li>
+      <a href="https://fipi.ru/navigator-podgotovki/navigator-ege" target="_blank" rel="noopener noreferrer">
+        Навигатор подготовки ФИПИ
+      </a>
+    </li>
+  </ul>
+
+  <h3>Методические акценты</h3>
+  <div class="emi-callout warning">
+    <ul>
+      <li>Не начинайте урок с определения. Сначала создайте проблему: «Магнитное поле есть. Почему тока может не быть?»</li>
+      <li>Подчеркивайте разницу между наличием поля и изменением потока.</li>
+      <li>Правило Ленца вводите через энергию, а не как отдельное мнемоническое правило.</li>
+      <li>Для сильного класса используйте производную и график Φ(t) → ε(t).</li>
+      <li>Для базового уровня достаточно средней ЭДС: |ε| = N·|ΔΦ|/Δt.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== ПОДВАЛ ===================== -->
+<footer class="emi-section emi-footer">
+  <p>
+    <strong>Итоговая формула урока:</strong>
+    изменение Φ → ЭДС → индукционный ток.
+  </p>
+  <p>
+    Материал собран и адаптирован как единый академический урок для Moodle на основе нескольких вариантов презентаций
+    по теме «Электромагнитная индукция».
+  </p>
+</footer>
+
+</div>
