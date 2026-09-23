@@ -14,7 +14,6 @@
 - [Демо-уроки и LMS](demo_edu/edu_test.html)
 - [Расписание с кабинетами](schedule/lfu_2026-2027_shedule.html)
 - [Карта кабинетов и свободных слотов](schedule/cabinets.html)
-- [Расписание без кабинетов](schedule/shedule.html)
 
 ## Материалы
 
@@ -26,8 +25,7 @@
 | [`guides/guide.html`](guides/guide.html) | Инструкция Лицея и FAQ для педагогов |
 | [`demo_edu/`](demo_edu/) | Готовые HTML-уроки, конспект и LMS-демо |
 | [`schedule/lfu_2026-2027_shedule.html`](schedule/lfu_2026-2027_shedule.html) | Полное расписание 2026–2027 |
-| [`schedule/cabinets.html`](schedule/cabinets.html) | Кабинеты и свободные слоты |
-| [`schedule/shedule.html`](schedule/shedule.html) | Упрощённое расписание |
+| [`schedule/cabinets.html`](schedule/cabinets.html) | Актуальные кабинеты, уроки, ДО и консультации |
 | [`projects/MechAI.html`](projects/MechAI.html) | Аналитика курсов программы «МехИИ» |
 | [`projects/MechAI_KTP.html`](projects/MechAI_KTP.html) | Интегрированное КТП и ИИ-трек |
 | [`projects/online_lfu.html`](projects/online_lfu.html) | Moodle, МТС Линк и ИИ |
