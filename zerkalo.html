@@ -888,20 +888,38 @@
     }
   }
 
-  // Расписание звонков. При необходимости меняется только этот массив.
-  const BELL_SCHEDULE = [
-    {lesson:1,start:"08:30",end:"09:10"},
-    {lesson:2,start:"09:20",end:"10:00"},
-    {lesson:3,start:"10:10",end:"10:50"},
-    {lesson:4,start:"11:00",end:"11:40"},
-    {lesson:5,start:"11:50",end:"12:30"},
-    {lesson:6,start:"12:40",end:"13:20"},
-    {lesson:7,start:"13:30",end:"14:10"},
-    {lesson:8,start:"14:20",end:"15:00"},
-    {lesson:9,start:"15:10",end:"15:50"},
-    {lesson:10,start:"16:00",end:"16:40"},
-    {lesson:11,start:"16:50",end:"17:30"}
+  // Два варианта расписания звонков из предоставленной таблицы.
+  // Сейчас активен вариант 1. Для привязки к дням недели достаточно
+  // поменять функцию getActiveBellSchedule().
+  const BELL_SCHEDULE_1 = [
+    {lesson:1,start:"08:30",end:"09:15"},
+    {lesson:2,start:"09:30",end:"10:15"},
+    {lesson:3,start:"10:35",end:"11:20"},
+    {lesson:4,start:"11:30",end:"12:15"},
+    {lesson:5,start:"12:25",end:"13:10"},
+    {lesson:6,start:"13:20",end:"14:05"},
+    {lesson:7,start:"14:35",end:"15:20"},
+    {lesson:8,start:"15:30",end:"16:15"},
+    {lesson:9,start:"16:25",end:"17:10"},
+    {lesson:10,start:"17:20",end:"18:05"}
   ];
+
+  const BELL_SCHEDULE_2 = [
+    {lesson:1,start:"08:30",end:"09:15"},
+    {lesson:2,start:"09:30",end:"10:15"},
+    {lesson:3,start:"10:20",end:"11:05"},
+    {lesson:4,start:"11:30",end:"12:15"},
+    {lesson:5,start:"12:25",end:"13:10"},
+    {lesson:6,start:"13:20",end:"14:05"},
+    {lesson:7,start:"14:10",end:"14:55"},
+    {lesson:8,start:"15:30",end:"16:15"},
+    {lesson:9,start:"16:25",end:"17:10"},
+    {lesson:10,start:"17:20",end:"18:05"}
+  ];
+
+  function getActiveBellSchedule(){
+    return BELL_SCHEDULE_1;
+  }
 
   function hmToSeconds(hm){
     const [h,m]=hm.split(":").map(Number);
@@ -919,6 +937,7 @@
     const p=getMoscowParts();
     const now=Number(p.hour)*3600+Number(p.minute)*60+Number(p.second);
 
+    const BELL_SCHEDULE=getActiveBellSchedule();
     const first=BELL_SCHEDULE[0];
     const last=BELL_SCHEDULE[BELL_SCHEDULE.length-1];
     const firstStart=hmToSeconds(first.start);
