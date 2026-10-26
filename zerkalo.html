@@ -1142,6 +1142,29 @@
     try{ localStorage.setItem(moodKey(),JSON.stringify(v)); }catch{}
   }
 
+  function resetMoodStats(){
+    const empty=[0,0,0,0,0];
+    saveStats(empty);
+    renderStats(empty);
+  }
+
+  let moodResetMarker="";
+  function checkMoodReset(){
+    const p=getMoscowParts();
+    const marker=`${p.year}-${p.month}-${p.day}`;
+
+    // Общий ежедневный сброс строго в 23:59 по Москве.
+    if(p.hour==="23" && p.minute==="59" && moodResetMarker!==marker){
+      resetMoodStats();
+      moodResetMarker=marker;
+    }
+
+    // После наступления нового дня разрешаем следующий ежедневный сброс.
+    if(p.hour==="00" && p.minute==="00" && moodResetMarker===marker){
+      moodResetMarker="";
+    }
+  }
+
   function answerWord(n){
     const n10=n%10,n100=n%100;
     if(n10===1&&n100!==11) return "ответ";
@@ -1214,6 +1237,7 @@
 
   updateClock();
   updateBellTimer();
+  checkMoodReset();
   updateNetwork();
   renderStats(loadStats());
   updateWeather();
@@ -1225,6 +1249,7 @@
   setInterval(()=>{
     updateClock();
     updateBellTimer();
+    checkMoodReset();
 
     const current=dateKey();
     if(current!==lastMoodDay){
